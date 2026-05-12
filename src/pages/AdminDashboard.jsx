@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { CheckCircle2, XCircle, Eye, Trash2, Star, StarOff } from "lucide-react";
 import { toast } from "sonner";
+import SpotlightManager from "@/components/admin/SpotlightManager";
 
 export default function AdminDashboard() {
   const qc = useQueryClient();
@@ -63,6 +64,7 @@ export default function AdminDashboard() {
               <TabsTrigger value="rejected">
                 Rejected <span className="ml-1.5 bg-red-100 text-red-700 text-xs px-1.5 rounded-full">{rejected.length}</span>
               </TabsTrigger>
+              <TabsTrigger value="spotlights">✨ Spotlights</TabsTrigger>
             </TabsList>
 
             <TabsContent value="pending">
@@ -73,6 +75,9 @@ export default function AdminDashboard() {
             </TabsContent>
             <TabsContent value="rejected">
               <BusinessList businesses={rejected} onApprove={approve} onReject={reject} onDelete={del} onToggleFeatured={toggleFeatured} showApprove />
+            </TabsContent>
+            <TabsContent value="spotlights">
+              <SpotlightManager />
             </TabsContent>
           </Tabs>
         )}

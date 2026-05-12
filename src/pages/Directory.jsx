@@ -7,6 +7,7 @@ import SearchFilters from "@/components/directory/SearchFilters";
 import BusinessCard from "@/components/directory/BusinessCard";
 import Footer from "@/components/directory/Footer";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import SpotlightSection from "@/components/directory/SpotlightSection";
 
 export default function Directory() {
   const [filters, setFilters] = useState({});
@@ -74,6 +75,8 @@ export default function Directory() {
           SUBMIT YOUR HBB LISTING HERE
         </a>
       </div>
+
+      <SpotlightSection allBusinesses={businesses} />
 
       {/* Discover section */}
       <div className="max-w-4xl mx-auto px-4 pt-8 pb-2 text-center">

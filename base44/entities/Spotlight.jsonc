@@ -1,0 +1,34 @@
+{
+  "name": "Spotlight",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Spotlight collection name, e.g. April Spotlight"
+    },
+    "description": {
+      "type": "string",
+      "description": "Optional short description for this spotlight"
+    },
+    "business_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Array of business IDs included in this spotlight"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether this spotlight is currently shown on the directory"
+    },
+    "display_order": {
+      "type": "number",
+      "default": 0,
+      "description": "Order in which spotlights appear (lower = first)"
+    }
+  },
+  "required": [
+    "title"
+  ]
+}
