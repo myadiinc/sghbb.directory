@@ -36,12 +36,12 @@ export default function Footer() {
                     className="w-36 h-36 object-contain rounded-lg border border-border shadow-sm"
                   />
                 </a>
-              </div>
+              </div><br />
 
               {/* Ko-fi */}
               <div className="flex flex-col items-center gap-2">
                 <p className="text-xs font-semibold text-foreground uppercase tracking-wide">Ko‑Fi</p>
-                <a href="https://ko-fi.com" target="_blank" rel="noopener noreferrer">
+                <a href="https://ko-fi.com/O4O41XWXNX" target="_blank" rel="noopener noreferrer">
                   <img
                     src="https://storage.ko-fi.com/cdn/kofi3.png?v=3"
                     alt="Buy Me a Coffee at ko-fi.com"
