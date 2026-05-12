@@ -8,7 +8,21 @@
     },
     "month": {
       "type": "string",
-      "description": "Month for this blog entry (e.g., May 2026)"
+      "enum": [
+        "April_01",
+        "April_02",
+        "May"
+      ],
+      "description": "Month category for this blog entry"
+    },
+    "special_attribute": {
+      "type": "string",
+      "enum": [
+        "April_01",
+        "April_02",
+        "May"
+      ],
+      "description": "Special attribute category for spotlight filtering"
     },
     "description": {
       "type": "string",
@@ -19,7 +33,7 @@
       "items": {
         "type": "string"
       },
-      "description": "Array of featured business IDs for this month"
+      "description": "Array of featured business IDs for this entry"
     },
     "is_published": {
       "type": "boolean",
