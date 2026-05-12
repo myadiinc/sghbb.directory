@@ -543,7 +543,7 @@ function Section({ title, children }) {
 
 function SubSection({ children }) {
   return (
-    <div className="border-t pt-4 space-y-4 first:border-t-0 first:pt-0">
+    <div className="bg-secondary/30 rounded-lg p-4 space-y-4">
       {children}
     </div>
   );
