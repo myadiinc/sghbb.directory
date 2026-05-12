@@ -58,12 +58,12 @@ export default function Directory() {
   const featured = businesses.filter(b => b.is_featured);
 
   return (
-    <div className="min-h-screen font-inter">
+      <div className="min-h-screen bg-background font-inter">
       <Navbar />
       <HeroSection totalCount={businesses.length} />
 
       {/* Submit CTA below hero */}
-      <div className="bg-secondary/60 border-b border-border px-4 py-5 text-center">
+      <div className="text-center">
         <p className="text-sm text-muted-foreground mb-3">
           Come join the <span className="font-bold text-foreground">{businesses.length}</span> HBBs listed ✨
         </p>
