@@ -33,6 +33,7 @@ export default function Navbar() {
         <div className="hidden md:flex items-center gap-6 text-sm font-inter">
           <Link to="/submit" className="text-muted-foreground hover:text-primary transition-colors">Submit HBB</Link>
           <Link to="/my-lists" className="text-muted-foreground hover:text-primary transition-colors">My Lists</Link>
+          <Link to="/my-reviews" className="text-muted-foreground hover:text-primary transition-colors">My Reviews</Link>
           {isAdmin && (
             <>
               <Link to="/admin" className="text-muted-foreground hover:text-primary transition-colors text-xs font-thin">Admin</Link>
@@ -63,6 +64,7 @@ export default function Navbar() {
       <div className="md:hidden bg-white border-t border-border px-4 py-3 flex flex-col gap-3 text-sm">
           <Link to="/submit" onClick={() => setOpen(false)} className="text-muted-foreground hover:text-primary">Submit HBB</Link>
           <Link to="/my-lists" onClick={() => setOpen(false)} className="text-muted-foreground hover:text-primary">My Lists</Link>
+          <Link to="/my-reviews" onClick={() => setOpen(false)} className="text-muted-foreground hover:text-primary">My Reviews</Link>
           {isAdmin && (
             <>
               <Link to="/admin" onClick={() => setOpen(false)} className="text-muted-foreground hover:text-primary text-xs font-thin">Admin</Link>
