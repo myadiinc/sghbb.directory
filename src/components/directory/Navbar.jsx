@@ -1,16 +1,22 @@
 import { Link } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, X, LogOut } from "lucide-react";
 import { useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
+import { useAuth } from "@/lib/AuthContext";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const { user: authUser, logout } = useAuth();
   const { data: user } = useQuery({
     queryKey: ["me"],
     queryFn: () => base44.auth.me(),
     retry: false
   });
+
+  const currentUser = user || authUser;
+  const isOwner = currentUser && currentUser.role === "owner";
+  const isAdmin = currentUser && currentUser.role === "admin";
 
   return (
     <nav className="sticky top-0 z-50 bg-white border-b border-border shadow-sm">
@@ -25,14 +31,30 @@ export default function Navbar() {
 
         {/* Desktop nav */}
         <div className="hidden md:flex items-center gap-6 text-sm font-inter">
-          <Link to="/submit" className="text-muted-foreground hover:text-primary transition-colors">Submit HBB</Link>
-          {user && <Link to="/my-lists" className="text-muted-foreground hover:text-primary transition-colors">My Lists</Link>}
-          {user?.role === "admin" &&
-          <>
-              <Link to="/admin" className="text-muted-foreground hover:text-primary transition-colors text-xs font-thin">Admin</Link>
-              <Link to="/admin/blog" className="text-muted-foreground hover:text-primary transition-colors text-xs font-thin">Blog Manager</Link>
+          {!currentUser ? (
+            <>
+              <Link to="/submit" className="text-muted-foreground hover:text-primary transition-colors">Submit HBB</Link>
+              <Link to="/report" className="text-muted-foreground hover:text-primary transition-colors">Report HBB</Link>
+              <button onClick={() => base44.auth.redirectToLogin()} className="text-primary hover:opacity-80 transition-colors font-medium">Login / Register</button>
             </>
-          }
+          ) : (
+            <>
+              {isOwner && <Link to="/my-lists" className="text-muted-foreground hover:text-primary transition-colors">My Lists</Link>}
+              <Link to="/report" className="text-muted-foreground hover:text-primary transition-colors">Report HBB</Link>
+              {isAdmin && (
+                <>
+                  <Link to="/admin" className="text-muted-foreground hover:text-primary transition-colors text-xs font-thin">Admin</Link>
+                  <Link to="/admin/blog" className="text-muted-foreground hover:text-primary transition-colors text-xs font-thin">Blog Manager</Link>
+                </>
+              )}
+              <div className="flex items-center gap-3 pl-6 border-l border-border">
+                <span className="text-xs text-muted-foreground">{currentUser.email}</span>
+                <button onClick={() => logout()} className="text-muted-foreground hover:text-primary transition-colors" title="Logout">
+                  <LogOut className="w-4 h-4" />
+                </button>
+              </div>
+            </>
+          )}
         </div>
 
         {/* Mobile hamburger */}
@@ -44,14 +66,30 @@ export default function Navbar() {
       {/* Mobile menu */}
       {open &&
       <div className="md:hidden bg-white border-t border-border px-4 py-3 flex flex-col gap-3 text-sm">
-          <Link to="/submit" onClick={() => setOpen(false)} className="text-muted-foreground hover:text-primary">Submit HBB</Link>
-          {user && <Link to="/my-lists" onClick={() => setOpen(false)} className="text-muted-foreground hover:text-primary">My Lists</Link>}
-          {user?.role === "admin" &&
-        <>
-              <Link to="/admin" onClick={() => setOpen(false)} className="text-muted-foreground hover:text-primary text-xs font-thin">Admin</Link>
-              <Link to="/admin/blog" onClick={() => setOpen(false)} className="text-muted-foreground hover:text-primary text-xs font-thin">Blog Manager</Link>
+          {!currentUser ? (
+            <>
+              <Link to="/submit" onClick={() => setOpen(false)} className="text-muted-foreground hover:text-primary">Submit HBB</Link>
+              <Link to="/report" onClick={() => setOpen(false)} className="text-muted-foreground hover:text-primary">Report HBB</Link>
+              <button onClick={() => { base44.auth.redirectToLogin(); setOpen(false); }} className="text-primary hover:opacity-80 transition-colors font-medium text-left">Login / Register</button>
             </>
-        }
+          ) : (
+            <>
+              {isOwner && <Link to="/my-lists" onClick={() => setOpen(false)} className="text-muted-foreground hover:text-primary">My Lists</Link>}
+              <Link to="/report" onClick={() => setOpen(false)} className="text-muted-foreground hover:text-primary">Report HBB</Link>
+              {isAdmin && (
+                <>
+                  <Link to="/admin" onClick={() => setOpen(false)} className="text-muted-foreground hover:text-primary text-xs font-thin">Admin</Link>
+                  <Link to="/admin/blog" onClick={() => setOpen(false)} className="text-muted-foreground hover:text-primary text-xs font-thin">Blog Manager</Link>
+                </>
+              )}
+              <div className="border-t border-border pt-3 mt-3 flex items-center justify-between">
+                <span className="text-xs text-muted-foreground">{currentUser.email}</span>
+                <button onClick={() => logout()} className="text-muted-foreground hover:text-primary transition-colors" title="Logout">
+                  <LogOut className="w-4 h-4" />
+                </button>
+              </div>
+            </>
+          )}
         </div>
       }
     </nav>);
