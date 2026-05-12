@@ -7,9 +7,9 @@
       "enum": [
         "admin",
         "business",
-        "member"
+        "user"
       ],
-      "default": "member",
+      "default": "user",
       "description": "User role"
     }
   }
