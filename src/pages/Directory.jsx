@@ -69,7 +69,7 @@ export default function Directory() {
         </p>
         <a
           href="/submit"
-          className="inline-block px-8 py-3 rounded-full font-nunito font-semibold text-sm text-white transition-all hover:opacity-90 hover:scale-105 shadow"
+          className="inline-block px-8 py-3 rounded-full font-quicksand font-semibold text-sm text-white transition-all hover:opacity-90 hover:scale-105 shadow"
           style={{ background: "hsl(38,75%,45%)" }}>
           SUBMIT YOUR HBB LISTING HERE
         </a>
