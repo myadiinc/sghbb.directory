@@ -13,35 +13,35 @@ import { CheckCircle2, Upload } from "lucide-react";
 import { MAIN_CATEGORIES } from "@/lib/constants";
 
 const LOCATIONS = [
-"01 [Central] Raffles Place, Cecil, Marina, People's Park",
-"02 [South] Anson, Tanjong Pagar",
-"03 [South] Queenstown, Tiong Bahru",
-"04 [South] Telok Blangah, Harbourfront",
-"05 [South] Pasir Panjang, Hong Leong Garden, Clementi New Town",
-"06 [Central] High Street, Beach Road",
-"07 [Central] Middle Road, Golden Mile",
-"08 [Central] Little India",
-"09 [Central] Orchard, Cairnhill, River Valley",
-"10 [Central] Ardmore, Bukit Timah, Holland Road, Tanglin",
-"11 [Central] Watten Estate, Novena, Thomson",
-"12 [Central] Balestier, Toa Payoh, Serangoon",
-"13 [Central] Macpherson, Braddell",
-"14 [East] Geylang, Eunos",
-"15 [East] Katong, Joo Chiat, Amber Road",
-"16 [East] Bedok, Upper East Coast, Eastwood, Kew Drive",
-"17 [East] Loyang, Changi",
-"18 [East] Tampines, Pasir Ris",
-"19 [North-East] Serangoon Garden, Hougang, Punggol, Sengkang",
-"20 [Central] Bishan, Ang Mo Kio",
-"21 [Central] Upper Bukit Timah, Clementi Park, Ulu Pandan",
-"22 [West] Jurong",
-"23 [West] Hillview, Dairy Farm, Bukit Panjang, Choa Chu Kang",
-"24 [West] Lim Chu Kang, Tengah",
-"25 [North] Kranji, Woodgrove, Marsiling, Woodlands, Admiralty",
-"26 [Central] Upper Thomson, Springleaf",
-"27 [North] Yishun, Khatib, Sembawang, Canberra",
-"28 [North] Seletar"];
-
+  "01 [Central] Raffles Place, Cecil, Marina, People's Park",
+  "02 [South] Anson, Tanjong Pagar",
+  "03 [South] Queenstown, Tiong Bahru",
+  "04 [South] Telok Blangah, Harbourfront",
+  "05 [South] Pasir Panjang, Hong Leong Garden, Clementi New Town",
+  "06 [Central] High Street, Beach Road",
+  "07 [Central] Middle Road, Golden Mile",
+  "08 [Central] Little India",
+  "09 [Central] Orchard, Cairnhill, River Valley",
+  "10 [Central] Ardmore, Bukit Timah, Holland Road, Tanglin",
+  "11 [Central] Watten Estate, Novena, Thomson",
+  "12 [Central] Balestier, Toa Payoh, Serangoon",
+  "13 [Central] Macpherson, Braddell",
+  "14 [East] Geylang, Eunos",
+  "15 [East] Katong, Joo Chiat, Amber Road",
+  "16 [East] Bedok, Upper East Coast, Eastwood, Kew Drive",
+  "17 [East] Loyang, Changi",
+  "18 [East] Tampines, Pasir Ris",
+  "19 [North-East] Serangoon Garden, Hougang, Punggol, Sengkang",
+  "20 [Central] Bishan, Ang Mo Kio",
+  "21 [Central] Upper Bukit Timah, Clementi Park, Ulu Pandan",
+  "22 [West] Jurong",
+  "23 [West] Hillview, Dairy Farm, Bukit Panjang, Choa Chu Kang",
+  "24 [West] Lim Chu Kang, Tengah",
+  "25 [North] Kranji, Woodgrove, Marsiling, Woodlands, Admiralty",
+  "26 [Central] Upper Thomson, Springleaf",
+  "27 [North] Yishun, Khatib, Sembawang, Canberra",
+  "28 [North] Seletar",
+];
 
 const HALAL_OPTIONS = ["Muslim-Owned F&B", "Halal-Certified F&B", "Non F&B"];
 
@@ -68,7 +68,7 @@ export default function SubmitBusiness() {
     telegram: "",
     menu_url: "",
     halal_status: "",
-    more_about_us: ""
+    more_about_us: "",
   });
   const [disclaimer, setDisclaimer] = useState({
     stored: false,
@@ -77,17 +77,17 @@ export default function SubmitBusiness() {
     indexed: false,
     directory: false,
     visibility: false,
-    contact: false
+    contact: false,
   });
 
-  const set = (k, v) => setForm((f) => ({ ...f, [k]: v }));
+  const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
 
   const toggleCategory = (cat) => {
-    setForm((f) => ({
+    setForm(f => ({
       ...f,
-      additional_categories: f.additional_categories.includes(cat) ?
-      f.additional_categories.filter((c) => c !== cat) :
-      [...f.additional_categories, cat]
+      additional_categories: f.additional_categories.includes(cat)
+        ? f.additional_categories.filter(c => c !== cat)
+        : [...f.additional_categories, cat],
     }));
   };
 
@@ -106,8 +106,8 @@ export default function SubmitBusiness() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const disclaimerAccepted = Object.values(disclaimer).every((v) => v);
+    
+    const disclaimerAccepted = Object.values(disclaimer).every(v => v);
     if (!disclaimerAccepted) {
       alert("Please accept all disclaimer terms");
       return;
@@ -153,7 +153,7 @@ export default function SubmitBusiness() {
         logo_url,
         menu_url,
         photos,
-        status: "pending"
+        status: "pending",
       });
 
       setLoading(false);
@@ -177,8 +177,8 @@ export default function SubmitBusiness() {
           <Button onClick={() => navigate("/")} variant="outline">Back to Directory</Button>
         </div>
         <Footer />
-      </div>);
-
+      </div>
+    );
   }
 
   return (
@@ -197,7 +197,7 @@ export default function SubmitBusiness() {
           {/* SECTION 1 — Business Info */}
           <Section title="SECTION 1 — Business Info">
             <Field label="HBB Name *">
-              <Input value={form.name} onChange={(e) => set("name", e.target.value)} placeholder="Your HBB name" required />
+              <Input value={form.name} onChange={e => set("name", e.target.value)} placeholder="Your HBB name" required />
             </Field>
 
             <div className="border-t pt-4">
@@ -211,12 +211,12 @@ export default function SubmitBusiness() {
               <label className="flex flex-col items-center gap-2 border-2 border-dashed border-border rounded-xl p-6 cursor-pointer hover:border-primary/50 transition-colors">
                 <Upload className="w-8 h-8 text-muted-foreground" />
                 <span className="text-sm text-muted-foreground">{logoFile ? logoFile.name : "Click to upload logo"}</span>
-                <input type="file" accept="image/*" className="hidden" onChange={(e) => setLogoFile(e.target.files[0])} />
+                <input type="file" accept="image/*" className="hidden" onChange={e => setLogoFile(e.target.files[0])} />
               </label>
             </div>
 
             <Field label="HBB Mamas? *">
-              <Select value={form.is_mama} onValueChange={(v) => set("is_mama", v)}>
+              <Select value={form.is_mama} onValueChange={v => set("is_mama", v)}>
                 <SelectTrigger><SelectValue placeholder="Select Yes or No" /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="Yes">Yes</SelectItem>
@@ -248,10 +248,10 @@ export default function SubmitBusiness() {
               </div>
 
               <Field label="HBB Main Category *">
-                <Select value={form.main_category} onValueChange={(v) => set("main_category", v)}>
+                <Select value={form.main_category} onValueChange={v => set("main_category", v)}>
                   <SelectTrigger><SelectValue placeholder="Select a category" /></SelectTrigger>
                   <SelectContent>
-                    {MAIN_CATEGORIES.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                    {MAIN_CATEGORIES.map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
                   </SelectContent>
                 </Select>
                 <p className="text-xs text-muted-foreground mt-2 leading-relaxed">
@@ -270,27 +270,27 @@ export default function SubmitBusiness() {
                 <strong>DO NOT tick the same as your MAIN category above.</strong>
               </p>
               <div className="space-y-2">
-                {MAIN_CATEGORIES.map((cat) =>
-                <label key={cat} className="flex items-center gap-2 cursor-pointer">
+                {MAIN_CATEGORIES.map(cat => (
+                  <label key={cat} className="flex items-center gap-2 cursor-pointer">
                     <Checkbox
-                    checked={form.additional_categories.includes(cat)}
-                    onCheckedChange={() => toggleCategory(cat)}
-                    disabled={cat === form.main_category} />
-                  
+                      checked={form.additional_categories.includes(cat)}
+                      onCheckedChange={() => toggleCategory(cat)}
+                      disabled={cat === form.main_category}
+                    />
                     <span className="text-sm">{cat}</span>
                   </label>
-                )}
+                ))}
               </div>
             </div>
 
             <Field label="Product/Services Details *">
               <Textarea
                 value={form.description}
-                onChange={(e) => set("description", e.target.value)}
+                onChange={e => set("description", e.target.value)}
                 placeholder="A brief description of the products you're selling and or the services you're rendering..."
                 rows={4}
-                required />
-              
+                required
+              />
               <p className="text-xs text-muted-foreground mt-2 leading-relaxed">
                 A brief description of the products you're selling and or the services you're rendering.
                 This will be shown while customers are browsing all the listings.
@@ -313,29 +313,29 @@ export default function SubmitBusiness() {
                 <span className="text-sm text-muted-foreground">Click to upload photos ({productPhotos.length}/5)</span>
                 <input type="file" accept="image/*" multiple className="hidden" onChange={handleProductPhotoChange} />
               </label>
-              {productPhotos.length > 0 &&
-              <div className="grid grid-cols-5 gap-2 mt-4">
-                  {productPhotos.map((file, idx) =>
-                <div key={idx} className="relative">
+              {productPhotos.length > 0 && (
+                <div className="grid grid-cols-5 gap-2 mt-4">
+                  {productPhotos.map((file, idx) => (
+                    <div key={idx} className="relative">
                       <img src={URL.createObjectURL(file)} alt={`Product ${idx}`} className="w-full h-20 object-cover rounded-lg" />
                       <button
-                    type="button"
-                    onClick={() => removeProductPhoto(idx)}
-                    className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center">
-                    
+                        type="button"
+                        onClick={() => removeProductPhoto(idx)}
+                        className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center"
+                      >
                         ✕
                       </button>
                     </div>
-                )}
+                  ))}
                 </div>
-              }
+              )}
             </div>
 
             <Field label="Location *">
-              <Select value={form.location} onValueChange={(v) => set("location", v)}>
+              <Select value={form.location} onValueChange={v => set("location", v)}>
                 <SelectTrigger><SelectValue placeholder="Select your area" /></SelectTrigger>
                 <SelectContent>
-                  {LOCATIONS.map((l) => <SelectItem key={l} value={l}>{l}</SelectItem>)}
+                  {LOCATIONS.map(l => <SelectItem key={l} value={l}>{l}</SelectItem>)}
                 </SelectContent>
               </Select>
               <p className="text-xs text-muted-foreground mt-2 leading-relaxed">
@@ -351,65 +351,65 @@ export default function SubmitBusiness() {
             <Field label="WhatsApp Number *">
               <Input
                 value={form.whatsapp}
-                onChange={(e) => set("whatsapp", e.target.value.replace(/\D/g, ""))}
+                onChange={e => set("whatsapp", e.target.value.replace(/\D/g, ""))}
                 placeholder="65912345678"
                 maxLength="11"
-                required />
-              
+                required
+              />
               <p className="text-xs text-muted-foreground mt-2">For customers to contact you.</p>
             </Field>
 
             <Field label="Website / Order Form / Shop Link">
               <Input
                 value={form.website}
-                onChange={(e) => set("website", e.target.value)}
-                placeholder="https://example.com" />
-              
+                onChange={e => set("website", e.target.value)}
+                placeholder="https://example.com"
+              />
               <p className="text-xs text-muted-foreground mt-2">Enter your full link address, including the https://</p>
             </Field>
 
             <Field label="Facebook">
               <Input
                 value={form.facebook}
-                onChange={(e) => set("facebook", e.target.value)}
-                placeholder="yourfacebookhandle" />
-              
+                onChange={e => set("facebook", e.target.value)}
+                placeholder="yourfacebookhandle"
+              />
               <p className="text-xs text-muted-foreground mt-2">Only enter the Facebook username handle, no @ or links required</p>
             </Field>
 
             <Field label="Instagram">
               <Input
                 value={form.instagram}
-                onChange={(e) => set("instagram", e.target.value)}
-                placeholder="yourinstagramhandle" />
-              
+                onChange={e => set("instagram", e.target.value)}
+                placeholder="yourinstagramhandle"
+              />
               <p className="text-xs text-muted-foreground mt-2">Only enter the Instagram username handle, no @ or links required</p>
             </Field>
 
             <Field label="Threads">
               <Input
                 value={form.threads}
-                onChange={(e) => set("threads", e.target.value)}
-                placeholder="yourthreadshandle" />
-              
+                onChange={e => set("threads", e.target.value)}
+                placeholder="yourthreadshandle"
+              />
               <p className="text-xs text-muted-foreground mt-2">Only enter the Threads username handle, no @ or links required</p>
             </Field>
 
             <Field label="TikTok">
               <Input
                 value={form.tiktok}
-                onChange={(e) => set("tiktok", e.target.value)}
-                placeholder="yourtiktokhandle" />
-              
+                onChange={e => set("tiktok", e.target.value)}
+                placeholder="yourtiktokhandle"
+              />
               <p className="text-xs text-muted-foreground mt-2">Only enter the TikTok username handle, no @ or links required</p>
             </Field>
 
             <Field label="Telegram Channel">
               <Input
                 value={form.telegram}
-                onChange={(e) => set("telegram", e.target.value)}
-                placeholder="yourtelegramchannel" />
-              
+                onChange={e => set("telegram", e.target.value)}
+                placeholder="yourtelegramchannel"
+              />
               <p className="text-xs text-muted-foreground mt-2">Only enter the Telegram Channel username, no links required</p>
             </Field>
           </Section>
@@ -425,29 +425,29 @@ export default function SubmitBusiness() {
               <label className="flex flex-col items-center gap-2 border-2 border-dashed border-border rounded-xl p-6 cursor-pointer hover:border-primary/50 transition-colors">
                 <Upload className="w-8 h-8 text-muted-foreground" />
                 <span className="text-sm text-muted-foreground">{menuFile ? menuFile.name : "Click to upload menu"}</span>
-                <input type="file" accept="image/*,.pdf" className="hidden" onChange={(e) => setMenuFile(e.target.files[0])} />
+                <input type="file" accept="image/*,.pdf" className="hidden" onChange={e => setMenuFile(e.target.files[0])} />
               </label>
             </div>
 
             <Field label="F&B Halal Status *">
-              <Select value={form.halal_status} onValueChange={(v) => set("halal_status", v)}>
+              <Select value={form.halal_status} onValueChange={v => set("halal_status", v)}>
                 <SelectTrigger><SelectValue placeholder="Select halal status" /></SelectTrigger>
                 <SelectContent>
-                  {HALAL_OPTIONS.map((o) => <SelectItem key={o} value={o}>{o}</SelectItem>)}
+                  {HALAL_OPTIONS.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}
                 </SelectContent>
               </Select>
               <p className="text-xs text-muted-foreground mt-2">
-                <strong>Muslim-owned F&B must be responsible for ensuring halal</strong>
+                Muslim-owned F&B must be responsible for ensuring halal
               </p>
             </Field>
 
             <Field label="More About Us">
               <Textarea
                 value={form.more_about_us}
-                onChange={(e) => set("more_about_us", e.target.value)}
+                onChange={e => set("more_about_us", e.target.value)}
                 placeholder="Anything you want people to know about your beloved home based business?"
-                rows={4} />
-              
+                rows={4}
+              />
             </Field>
           </Section>
 
@@ -456,63 +456,63 @@ export default function SubmitBusiness() {
             <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
               By submitting this form, you agree that the information, photos, and links you provide will be displayed publicly in the SG HBB Directory.
               <br /><br />
-              You also acknowledge that: <strong className="hidden">(all must be checked and selected!)</strong>
+              You also acknowledge that: <strong>(all must be checked and selected!)</strong>
             </p>
 
             <div className="space-y-3">
               <label className="flex items-start gap-3 cursor-pointer">
                 <Checkbox
                   checked={disclaimer.stored}
-                  onCheckedChange={(v) => setDisclaimer({ ...disclaimer, stored: v })} />
-                
+                  onCheckedChange={(v) => setDisclaimer({...disclaimer, stored: v})}
+                />
                 <span className="text-sm leading-relaxed">Your submission will be stored in this website.</span>
               </label>
 
               <label className="flex items-start gap-3 cursor-pointer">
                 <Checkbox
                   checked={disclaimer.email}
-                  onCheckedChange={(v) => setDisclaimer({ ...disclaimer, email: v })} />
-                
+                  onCheckedChange={(v) => setDisclaimer({...disclaimer, email: v})}
+                />
                 <span className="text-sm leading-relaxed">You may receive an email with a link to edit your response.</span>
               </label>
 
               <label className="flex items-start gap-3 cursor-pointer">
                 <Checkbox
                   checked={disclaimer.edited}
-                  onCheckedChange={(v) => setDisclaimer({ ...disclaimer, edited: v })} />
-                
+                  onCheckedChange={(v) => setDisclaimer({...disclaimer, edited: v})}
+                />
                 <span className="text-sm leading-relaxed">Listings may be edited or removed if they are inappropriate, misleading, or harmful.</span>
               </label>
 
               <label className="flex items-start gap-3 cursor-pointer">
                 <Checkbox
                   checked={disclaimer.directory}
-                  onCheckedChange={(v) => setDisclaimer({ ...disclaimer, directory: v })} />
-                
+                  onCheckedChange={(v) => setDisclaimer({...disclaimer, directory: v})}
+                />
                 <span className="text-sm leading-relaxed"><strong>‼️This is a directory, not a marketplace — buyers do not purchase through this platform.</strong></span>
               </label>
 
               <label className="flex items-start gap-3 cursor-pointer">
                 <Checkbox
                   checked={disclaimer.visibility}
-                  onCheckedChange={(v) => setDisclaimer({ ...disclaimer, visibility: v })} />
-                
+                  onCheckedChange={(v) => setDisclaimer({...disclaimer, visibility: v})}
+                />
                 <span className="text-sm leading-relaxed"><strong>‼️The directory does not guarantee visibility, traffic, or sales for any business.</strong></span>
               </label>
 
               <label className="flex items-start gap-3 cursor-pointer">
                 <Checkbox
                   checked={disclaimer.indexed}
-                  onCheckedChange={(v) => setDisclaimer({ ...disclaimer, indexed: v })} />
-                
+                  onCheckedChange={(v) => setDisclaimer({...disclaimer, indexed: v})}
+                />
                 <span className="text-sm leading-relaxed">Search engines may index your listing once it appears on the directory.</span>
               </label>
 
               <label className="flex items-start gap-3 cursor-pointer">
                 <Checkbox
                   checked={disclaimer.contact}
-                  onCheckedChange={(v) => setDisclaimer({ ...disclaimer, contact: v })} />
-                
+                  onCheckedChange={(v) => setDisclaimer({...disclaimer, contact: v})}
+                />
                 <span className="text-sm leading-relaxed">If you wish to update or remove your listing, you may contact <strong>hello@sghbb.directory</strong></span>
               </label>
             </div>
@@ -525,8 +525,8 @@ export default function SubmitBusiness() {
       </div>
 
       <Footer />
-    </div>);
-
+    </div>
+  );
 }
 
 function Section({ title, children }) {
@@ -534,8 +534,8 @@ function Section({ title, children }) {
     <div className="border border-border rounded-xl p-5 bg-white space-y-4">
       <h3 className="font-quicksand font-bold text-sm text-foreground border-b border-border pb-2">{title}</h3>
       {children}
-    </div>);
-
+    </div>
+  );
 }
 
 function Field({ label, children }) {
@@ -543,6 +543,6 @@ function Field({ label, children }) {
     <div className="space-y-1.5">
       <Label className="text-xs font-medium text-muted-foreground">{label}</Label>
       {children}
-    </div>);
-
+    </div>
+  );
 }
