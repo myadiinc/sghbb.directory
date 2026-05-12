@@ -36,10 +36,11 @@ export default function Directory() {
     retry: false
   });
 
+  const isAdmin = currentUser && currentUser.role === "admin";
   const isBusiness = currentUser && currentUser.role === "business";
-  const hasUserBusiness = isBusiness && !businessLoading && userBusiness;
-  const submitPath = hasUserBusiness ? `/edit-business/${userBusiness.id}` : "/submit";
-  const submitLabel = hasUserBusiness ? "EDIT YOUR HBB LISTING HERE" : "SUBMIT YOUR HBB LISTING HERE";
+  const canEditBusiness = (isBusiness || isAdmin) && !businessLoading && userBusiness;
+  const submitPath = canEditBusiness ? `/edit-business/${userBusiness.id}` : "/submit";
+  const submitLabel = canEditBusiness ? "EDIT YOUR HBB LISTING HERE" : "SUBMIT YOUR HBB LISTING HERE";
 
   const filtered = useMemo(() => {
     let list = [...businesses];

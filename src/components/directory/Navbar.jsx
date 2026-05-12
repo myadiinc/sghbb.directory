@@ -28,20 +28,9 @@ export default function Navbar() {
   const currentUser = user || authUser;
   const isAdmin = currentUser && currentUser.role === "admin";
   const isBusiness = currentUser && currentUser.role === "business";
-  const hasUserBusiness = isBusiness && !businessLoading && userBusiness;
-  const submitPath = hasUserBusiness ? `/edit-business/${userBusiness.id}` : "/submit";
-  const submitLabel = hasUserBusiness ? "Edit HBB" : "Submit HBB";
-
-  // DEBUG
-  console.log("Navbar Debug:", {
-    currentUser: currentUser?.email,
-    role: currentUser?.role,
-    isBusiness,
-    businessLoading,
-    userBusiness: userBusiness?.id,
-    hasUserBusiness,
-    submitLabel
-  });
+  const canEditBusiness = (isBusiness || isAdmin) && !businessLoading && userBusiness;
+  const submitPath = canEditBusiness ? `/edit-business/${userBusiness.id}` : "/submit";
+  const submitLabel = canEditBusiness ? "Edit HBB" : "Submit HBB";
 
   return (
     <nav className="sticky top-0 z-50 bg-white border-b border-border shadow-sm">
@@ -56,7 +45,7 @@ export default function Navbar() {
 
         {/* Desktop nav */}
         <div className="hidden md:flex items-center gap-6 text-sm font-inter">
-          {(isBusiness || isAdmin) && (
+          {(isBusiness || isAdmin) && currentUser && (
             <Link to={submitPath} className="text-muted-foreground hover:text-primary transition-colors">{submitLabel}</Link>
           )}
           <Link to="/my-lists" className="text-muted-foreground hover:text-primary transition-colors">My Lists</Link>
@@ -89,9 +78,9 @@ export default function Navbar() {
       {/* Mobile menu */}
       {open &&
       <div className="md:hidden bg-white border-t border-border px-4 py-3 flex flex-col gap-3 text-sm">
-         {(isBusiness || isAdmin) && (
-           <Link to={submitPath} onClick={() => setOpen(false)} className="text-muted-foreground hover:text-primary">{submitLabel}</Link>
-         )}
+         {(isBusiness || isAdmin) && currentUser && (
+            <Link to={submitPath} onClick={() => setOpen(false)} className="text-muted-foreground hover:text-primary">{submitLabel}</Link>
+          )}
           <Link to="/my-lists" onClick={() => setOpen(false)} className="text-muted-foreground hover:text-primary">My Lists</Link>
           <Link to="/my-reviews" onClick={() => setOpen(false)} className="text-muted-foreground hover:text-primary">My Reviews</Link>
           {isAdmin && (
