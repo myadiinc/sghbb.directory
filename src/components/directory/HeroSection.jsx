@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 export default function HeroSection({ totalCount }) {
   return (
     <div
-      className="relative w-full py-10 px-4 flex flex-col items-center justify-center text-center overflow-hidden mb-16"
+      className="relative w-full py-10 px-4 flex flex-col items-center justify-center text-center overflow-hidden mb-10"
       style={{ minHeight: "220px" }}>
       
       {/* Background image */}
