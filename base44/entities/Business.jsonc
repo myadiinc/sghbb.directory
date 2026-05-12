@@ -37,6 +37,18 @@
       },
       "description": "Additional category tags"
     },
+    "special_attributes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "enum": [
+        "April",
+        "Spotlight",
+        "New"
+      ],
+      "description": "Special attributes for filtering"
+    },
     "halal_status": {
       "type": "string",
       "enum": [
