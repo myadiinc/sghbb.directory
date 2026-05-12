@@ -48,8 +48,8 @@ export default function Navbar() {
           {user && <Link to="/my-lists" onClick={() => setOpen(false)} className="text-muted-foreground hover:text-primary">My Lists</Link>}
           {user?.role === "admin" &&
         <>
-              <Link to="/admin" onClick={() => setOpen(false)} className="text-muted-foreground hover:text-primary font-medium">Admin</Link>
-              <Link to="/admin/blog" onClick={() => setOpen(false)} className="text-muted-foreground hover:text-primary text-xs">Blog Manager</Link>
+              <Link to="/admin" onClick={() => setOpen(false)} className="text-muted-foreground hover:text-primary text-xs font-thin">Admin</Link>
+              <Link to="/admin/blog" onClick={() => setOpen(false)} className="text-muted-foreground hover:text-primary text-xs font-thin">Blog Manager</Link>
             </>
         }
         </div>
