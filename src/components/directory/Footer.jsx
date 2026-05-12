@@ -1,8 +1,8 @@
 export default function Footer() {
   return (
-    <>
+    <footer className="w-full">
       {/* Links to Blog, Help, Info */}
-      <div className="bg-white border-t border-border px-4 py-4">
+      <div className="w-full bg-white border-t border-border px-4 py-4">
         <div className="max-w-2xl mx-auto flex justify-center gap-6 text-sm">
           <a href="/blog" className="text-primary hover:underline font-medium">Blog</a>
           <a href="/help" className="text-primary hover:underline font-medium">Help & Support</a>
@@ -11,7 +11,7 @@ export default function Footer() {
       </div>
 
       {/* About & Support section */}
-<div className="bg-secondary/40 border-t border-border px-4 py-10">
+<div className="w-full bg-secondary/40 border-t border-border px-4 py-10">
   <div className="max-w-2xl mx-auto space-y-8">
 
     {/* About */}
@@ -84,8 +84,8 @@ export default function Footer() {
 </div>
 
 
-      {/* Footer */}
-      <footer className="bg-white border-t border-border py-6 px-4 text-center">
+      {/* Footer Social & Copyright */}
+      <div className="w-full bg-white border-t border-border py-6 px-4 text-center">
         <div className="max-w-2xl mx-auto">
 
           {/* Social icons */}
@@ -117,8 +117,8 @@ export default function Footer() {
           </div>
 
           <p className="text-xs text-muted-foreground">© 2026 SGHBB.Directory • Find &amp; Be Found</p>
-        </div>
-      </footer>
-    </>
-  );
-}
+          </div>
+          </div>
+          </footer>
+          );
+          }

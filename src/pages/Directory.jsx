@@ -11,7 +11,6 @@ import SpotlightSection from "@/components/directory/SpotlightSection";
 
 export default function Directory() {
   const [filters, setFilters] = useState({});
-  const [tab, setTab] = useState("directory");
 
   const { data: businesses = [], isLoading } = useQuery({
     queryKey: ["businesses"],
@@ -79,65 +78,63 @@ export default function Directory() {
       <SpotlightSection allBusinesses={businesses} />
 
       {/* Discover section */}
-      <div className="max-w-4xl mx-auto px-4 pt-8 pb-2 text-center">
-        <h2 className="font-quicksand text-xl font-bold text-foreground mb-4">
-          DISCOVER ✨
-        </h2>
+       <div className="max-w-4xl mx-auto px-4 pt-8 pb-8 text-center">
+         <h2 className="font-quicksand text-xl font-bold text-foreground mb-6">
+           DISCOVER ✨
+         </h2>
 
-        {/* Location Filter Buttons */}
-        <div className="flex flex-wrap justify-center gap-2 mb-5">
-          {["North", "South", "East", "West", "Central"].map((location) => (
-            <button
-              key={location}
-              onClick={() => setFilters(f => ({ ...f, location: f.location === location ? "" : location }))}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                filters.location === location
-                  ? "bg-primary text-primary-foreground shadow-md"
-                  : "bg-secondary text-secondary-foreground hover:bg-accent"
-              }`}
-            >
-              {location}
-            </button>
-          ))}
+         {/* Location Filter Tabs */}
+         <Tabs value={filters.location || ""} onValueChange={(v) => setFilters(f => ({ ...f, location: v }))} className="w-full mb-6">
+           <TabsList className="grid grid-cols-5 w-full max-w-2xl mx-auto">
+             <TabsTrigger value="">All</TabsTrigger>
+             <TabsTrigger value="North">North</TabsTrigger>
+             <TabsTrigger value="South">South</TabsTrigger>
+             <TabsTrigger value="East">East</TabsTrigger>
+             <TabsTrigger value="West">West</TabsTrigger>
+             <TabsTrigger value="Central">Central</TabsTrigger>
+           </TabsList>
+         </Tabs>
+
+         {/* Discover Buttons */}
+         <div className="flex flex-col sm:flex-row justify-center gap-3 max-w-2xl mx-auto">
+           <a
+             href="/blog"
+             className="px-6 py-3 rounded-lg font-semibold text-sm bg-primary text-primary-foreground hover:opacity-90 transition-all shadow"
+           >
+             HBB SPOTLIGHT 📸
+           </a>
+           <a
+             href="https://directories.sghbb.directory"
+             target="_blank"
+             rel="noopener noreferrer"
+             className="px-6 py-3 rounded-lg font-semibold text-sm border border-primary text-primary hover:bg-accent transition-all"
+           >
+             OTHER HBB PLATFORMS 🔗
+           </a>
+         </div>
+       </div>
+
+      <SearchFilters filters={filters} onFilterChange={setFilters} />
+
+        <div className="max-w-4xl mx-auto">
+          {isLoading ? (
+            <div className="flex items-center justify-center py-20">
+              <div className="w-8 h-8 border-4 border-border border-t-primary rounded-full animate-spin" />
+            </div>
+          ) : filtered.length === 0 ? (
+            <div className="text-center py-20 text-muted-foreground">
+              <p className="text-4xl mb-3">🔍</p>
+              <p className="font-medium">No HBBs found matching your search.</p>
+              <p className="text-sm mt-1">Try adjusting your filters.</p>
+            </div>
+          ) : (
+            <div className="divide-y divide-border">
+              {filtered.map((business) => (
+                <BusinessCard key={business.id} business={business} />
+              ))}
+            </div>
+          )}
         </div>
-
-        <Tabs value={tab} onValueChange={setTab} className="w-full max-w-sm mx-auto">
-          <TabsList className="grid grid-cols-2 w-full">
-            <TabsTrigger value="directory">HBB SPOTLIGHT</TabsTrigger>
-            <TabsTrigger value="platforms">OTHER HBB PLATFORMS</TabsTrigger>
-          </TabsList>
-        </Tabs>
-      </div>
-
-      {tab === "platforms" ? (
-        <div className="max-w-4xl mx-auto px-4 py-10 text-center text-muted-foreground">
-          <p className="text-sm">Links to other HBB platforms coming soon.</p>
-        </div>
-      ) : (
-        <>
-          <SearchFilters filters={filters} onFilterChange={setFilters} />
-
-          <div className="max-w-4xl mx-auto">
-            {isLoading ? (
-              <div className="flex items-center justify-center py-20">
-                <div className="w-8 h-8 border-4 border-border border-t-primary rounded-full animate-spin" />
-              </div>
-            ) : filtered.length === 0 ? (
-              <div className="text-center py-20 text-muted-foreground">
-                <p className="text-4xl mb-3">🔍</p>
-                <p className="font-medium">No HBBs found matching your search.</p>
-                <p className="text-sm mt-1">Try adjusting your filters.</p>
-              </div>
-            ) : (
-              <div className="divide-y divide-border">
-                {filtered.map((business) => (
-                  <BusinessCard key={business.id} business={business} />
-                ))}
-              </div>
-            )}
-          </div>
-        </>
-      )}
 
       <Footer />
     </div>
