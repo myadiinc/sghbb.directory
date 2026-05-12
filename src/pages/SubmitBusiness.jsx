@@ -9,24 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { CheckCircle2, Upload } from "lucide-react";
-
-const MAIN_CATEGORIES = [
-  "01 Food & Beverage",
-  "02 Fashion & Apparel",
-  "03 Beauty & Personal Care",
-  "04 Beauty & Wellness",
-  "05 Home & Living",
-  "06 Education & Tutoring",
-  "07 Digital Services",
-  "08 Event & Catering",
-  "09 Health & Wellness",
-  "10 Crafts & Handmade",
-  "11 Kids & Parenting",
-  "12 Other",
-];
-
-const HALAL_OPTIONS = ["Halal Certified", "Muslim-Owned", "Halal Ingredients", "Not Applicable"];
-const BADGES = ["HBB Mama", "Non F&B", "F&B"];
+import { MAIN_CATEGORIES, HALAL_OPTIONS, BADGES, LOCATIONS } from "@/lib/constants";
 
 export default function SubmitBusiness() {
   const navigate = useNavigate();
@@ -157,7 +140,12 @@ export default function SubmitBusiness() {
           {/* Location & Hours */}
           <Section title="Location & Hours">
             <Field label="Area / Location">
-              <Input value={form.location} onChange={e => set("location", e.target.value)} placeholder="e.g. Yishun, North Singapore" />
+              <Select value={form.location} onValueChange={v => set("location", v)}>
+                <SelectTrigger><SelectValue placeholder="Select your area" /></SelectTrigger>
+                <SelectContent>
+                  {LOCATIONS.map(l => <SelectItem key={l} value={l}>{l}</SelectItem>)}
+                </SelectContent>
+              </Select>
             </Field>
             <Field label="Operating Hours">
               <Input value={form.hours} onChange={e => set("hours", e.target.value)} placeholder="e.g. Mon–Fri 9am–6pm" />

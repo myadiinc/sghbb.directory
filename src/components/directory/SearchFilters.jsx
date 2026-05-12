@@ -1,29 +1,7 @@
 import { Search } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { MAIN_CATEGORIES, HALAL_OPTIONS, LOCATIONS } from "@/lib/constants";
 
-const MAIN_CATEGORIES = [
-  "01 Food & Beverage",
-  "02 Fashion & Apparel",
-  "03 Beauty & Personal Care",
-  "04 Beauty & Wellness",
-  "05 Home & Living",
-  "06 Education & Tutoring",
-  "07 Digital Services",
-  "08 Event & Catering",
-  "09 Health & Wellness",
-  "10 Crafts & Handmade",
-  "11 Kids & Parenting",
-  "12 Other",
-];
-
-const ADDITIONAL_CATEGORIES = ["Non F&B", "F&B", "HBB Mama", "HBB Spotlight"];
-const HOURS = ["Open Now", "Weekdays", "Weekends", "24/7"];
-const HALAL_STATUS = ["Halal Certified", "Muslim-Owned", "Halal Ingredients", "Not Applicable"];
-const LOCATIONS = [
-  "North", "South", "East", "West", "Central",
-  "Yishun", "Tampines", "Jurong", "Bedok", "Woodlands",
-  "Ang Mo Kio", "Bukit Timah", "Punggol", "Sengkang", "Hougang",
-];
 const SORT_OPTIONS = ["Default order", "Newest first", "Name A-Z", "Name Z-A"];
 
 export default function SearchFilters({ filters, onFilterChange }) {
@@ -52,7 +30,7 @@ export default function SearchFilters({ filters, onFilterChange }) {
         <FilterSelect
           label="HBB Additional Cat..."
           value={filters.additional_category}
-          options={ADDITIONAL_CATEGORIES}
+          options={MAIN_CATEGORIES}
           onChange={(v) => onFilterChange({ ...filters, additional_category: v })}
         />
         <FilterSelect
@@ -64,7 +42,7 @@ export default function SearchFilters({ filters, onFilterChange }) {
         <FilterSelect
           label="F&B Halal Status"
           value={filters.halal_status}
-          options={HALAL_STATUS}
+          options={HALAL_OPTIONS}
           onChange={(v) => onFilterChange({ ...filters, halal_status: v })}
         />
         <FilterSelect
