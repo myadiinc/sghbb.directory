@@ -5,7 +5,13 @@ import Navbar from "@/components/directory/Navbar";
 import Footer from "@/components/directory/Footer";
 import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function Blog() {
   const [expandedId, setExpandedId] = useState(null);
@@ -15,11 +21,6 @@ export default function Blog() {
   const { data: entries = [] } = useQuery({
     queryKey: ["blogEntries"],
     queryFn: () => base44.entities.BlogEntry.filter({ is_published: true }, "-created_date", 50),
-  });
-
-  const { data: businesses = [] } = useQuery({
-    queryKey: ["allBusinesses"],
-    queryFn: () => base44.entities.Business.filter({ status: "approved" }, "-created_date", 500),
   });
 
   // Get unique months and special attributes
@@ -44,8 +45,6 @@ export default function Blog() {
     });
   }, [entries, selectedMonth, selectedSpotlight]);
 
-  const getBusiness = (id) => businesses.find(b => b.id === id);
-
   return (
     <div className="min-h-screen bg-background font-inter">
       <Navbar />
@@ -58,39 +57,40 @@ export default function Blog() {
 
         <h1 className="font-quicksand font-bold text-3xl text-foreground mb-8 text-center">HBB Blog 📝</h1>
 
-        {/* Month Filter */}
-        {months.length > 0 && (
-          <div className="mb-6">
-            <p className="text-sm font-semibold text-foreground mb-3">By Month</p>
-            <Tabs value={selectedMonth} onValueChange={setSelectedMonth} className="w-full">
-              <TabsList className="flex flex-wrap gap-0 h-auto p-0">
-                <TabsTrigger value="" className="text-sm py-2">All</TabsTrigger>
+        {/* Filters */}
+        <div className="flex flex-col sm:flex-row gap-4 mb-8">
+          {months.length > 0 && (
+            <Select value={selectedMonth} onValueChange={setSelectedMonth}>
+              <SelectTrigger className="w-full sm:flex-1">
+                <SelectValue placeholder="Filter by Month" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value={null}>All Months</SelectItem>
                 {months.map((month) => (
-                  <TabsTrigger key={month} value={month} className="text-sm py-2">
+                  <SelectItem key={month} value={month}>
                     {month}
-                  </TabsTrigger>
+                  </SelectItem>
                 ))}
-              </TabsList>
-            </Tabs>
-          </div>
-        )}
+              </SelectContent>
+            </Select>
+          )}
 
-        {/* Spotlight Filter */}
-        {spotlights.length > 0 && (
-          <div className="mb-6">
-            <p className="text-sm font-semibold text-foreground mb-3">By Spotlight</p>
-            <Tabs value={selectedSpotlight} onValueChange={setSelectedSpotlight} className="w-full">
-              <TabsList className="flex flex-wrap gap-0 h-auto p-0">
-                <TabsTrigger value="" className="text-sm py-2">All</TabsTrigger>
+          {spotlights.length > 0 && (
+            <Select value={selectedSpotlight} onValueChange={setSelectedSpotlight}>
+              <SelectTrigger className="w-full sm:flex-1">
+                <SelectValue placeholder="Filter by Spotlight" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value={null}>All Spotlights</SelectItem>
                 {spotlights.map((spot) => (
-                  <TabsTrigger key={spot} value={spot} className="text-sm py-2">
+                  <SelectItem key={spot} value={spot}>
                     🌟 {spot}
-                  </TabsTrigger>
+                  </SelectItem>
                 ))}
-              </TabsList>
-            </Tabs>
-          </div>
-        )}
+              </SelectContent>
+            </Select>
+          )}
+        </div>
 
         {filteredEntries.length === 0 ? (
           <div className="text-center py-12 text-muted-foreground">
@@ -112,44 +112,6 @@ export default function Blog() {
 
                   {entry.description && (
                     <p className="text-sm text-foreground mt-3 leading-relaxed">{entry.description}</p>
-                  )}
-
-                  {entry.featured_hbb_ids?.length > 0 && (
-                    <div className="mt-4">
-                      <button
-                        onClick={() => setExpandedId(expandedId === entry.id ? null : entry.id)}
-                        className="text-sm font-medium text-primary hover:underline"
-                      >
-                        {expandedId === entry.id ? "Hide" : "Show"} Featured HBBs ({entry.featured_hbb_ids.length})
-                      </button>
-
-                      {expandedId === entry.id && (
-                        <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
-                          {entry.featured_hbb_ids.map((id) => {
-                            const biz = getBusiness(id);
-                            return biz ? (
-                              <Link
-                                key={id}
-                                to={`/business/${id}`}
-                                className="flex gap-3 p-3 border border-border rounded-lg bg-secondary/30 hover:bg-secondary transition-colors"
-                              >
-                                <div className="w-16 h-16 rounded-lg overflow-hidden bg-muted flex-shrink-0">
-                                  {biz.logo_url ? (
-                                    <img src={biz.logo_url} alt={biz.name} className="w-full h-full object-cover" />
-                                  ) : (
-                                    <div className="w-full h-full flex items-center justify-center text-2xl bg-secondary">🏠</div>
-                                  )}
-                                </div>
-                                <div className="min-w-0 flex-1">
-                                  <p className="font-semibold text-sm text-foreground truncate">{biz.name}</p>
-                                  <p className="text-xs text-muted-foreground truncate mt-0.5">{biz.description || biz.main_category}</p>
-                                </div>
-                              </Link>
-                            ) : null;
-                          })}
-                        </div>
-                      )}
-                    </div>
                   )}
                 </div>
               );

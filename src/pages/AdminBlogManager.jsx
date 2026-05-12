@@ -11,7 +11,7 @@ import { X } from "lucide-react";
 export default function AdminBlogManager() {
   const [user, setUser] = useState(null);
   const [editingId, setEditingId] = useState(null);
-  const [form, setForm] = useState({ title: "", month: "", description: "", featured_hbb_ids: [], is_published: false });
+  const [form, setForm] = useState({ title: "", month: "", special_attribute: "", description: "", is_published: false });
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
@@ -43,7 +43,7 @@ export default function AdminBlogManager() {
       await base44.entities.BlogEntry.create(form);
     }
 
-    setForm({ title: "", month: "", description: "", featured_hbb_ids: [], is_published: false });
+    setForm({ title: "", month: "", special_attribute: "", description: "", is_published: false });
     refetchEntries();
   };
 
@@ -59,14 +59,7 @@ export default function AdminBlogManager() {
     }
   };
 
-  const toggleBusiness = (id) => {
-    setForm(f => ({
-      ...f,
-      featured_hbb_ids: f.featured_hbb_ids.includes(id)
-        ? f.featured_hbb_ids.filter(bid => bid !== id)
-        : [...f.featured_hbb_ids, id]
-    }));
-  };
+
 
   if (!user || user.role !== "admin") {
     return (
@@ -105,7 +98,17 @@ export default function AdminBlogManager() {
               <Input
                 value={form.month}
                 onChange={(e) => setForm({ ...form, month: e.target.value })}
-                placeholder="e.g., May 2026"
+                placeholder="e.g., May"
+                className="mt-1"
+              />
+            </div>
+
+            <div>
+              <label className="text-sm font-medium text-foreground">Spotlight (Special Attribute)</label>
+              <Input
+                value={form.special_attribute}
+                onChange={(e) => setForm({ ...form, special_attribute: e.target.value })}
+                placeholder="e.g., Featured, Trending"
                 className="mt-1"
               />
             </div>
@@ -118,28 +121,6 @@ export default function AdminBlogManager() {
                 placeholder="Blog entry content..."
                 className="mt-1"
               />
-            </div>
-
-            <div>
-              <label className="text-sm font-medium text-foreground mb-3 block">Featured HBBs</label>
-              <Input
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Search businesses..."
-                className="mb-3"
-              />
-              <div className="space-y-2 max-h-48 overflow-y-auto border border-border rounded-lg p-3">
-                {filteredBusinesses.map((b) => (
-                  <label key={b.id} className="flex items-center gap-2 cursor-pointer">
-                    <Checkbox
-                      checked={form.featured_hbb_ids.includes(b.id)}
-                      onCheckedChange={() => toggleBusiness(b.id)}
-                    />
-                    <span className="text-sm">{b.name}</span>
-                  </label>
-                ))}
-              </div>
-              <p className="text-xs text-muted-foreground mt-2">{form.featured_hbb_ids.length} selected</p>
             </div>
 
             <label className="flex items-center gap-2 cursor-pointer">
@@ -158,7 +139,7 @@ export default function AdminBlogManager() {
                   variant="outline"
                   onClick={() => {
                     setEditingId(null);
-                    setForm({ title: "", month: "", description: "", featured_hbb_ids: [], is_published: false });
+                    setForm({ title: "", month: "", special_attribute: "", description: "", is_published: false });
                   }}
                 >
                   Cancel
@@ -175,12 +156,11 @@ export default function AdminBlogManager() {
             {entries.map((entry) => (
               <div key={entry.id} className="bg-white border border-border rounded-lg p-4 flex justify-between items-start">
                 <div className="flex-1">
-                  <p className="font-semibold text-foreground">{entry.title}</p>
-                  <p className="text-sm text-muted-foreground">{entry.month}</p>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    {entry.featured_hbb_ids?.length || 0} HBBs • {entry.is_published ? "Published" : "Draft"}
-                  </p>
-                </div>
+                   <p className="font-semibold text-foreground">{entry.title}</p>
+                   <p className="text-sm text-muted-foreground">{entry.month}</p>
+                   {entry.special_attribute && <p className="text-xs text-accent-foreground mt-1">🌟 {entry.special_attribute}</p>}
+                   <p className="text-xs text-muted-foreground mt-1">{entry.is_published ? "Published" : "Draft"}</p>
+                 </div>
                 <div className="flex gap-2">
                   <Button size="sm" variant="outline" onClick={() => handleEdit(entry)}>Edit</Button>
                   <Button size="sm" variant="outline" onClick={() => handleDelete(entry.id)}>Delete</Button>
