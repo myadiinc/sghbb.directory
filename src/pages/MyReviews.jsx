@@ -52,12 +52,13 @@ export default function MyReviews() {
 
   const saveEdit = () => {
     base44.entities.Review.update(editingId, { 
-      comment: editComment, 
-      rating: editRating 
+      pending_comment: editComment,
+      requires_approval: true,
+      rating: editRating
     }).then(() => {
       refetch();
       setEditingId(null);
-      toast.success("Review updated.");
+      toast.success("Review edit submitted for approval.");
     });
   };
 
@@ -156,6 +157,9 @@ export default function MyReviews() {
                     </div>
                     {review.comment && (
                       <p className="text-sm text-foreground leading-relaxed">{review.comment}</p>
+                    )}
+                    {review.requires_approval && (
+                      <p className="text-xs text-amber-600 mt-2 bg-amber-50 p-2 rounded">⏳ Pending approval</p>
                     )}
                     <p className="text-xs text-muted-foreground mt-3">
                       {new Date(review.created_date).toLocaleDateString()}

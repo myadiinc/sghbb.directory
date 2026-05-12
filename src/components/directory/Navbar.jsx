@@ -15,8 +15,8 @@ export default function Navbar() {
   });
 
   const currentUser = user || authUser;
-  const isOwner = currentUser && currentUser.role === "owner";
   const isAdmin = currentUser && currentUser.role === "admin";
+  const isBusiness = currentUser && currentUser.role === "business";
 
   return (
     <nav className="sticky top-0 z-50 bg-white border-b border-border shadow-sm">
@@ -31,7 +31,9 @@ export default function Navbar() {
 
         {/* Desktop nav */}
         <div className="hidden md:flex items-center gap-6 text-sm font-inter">
-          <Link to="/submit" className="text-muted-foreground hover:text-primary transition-colors">Submit HBB</Link>
+          {(isBusiness || isAdmin) && (
+            <Link to="/submit" className="text-muted-foreground hover:text-primary transition-colors">Submit HBB</Link>
+          )}
           <Link to="/my-lists" className="text-muted-foreground hover:text-primary transition-colors">My Lists</Link>
           <Link to="/my-reviews" className="text-muted-foreground hover:text-primary transition-colors">My Reviews</Link>
           {isAdmin && (
@@ -62,7 +64,9 @@ export default function Navbar() {
       {/* Mobile menu */}
       {open &&
       <div className="md:hidden bg-white border-t border-border px-4 py-3 flex flex-col gap-3 text-sm">
-          <Link to="/submit" onClick={() => setOpen(false)} className="text-muted-foreground hover:text-primary">Submit HBB</Link>
+          {(isBusiness || isAdmin) && (
+            <Link to="/submit" onClick={() => setOpen(false)} className="text-muted-foreground hover:text-primary">Submit HBB</Link>
+          )}
           <Link to="/my-lists" onClick={() => setOpen(false)} className="text-muted-foreground hover:text-primary">My Lists</Link>
           <Link to="/my-reviews" onClick={() => setOpen(false)} className="text-muted-foreground hover:text-primary">My Reviews</Link>
           {isAdmin && (

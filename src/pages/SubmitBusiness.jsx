@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import Navbar from "@/components/directory/Navbar";
@@ -47,8 +47,18 @@ const HALAL_OPTIONS = ["Muslim-Owned F&B", "Halal-Certified F&B", "Non F&B"];
 
 export default function SubmitBusiness() {
   const navigate = useNavigate();
+  const [user, setUser] = useState(null);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    base44.auth.me().then(u => {
+      setUser(u);
+      if (!u || (u.role !== "business" && u.role !== "admin")) {
+        base44.auth.redirectToLogin();
+      }
+    }).catch(() => base44.auth.redirectToLogin());
+  }, []);
   const [logoFile, setLogoFile] = useState(null);
   const [productPhotos, setProductPhotos] = useState([]);
   const [menuFile, setMenuFile] = useState(null);

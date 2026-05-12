@@ -48,6 +48,7 @@ const HALAL_OPTIONS = ["Muslim-Owned F&B", "Halal-Certified F&B", "Non F&B"];
 export default function EditBusiness() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [user, setUser] = useState(null);
   const [saved, setSaved] = useState(false);
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(true);
@@ -55,7 +56,6 @@ export default function EditBusiness() {
   const [productPhotos, setProductPhotos] = useState([]);
   const [newProductPhotos, setNewProductPhotos] = useState([]);
   const [menuFile, setMenuFile] = useState(null);
-  const [user, setUser] = useState(null);
   const [unauthorized, setUnauthorized] = useState(false);
   const [form, setForm] = useState(null);
 
@@ -63,6 +63,12 @@ export default function EditBusiness() {
     const load = async () => {
       const me = await base44.auth.me().catch(() => null);
       setUser(me);
+
+      if (!me || (me.role !== "business" && me.role !== "admin")) {
+        setUnauthorized(true);
+        setFetching(false);
+        return;
+      }
 
       const results = await base44.entities.Business.filter({ id });
       const biz = results[0];

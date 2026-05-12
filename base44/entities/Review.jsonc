@@ -21,6 +21,20 @@
     "reviewer_email": {
       "type": "string",
       "description": "Email of reviewer (for dedup)"
+    },
+    "pending_comment": {
+      "type": "string",
+      "description": "Pending comment awaiting approval"
+    },
+    "is_approved": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether the review (original or last approved edit) is approved"
+    },
+    "requires_approval": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether pending edits require approval"
     }
   },
   "required": [
