@@ -73,9 +73,6 @@ export default function Directory() {
           style={{ background: "hsl(38,75%,45%)" }}>
           SUBMIT YOUR HBB LISTING HERE
         </a>
-        <p className="text-xs text-muted-foreground mt-2">
-          Note: This form works only on Chrome or Safari. A Google account is required.
-        </p>
       </div>
 
       {/* Discover section */}
