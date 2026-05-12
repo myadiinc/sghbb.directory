@@ -1,0 +1,25 @@
+{
+  "name": "SavedList",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "description": "Owner of this list"
+    },
+    "list_name": {
+      "type": "string",
+      "description": "Name of the list"
+    },
+    "business_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Array of business IDs in this list"
+    }
+  },
+  "required": [
+    "user_email",
+    "list_name"
+  ]
+}

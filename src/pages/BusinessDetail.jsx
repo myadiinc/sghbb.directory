@@ -3,9 +3,11 @@ import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
 import Navbar from "@/components/directory/Navbar";
 import Footer from "@/components/directory/Footer";
-import BusinessCard from "@/components/directory/BusinessCard";
+import ReviewSection from "@/components/business/ReviewSection";
+import LikeButton from "@/components/business/LikeButton";
+import SaveToListButton from "@/components/business/SaveToListButton";
 import { ArrowLeft, MapPin, Clock, Globe, Instagram, Facebook, Phone, Mail } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const BADGE_STYLES = {
   "HBB Verified": "bg-emerald-100 text-emerald-700 border border-emerald-200",
@@ -19,6 +21,11 @@ const BADGE_STYLES = {
 export default function BusinessDetail() {
   const { id } = useParams();
   const [photoIndex, setPhotoIndex] = useState(0);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    base44.auth.me().then(setUser).catch(() => {});
+  }, []);
 
   const { data: business, isLoading } = useQuery({
     queryKey: ["business", id],
@@ -93,14 +100,18 @@ export default function BusinessDetail() {
           </div>
         )}
 
-        {/* WhatsApp CTA */}
-        {waLink && (
-          <a href={waLink} target="_blank" rel="noopener noreferrer"
-            className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-white font-semibold text-sm mb-4 transition-opacity hover:opacity-90"
-            style={{ background: "hsl(142,71%,40%)" }}>
-            💬 Message on WhatsApp
-          </a>
-        )}
+        {/* WhatsApp CTA + action buttons */}
+        <div className="flex gap-2 mb-4">
+          {waLink && (
+            <a href={waLink} target="_blank" rel="noopener noreferrer"
+              className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-white font-semibold text-sm transition-opacity hover:opacity-90"
+              style={{ background: "hsl(142,71%,40%)" }}>
+              💬 WhatsApp
+            </a>
+          )}
+          <LikeButton businessId={id} user={user} />
+          <SaveToListButton businessId={id} user={user} />
+        </div>
 
         {/* Back breadcrumb */}
         <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
@@ -207,6 +218,9 @@ export default function BusinessDetail() {
             </div>
           )}
         </div>
+
+        {/* Reviews */}
+        <ReviewSection businessId={id} user={user} />
 
         {/* Related */}
         {related.length > 0 && (

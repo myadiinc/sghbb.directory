@@ -1,0 +1,30 @@
+{
+  "name": "Review",
+  "type": "object",
+  "properties": {
+    "business_id": {
+      "type": "string",
+      "description": "ID of the business being reviewed"
+    },
+    "rating": {
+      "type": "number",
+      "description": "Star rating 1-5"
+    },
+    "comment": {
+      "type": "string",
+      "description": "Review text"
+    },
+    "reviewer_name": {
+      "type": "string",
+      "description": "Display name of reviewer"
+    },
+    "reviewer_email": {
+      "type": "string",
+      "description": "Email of reviewer (for dedup)"
+    }
+  },
+  "required": [
+    "business_id",
+    "rating"
+  ]
+}

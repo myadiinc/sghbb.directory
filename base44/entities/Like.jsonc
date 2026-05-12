@@ -1,0 +1,18 @@
+{
+  "name": "Like",
+  "type": "object",
+  "properties": {
+    "business_id": {
+      "type": "string",
+      "description": "ID of the liked business"
+    },
+    "user_email": {
+      "type": "string",
+      "description": "Email of user who liked"
+    }
+  },
+  "required": [
+    "business_id",
+    "user_email"
+  ]
+}
