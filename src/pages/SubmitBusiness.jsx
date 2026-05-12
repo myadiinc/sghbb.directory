@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
 import Navbar from "@/components/directory/Navbar";
 import Footer from "@/components/directory/Footer";
@@ -9,7 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { CheckCircle2, Upload } from "lucide-react";
+import { CheckCircle2, Upload, AlertCircle } from "lucide-react";
 import { MAIN_CATEGORIES } from "@/lib/constants";
 
 const LOCATIONS = [
@@ -59,6 +60,12 @@ export default function SubmitBusiness() {
       }
     }).catch(() => base44.auth.redirectToLogin());
   }, []);
+
+  const { data: userBusinesses = [] } = useQuery({
+    queryKey: ["user-businesses", user?.email],
+    queryFn: () => base44.entities.Business.filter({ submitted_by_email: user.email }, "", 100),
+    enabled: !!user,
+  });
   const [logoFile, setLogoFile] = useState(null);
   const [productPhotos, setProductPhotos] = useState([]);
   const [menuFile, setMenuFile] = useState(null);
@@ -173,6 +180,25 @@ export default function SubmitBusiness() {
       setLoading(false);
     }
   };
+
+  if (userBusinesses.length > 0) {
+    return (
+      <div className="min-h-screen bg-background font-nunito">
+        <Navbar />
+        <div className="max-w-lg mx-auto px-4 py-20 text-center">
+          <AlertCircle className="w-16 h-16 text-amber-500 mx-auto mb-4" />
+          <h2 className="font-quicksand text-2xl font-bold text-foreground mb-2">One Business Per Account</h2>
+          <p className="text-muted-foreground text-sm mb-6">
+            Your account already has a business listing. Each email can only submit one business.
+            <br /><br />
+            To submit another business, please sign up with a different email address.
+          </p>
+          <Button onClick={() => navigate("/")} variant="outline">Back to Directory</Button>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   if (submitted) {
     return (
