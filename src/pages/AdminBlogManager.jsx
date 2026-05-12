@@ -6,6 +6,13 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { X } from "lucide-react";
 
 export default function AdminBlogManager() {
@@ -105,12 +112,17 @@ export default function AdminBlogManager() {
 
             <div>
               <label className="text-sm font-medium text-foreground">Spotlight (Special Attribute)</label>
-              <Input
-                value={form.special_attribute}
-                onChange={(e) => setForm({ ...form, special_attribute: e.target.value })}
-                placeholder="e.g., Featured, Trending"
-                className="mt-1"
-              />
+              <Select value={form.special_attribute} onValueChange={(v) => setForm({ ...form, special_attribute: v })}>
+                <SelectTrigger className="mt-1">
+                  <SelectValue placeholder="Select a spotlight..." />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value={null}>None</SelectItem>
+                  <SelectItem value="April_01">April_01</SelectItem>
+                  <SelectItem value="April_02">April_02</SelectItem>
+                  <SelectItem value="May">May</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             <div>
