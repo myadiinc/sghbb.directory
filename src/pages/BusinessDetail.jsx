@@ -6,7 +6,8 @@ import Footer from "@/components/directory/Footer";
 import ReviewSection from "@/components/business/ReviewSection";
 import LikeButton from "@/components/business/LikeButton";
 import SaveToListButton from "@/components/business/SaveToListButton";
-import { ArrowLeft, MapPin, Clock, Globe, Instagram, Facebook, Phone, Mail } from "lucide-react";
+import { ArrowLeft, MapPin, Clock, Globe, Instagram, Facebook, Phone, Mail, Pencil } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 
 const BADGE_STYLES = {
@@ -113,9 +114,16 @@ export default function BusinessDetail() {
           <SaveToListButton businessId={id} user={user} />
         </div>
 
-        {/* Back breadcrumb */}
-        <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
+        {/* Back breadcrumb + Edit button */}
+        <div className="flex items-center justify-between gap-2 text-sm text-muted-foreground mb-3">
           <Link to="/" className="hover:text-primary">← Back</Link>
+          {user && (user.role === "admin" || business.submitted_by_email === user.email || business.created_by === user.email) && (
+            <Link to={`/edit-business/${id}`}>
+              <Button size="sm" variant="outline" className="gap-1.5 text-xs">
+                <Pencil className="w-3 h-3" /> Edit Listing
+              </Button>
+            </Link>
+          )}
         </div>
 
         {/* Badges */}

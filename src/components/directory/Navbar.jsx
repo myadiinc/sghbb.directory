@@ -16,7 +16,7 @@ export default function Navbar() {
     <nav className="sticky top-0 z-50 bg-white border-b border-border shadow-sm">
       <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2">
-          <span className="text-xl">🏠</span>
+          <img src="https://i.ibb.co/mC8w4ghP/SGHBBD-Logo-V2-2b.png" alt="SGHBB Directory" className="w-8 h-8 object-contain" />
           <div>
             <span className="font-quicksand font-bold text-primary text-base">SGHBB.Directory</span>
             <span className="hidden sm:inline text-xs text-muted-foreground ml-1">• Find &amp; Be Found 🔍</span>

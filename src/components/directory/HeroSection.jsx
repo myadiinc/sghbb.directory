@@ -5,24 +5,18 @@ export default function HeroSection({ totalCount }) {
   return (
     <div
       className="relative w-full py-16 px-4 flex flex-col items-center justify-center text-center overflow-hidden"
-      style={{ background: "linear-gradient(135deg, hsl(20,35%,16%) 0%, hsl(25,40%,22%) 50%, hsl(20,30%,14%) 100%)" }}>
+      style={{ minHeight: "320px" }}>
       
-      {/* Background texture overlay */}
-      <div className="absolute inset-0 opacity-10"
-      style={{ backgroundImage: "url('https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=1400&q=60')", backgroundSize: "cover", backgroundPosition: "center" }} />
+      {/* Background image */}
+      <div className="absolute inset-0"
+        style={{ backgroundImage: "url('https://i.ibb.co/pB1GG7sf/SGHBBD-BG-V3-0.png')", backgroundSize: "cover", backgroundPosition: "center" }} />
+      {/* Dark overlay for readability */}
+      <div className="absolute inset-0 bg-black/40" />
       
       <div className="relative z-10 flex flex-col items-center gap-4">
         {/* Logo */}
         <div className="flex flex-col items-center mb-2">
-          <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-3" style={{ background: "hsl(38,75%,45%)" }}>
-            <span className="text-3xl">🏠</span>
-          </div>
-          <h1 className="font-quicksand text-3xl md:text-4xl font-bold text-white tracking-wide">SGHBB.Directory
-
-          </h1>
-          <p className="text-sm font-nunito font-light tracking-widest" style={{ color: "hsl(38,75%,65%)" }}>
-            Find &amp; Be Found
-          </p>
+          <img src="https://i.ibb.co/mC8w4ghP/SGHBBD-Logo-V2-2b.png" alt="SGHBB Directory Logo" className="w-24 h-24 object-contain mb-3 drop-shadow-lg" />
         </div>
 
         <p className="text-white/80 font-nunito text-sm md:text-base max-w-md leading-relaxed">
