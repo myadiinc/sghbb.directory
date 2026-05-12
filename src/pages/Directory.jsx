@@ -62,6 +62,22 @@ export default function Directory() {
       <Navbar />
       <HeroSection totalCount={businesses.length} />
 
+      {/* Submit CTA below hero */}
+      <div className="bg-secondary/60 border-b border-border px-4 py-5 text-center">
+        <p className="text-sm text-muted-foreground mb-3">
+          Come join the <span className="font-bold text-foreground">{businesses.length}</span> HBBs listed ✨
+        </p>
+        <a
+          href="/submit"
+          className="inline-block px-8 py-3 rounded-full font-nunito font-semibold text-sm text-white transition-all hover:opacity-90 hover:scale-105 shadow"
+          style={{ background: "hsl(38,75%,45%)" }}>
+          SUBMIT YOUR HBB LISTING HERE
+        </a>
+        <p className="text-xs text-muted-foreground mt-2">
+          Note: This form works only on Chrome or Safari. A Google account is required.
+        </p>
+      </div>
+
       {/* Discover section */}
       <div className="max-w-4xl mx-auto px-4 pt-8 pb-2 text-center">
         <h2 className="font-quicksand text-xl font-bold text-foreground mb-4">
