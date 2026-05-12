@@ -40,13 +40,13 @@ export default function Footer() {
                 <a
                   href="https://i.ibb.co/s9wzmDN2/Pay-Now-Support-SGHBBDirectory-V1-0.jpg"
                   target="_blank"
-                  rel="noopener noreferrer"
-                >
+                  rel="noopener noreferrer">
+                  
                   <img
                     src="https://i.ibb.co/s9wzmDN2/Pay-Now-Support-SGHBBDirectory-V1-0.jpg"
                     alt="PayNow QR Code"
-                    className="w-36 h-36 object-contain rounded-lg border border-border shadow-sm"
-                  />
+                    className="w-36 h-36 object-contain rounded-lg border border-border shadow-sm" />
+                  
                 </a>
               </div>
 
@@ -58,13 +58,13 @@ export default function Footer() {
                 <a
                   href="https://ko-fi.com/O4O41XWXNX"
                   target="_blank"
-                  rel="noopener noreferrer"
-                >
+                  rel="noopener noreferrer">
+                  
                   <img
                     src="https://storage.ko-fi.com/cdn/kofi3.png?v=3"
                     alt="Buy Me a Coffee at ko-fi.com"
-                    className="h-10 object-contain"
-                  />
+                    className="h-10 object-contain" />
+                  
                 </a>
               </div>
 
@@ -81,7 +81,7 @@ export default function Footer() {
           {/* Links to Blog, Help, Info */}
           <div className="flex justify-center gap-6 text-sm">
             <a href="/blog" className="text-primary hover:underline font-medium">Blog</a>
-            <a href="/help" className="text-primary hover:underline font-medium">Help & Support</a>
+            <a href="/help" className="text-primary hover:underline font-medium">Help & Info</a>
             <a href="/info" className="text-primary hover:underline font-medium">About</a>
           </div>
 
@@ -108,8 +108,8 @@ export default function Footer() {
                 src="https://hitwebcounter.com/counter/counter.php?page=21490454&style=0006&nbdigits=7&type=page&initCount=234"
                 title="Easy to JPG Conversion"
                 alt="Easy to JPG Conversion"
-                style={{ border: 0 }}
-              />
+                style={{ border: 0 }} />
+              
             </a>
           </div>
 
@@ -120,6 +120,6 @@ export default function Footer() {
 
         </div>
       </div>
-    </footer>
-   );
- }
+    </footer>);
+
+}
