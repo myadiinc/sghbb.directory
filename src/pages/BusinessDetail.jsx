@@ -130,7 +130,7 @@ export default function BusinessDetail() {
         )}
 
         {/* Name & tagline */}
-        <h1 className="font-playfair font-bold text-2xl text-foreground">{business.name}</h1>
+        <h1 className="font-quicksand font-bold text-2xl text-foreground">{business.name}</h1>
         {business.tagline && <p className="text-muted-foreground text-sm mt-1">{business.tagline}</p>}
 
         {/* Social icons */}
@@ -225,7 +225,7 @@ export default function BusinessDetail() {
         {/* Related */}
         {related.length > 0 && (
           <div className="mt-10">
-            <h2 className="font-playfair font-bold text-lg text-foreground mb-4 text-center">
+            <h2 className="font-quicksand font-bold text-lg text-foreground mb-4 text-center">
               See More Related HBBs
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

@@ -18,7 +18,7 @@ export default function Navbar() {
         <Link to="/" className="flex items-center gap-2">
           <span className="text-xl">🏠</span>
           <div>
-            <span className="font-playfair font-bold text-primary text-base">SGHBB.Directory</span>
+            <span className="font-quicksand font-bold text-primary text-base">SGHBB.Directory</span>
             <span className="hidden sm:inline text-xs text-muted-foreground ml-1">• Find &amp; Be Found 🔍</span>
           </div>
         </Link>

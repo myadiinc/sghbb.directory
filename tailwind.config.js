@@ -10,8 +10,9 @@ module.exports = {
   			sm: 'calc(var(--radius) - 4px)'
   		},
       fontFamily: {
-        inter: ['var(--font-inter)'],
-        playfair: ['var(--font-playfair)'],
+        quicksand: ['var(--font-quicksand)'],
+        nunito: ['var(--font-nunito)'],
+        lora: ['var(--font-lora)'],
       },
   		colors: {
   			background: 'hsl(var(--background))',
@@ -47,9 +48,16 @@ module.exports = {
   			border: 'hsl(var(--border))',
   			input: 'hsl(var(--input))',
   			ring: 'hsl(var(--ring))',
-        gold: 'hsl(var(--gold))',
-        'hero-bg': 'hsl(var(--hero-bg))',
         'wa-green': 'hsl(var(--green-whatsapp))',
+        maroon: {
+          ori: 'var(--maroon-ori)',
+          dark: 'var(--maroon-dark)',
+        },
+        yellow: {
+          ori: 'var(--yellow-ori)',
+          dark: 'var(--yellow-dark)',
+          vlight: 'var(--yellow-vlight)',
+        },
   			chart: {
   				'1': 'hsl(var(--chart-1))',
   				'2': 'hsl(var(--chart-2))',

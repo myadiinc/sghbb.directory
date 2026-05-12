@@ -64,7 +64,7 @@ export default function Directory() {
 
       {/* Discover section */}
       <div className="max-w-4xl mx-auto px-4 pt-8 pb-2 text-center">
-        <h2 className="font-playfair text-xl font-bold text-foreground mb-4">
+        <h2 className="font-quicksand text-xl font-bold text-foreground mb-4">
           DISCOVER ✨
         </h2>
         <Tabs value={tab} onValueChange={setTab} className="w-full max-w-sm mx-auto">

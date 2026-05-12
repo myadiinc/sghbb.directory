@@ -17,15 +17,15 @@ export default function HeroSection({ totalCount }) {
           <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-3" style={{ background: "hsl(38,75%,45%)" }}>
             <span className="text-3xl">🏠</span>
           </div>
-          <h1 className="font-playfair text-3xl md:text-4xl font-bold text-white tracking-wide">SGHBB.Directory
+          <h1 className="font-quicksand text-3xl md:text-4xl font-bold text-white tracking-wide">SGHBB.Directory
 
           </h1>
-          <p className="text-sm font-inter font-light tracking-widest" style={{ color: "hsl(38,75%,65%)" }}>
+          <p className="text-sm font-nunito font-light tracking-widest" style={{ color: "hsl(38,75%,65%)" }}>
             Find &amp; Be Found
           </p>
         </div>
 
-        <p className="text-white/80 font-inter text-sm md:text-base max-w-md leading-relaxed">
+        <p className="text-white/80 font-nunito text-sm md:text-base max-w-md leading-relaxed">
           Discover Muslim Home-Based Businesses on<br />
           Singapore's Centralised HBB Directory
         </p>
@@ -37,7 +37,7 @@ export default function HeroSection({ totalCount }) {
           </p>
           <Link
             to="/submit"
-            className="px-8 py-3 rounded-full font-inter font-semibold text-sm transition-all hover:opacity-90 hover:scale-105 shadow-lg"
+            className="px-8 py-3 rounded-full font-nunito font-semibold text-sm transition-all hover:opacity-90 hover:scale-105 shadow-lg"
             style={{ background: "hsl(38,75%,45%)", color: "#fff" }}>
             
             SUBMIT YOUR HBB LISTING HERE
