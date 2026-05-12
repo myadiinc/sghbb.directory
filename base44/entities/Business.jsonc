@@ -1,0 +1,157 @@
+{
+  "name": "Business",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Business name"
+    },
+    "slug": {
+      "type": "string",
+      "description": "URL-friendly unique identifier"
+    },
+    "tagline": {
+      "type": "string",
+      "description": "Short tagline or one-liner"
+    },
+    "description": {
+      "type": "string",
+      "description": "Full business description"
+    },
+    "main_category": {
+      "type": "string",
+      "enum": [
+        "01 Food & Beverage",
+        "02 Fashion & Apparel",
+        "03 Beauty & Personal Care",
+        "04 Beauty & Wellness",
+        "05 Home & Living",
+        "06 Education & Tutoring",
+        "07 Digital Services",
+        "08 Event & Catering",
+        "09 Health & Wellness",
+        "10 Crafts & Handmade",
+        "11 Kids & Parenting",
+        "12 Other"
+      ]
+    },
+    "additional_categories": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Additional category tags"
+    },
+    "badges": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "HBB Verified",
+          "New HBB",
+          "HBB Mama",
+          "Non F&B",
+          "F&B",
+          "HBB Spotlight"
+        ]
+      },
+      "description": "Status badges"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "approved",
+        "rejected"
+      ],
+      "default": "pending"
+    },
+    "location": {
+      "type": "string",
+      "description": "Area/region in Singapore (e.g. Yishun, Tampines)"
+    },
+    "postal_district": {
+      "type": "string",
+      "description": "Postal district or zone"
+    },
+    "hours": {
+      "type": "string",
+      "description": "Operating hours as text"
+    },
+    "is_halal": {
+      "type": "boolean",
+      "default": false
+    },
+    "halal_status": {
+      "type": "string",
+      "enum": [
+        "Halal Certified",
+        "Muslim-Owned",
+        "Halal Ingredients",
+        "Not Applicable"
+      ],
+      "description": "F&B Halal status"
+    },
+    "is_mama": {
+      "type": "boolean",
+      "default": false,
+      "description": "HBB Mama badge"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "whatsapp": {
+      "type": "string",
+      "description": "WhatsApp number (with country code)"
+    },
+    "email": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "instagram": {
+      "type": "string",
+      "description": "Instagram handle or URL"
+    },
+    "facebook": {
+      "type": "string",
+      "description": "Facebook page URL"
+    },
+    "tiktok": {
+      "type": "string",
+      "description": "TikTok handle or URL"
+    },
+    "threads": {
+      "type": "string",
+      "description": "Threads handle or URL"
+    },
+    "logo_url": {
+      "type": "string",
+      "description": "Logo/profile image URL"
+    },
+    "photos": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Array of photo URLs"
+    },
+    "is_featured": {
+      "type": "boolean",
+      "default": false
+    },
+    "submitted_by_email": {
+      "type": "string",
+      "description": "Email of submitter"
+    },
+    "view_count": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "name",
+    "main_category"
+  ]
+}
