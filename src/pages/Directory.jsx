@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
 import Navbar from "@/components/directory/Navbar";
@@ -11,6 +11,8 @@ import SpotlightSection from "@/components/directory/SpotlightSection";
 
 export default function Directory() {
   const [filters, setFilters] = useState({});
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 10;
 
   const { data: businesses = [], isLoading } = useQuery({
     queryKey: ["businesses"],
@@ -55,7 +57,17 @@ export default function Directory() {
     return list;
   }, [businesses, filters]);
 
+  // Reset to page 1 when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filters]);
+
   const featured = businesses.filter(b => b.is_featured);
+
+  // Pagination
+  const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
+  const startIdx = (currentPage - 1) * ITEMS_PER_PAGE;
+  const paginatedItems = filtered.slice(startIdx, startIdx + ITEMS_PER_PAGE);
 
   return (
       <div className="min-h-screen bg-background font-inter">
@@ -128,11 +140,36 @@ export default function Directory() {
               <p className="text-sm mt-1">Try adjusting your filters.</p>
             </div>
           ) : (
-            <div className="divide-y divide-border">
-              {filtered.map((business) => (
-                <BusinessCard key={business.id} business={business} />
-              ))}
-            </div>
+            <>
+              <div className="divide-y divide-border">
+                {paginatedItems.map((business) => (
+                  <BusinessCard key={business.id} business={business} />
+                ))}
+              </div>
+
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div className="flex justify-center items-center gap-2 py-8 px-4">
+                  <button
+                    onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                    disabled={currentPage === 1}
+                    className="px-4 py-2 text-sm border border-border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-accent transition-colors"
+                  >
+                    ← Previous
+                  </button>
+                  <div className="text-sm text-muted-foreground">
+                    Page {currentPage} of {totalPages}
+                  </div>
+                  <button
+                    onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                    disabled={currentPage === totalPages}
+                    className="px-4 py-2 text-sm border border-border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-accent transition-colors"
+                  >
+                    Next →
+                  </button>
+                </div>
+              )}
+            </>
           )}
         </div>
 
