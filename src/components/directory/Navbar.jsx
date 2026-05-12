@@ -27,12 +27,12 @@ export default function Navbar() {
         <div className="hidden md:flex items-center gap-6 text-sm font-inter">
           <Link to="/submit" className="text-muted-foreground hover:text-primary transition-colors">Submit HBB</Link>
           {user && <Link to="/my-lists" className="text-muted-foreground hover:text-primary transition-colors">My Lists</Link>}
-          {user?.role === "admin" && (
-            <>
-              <Link to="/admin" className="text-muted-foreground hover:text-primary transition-colors font-medium">Admin</Link>
+          {user?.role === "admin" &&
+          <>
+              <Link to="/admin" className="text-muted-foreground hover:text-primary transition-colors text-xs font-thin">Admin</Link>
               <Link to="/admin/blog" className="text-muted-foreground hover:text-primary transition-colors text-xs">Blog Manager</Link>
             </>
-          )}
+          }
         </div>
 
         {/* Mobile hamburger */}
@@ -46,12 +46,12 @@ export default function Navbar() {
       <div className="md:hidden bg-white border-t border-border px-4 py-3 flex flex-col gap-3 text-sm">
           <Link to="/submit" onClick={() => setOpen(false)} className="text-muted-foreground hover:text-primary">Submit HBB</Link>
           {user && <Link to="/my-lists" onClick={() => setOpen(false)} className="text-muted-foreground hover:text-primary">My Lists</Link>}
-          {user?.role === "admin" && (
-            <>
+          {user?.role === "admin" &&
+        <>
               <Link to="/admin" onClick={() => setOpen(false)} className="text-muted-foreground hover:text-primary font-medium">Admin</Link>
               <Link to="/admin/blog" onClick={() => setOpen(false)} className="text-muted-foreground hover:text-primary text-xs">Blog Manager</Link>
             </>
-          )}
+        }
         </div>
       }
     </nav>);
