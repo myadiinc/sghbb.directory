@@ -87,10 +87,9 @@
     "halal_status": {
       "type": "string",
       "enum": [
-        "Halal Certified",
-        "Muslim-Owned",
-        "Halal Ingredients",
-        "Not Applicable"
+        "Muslim-Owned F&B",
+        "Halal-Certified F&B",
+        "Non F&B"
       ],
       "description": "F&B Halal status"
     },

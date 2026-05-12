@@ -8,70 +8,169 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 import { CheckCircle2, Upload } from "lucide-react";
-import { MAIN_CATEGORIES, HALAL_OPTIONS, BADGES, LOCATIONS } from "@/lib/constants";
+import { MAIN_CATEGORIES } from "@/lib/constants";
+
+const LOCATIONS = [
+  "01 [Central] Raffles Place, Cecil, Marina, People's Park",
+  "02 [South] Anson, Tanjong Pagar",
+  "03 [South] Queenstown, Tiong Bahru",
+  "04 [South] Telok Blangah, Harbourfront",
+  "05 [South] Pasir Panjang, Hong Leong Garden, Clementi New Town",
+  "06 [Central] High Street, Beach Road",
+  "07 [Central] Middle Road, Golden Mile",
+  "08 [Central] Little India",
+  "09 [Central] Orchard, Cairnhill, River Valley",
+  "10 [Central] Ardmore, Bukit Timah, Holland Road, Tanglin",
+  "11 [Central] Watten Estate, Novena, Thomson",
+  "12 [Central] Balestier, Toa Payoh, Serangoon",
+  "13 [Central] Macpherson, Braddell",
+  "14 [East] Geylang, Eunos",
+  "15 [East] Katong, Joo Chiat, Amber Road",
+  "16 [East] Bedok, Upper East Coast, Eastwood, Kew Drive",
+  "17 [East] Loyang, Changi",
+  "18 [East] Tampines, Pasir Ris",
+  "19 [North-East] Serangoon Garden, Hougang, Punggol, Sengkang",
+  "20 [Central] Bishan, Ang Mo Kio",
+  "21 [Central] Upper Bukit Timah, Clementi Park, Ulu Pandan",
+  "22 [West] Jurong",
+  "23 [West] Hillview, Dairy Farm, Bukit Panjang, Choa Chu Kang",
+  "24 [West] Lim Chu Kang, Tengah",
+  "25 [North] Kranji, Woodgrove, Marsiling, Woodlands, Admiralty",
+  "26 [Central] Upper Thomson, Springleaf",
+  "27 [North] Yishun, Khatib, Sembawang, Canberra",
+  "28 [North] Seletar",
+];
+
+const HALAL_OPTIONS = ["Muslim-Owned F&B", "Halal-Certified F&B", "Non F&B"];
 
 export default function SubmitBusiness() {
   const navigate = useNavigate();
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [logoFile, setLogoFile] = useState(null);
+  const [productPhotos, setProductPhotos] = useState([]);
+  const [menuFile, setMenuFile] = useState(null);
   const [form, setForm] = useState({
     name: "",
-    tagline: "",
-    description: "",
+    is_mama: "",
     main_category: "",
-    badges: [],
-    halal_status: "",
+    additional_categories: [],
+    description: "",
     location: "",
-    hours: "",
-    phone: "",
     whatsapp: "",
-    email: "",
     website: "",
-    instagram: "",
     facebook: "",
-    tiktok: "",
+    instagram: "",
     threads: "",
+    tiktok: "",
+    telegram: "",
+    menu_url: "",
+    halal_status: "",
+    more_about_us: "",
+  });
+  const [disclaimer, setDisclaimer] = useState({
+    stored: false,
+    email: false,
+    edited: false,
+    indexed: false,
+    directory: false,
+    visibility: false,
+    contact: false,
   });
 
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
 
-  const toggleBadge = (badge) => {
+  const toggleCategory = (cat) => {
     setForm(f => ({
       ...f,
-      badges: f.badges.includes(badge) ? f.badges.filter(b => b !== badge) : [...f.badges, badge],
+      additional_categories: f.additional_categories.includes(cat)
+        ? f.additional_categories.filter(c => c !== cat)
+        : [...f.additional_categories, cat],
     }));
+  };
+
+  const handleProductPhotoChange = (e) => {
+    const files = Array.from(e.target.files || []);
+    if (productPhotos.length + files.length > 5) {
+      alert("Maximum 5 photos allowed");
+      return;
+    }
+    setProductPhotos([...productPhotos, ...files]);
+  };
+
+  const removeProductPhoto = (idx) => {
+    setProductPhotos(productPhotos.filter((_, i) => i !== idx));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-
-    let logo_url = "";
-    if (logoFile) {
-      const res = await base44.integrations.Core.UploadFile({ file: logoFile });
-      logo_url = res.file_url;
+    
+    const disclaimerAccepted = Object.values(disclaimer).every(v => v);
+    if (!disclaimerAccepted) {
+      alert("Please accept all disclaimer terms");
+      return;
     }
 
-    await base44.entities.Business.create({
-      ...form,
-      logo_url,
-      status: "pending",
-      is_mama: form.badges.includes("HBB Mama"),
-    });
+    setLoading(true);
 
-    setLoading(false);
-    setSubmitted(true);
+    try {
+      let logo_url = "";
+      if (logoFile) {
+        const res = await base44.integrations.Core.UploadFile({ file: logoFile });
+        logo_url = res.file_url;
+      }
+
+      let menu_url = "";
+      if (menuFile) {
+        const res = await base44.integrations.Core.UploadFile({ file: menuFile });
+        menu_url = res.file_url;
+      }
+
+      let photos = [];
+      for (const file of productPhotos) {
+        const res = await base44.integrations.Core.UploadFile({ file });
+        photos.push(res.file_url);
+      }
+
+      await base44.entities.Business.create({
+        name: form.name,
+        is_mama: form.is_mama === "Yes",
+        main_category: form.main_category,
+        additional_categories: form.additional_categories,
+        description: form.description,
+        location: form.location,
+        whatsapp: form.whatsapp,
+        website: form.website,
+        facebook: form.facebook,
+        instagram: form.instagram,
+        threads: form.threads,
+        tiktok: form.tiktok,
+        telegram: form.telegram,
+        halal_status: form.halal_status,
+        more_about_us: form.more_about_us,
+        logo_url,
+        menu_url,
+        photos,
+        status: "pending",
+      });
+
+      setLoading(false);
+      setSubmitted(true);
+    } catch (err) {
+      alert("Error submitting form: " + err.message);
+      setLoading(false);
+    }
   };
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-background font-inter">
+      <div className="min-h-screen bg-background font-nunito">
         <Navbar />
         <div className="max-w-lg mx-auto px-4 py-20 text-center">
           <CheckCircle2 className="w-16 h-16 text-emerald-500 mx-auto mb-4" />
-          <h2 className="font-playfair text-2xl font-bold text-foreground mb-2">Submission Received! 🎉</h2>
+          <h2 className="font-quicksand text-2xl font-bold text-foreground mb-2">Submission Received! 🎉</h2>
           <p className="text-muted-foreground text-sm mb-6">
             Thank you for submitting your HBB! Our team will review your listing and it will appear in the directory once approved.
           </p>
@@ -83,116 +182,343 @@ export default function SubmitBusiness() {
   }
 
   return (
-    <div className="min-h-screen bg-background font-inter">
+    <div className="min-h-screen bg-background font-nunito">
       <Navbar />
 
       <div className="max-w-2xl mx-auto px-4 py-10">
         <div className="mb-8 text-center">
-          <h1 className="font-playfair text-3xl font-bold text-foreground">Submit Your HBB</h1>
+          <h1 className="font-quicksand text-3xl font-bold text-foreground">Submit Your HBB</h1>
           <p className="text-muted-foreground text-sm mt-2">
             Fill in your business details below. Your listing will be reviewed before going live.
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Basic info */}
-          <Section title="Business Details">
-            <Field label="Business Name *">
+          {/* SECTION 1 — Business Info */}
+          <Section title="SECTION 1 — Business Info">
+            <Field label="HBB Name *">
               <Input value={form.name} onChange={e => set("name", e.target.value)} placeholder="Your HBB name" required />
             </Field>
-            <Field label="Tagline">
-              <Input value={form.tagline} onChange={e => set("tagline", e.target.value)} placeholder="Short one-liner about your business" />
-            </Field>
-            <Field label="Description">
-              <Textarea value={form.description} onChange={e => set("description", e.target.value)} placeholder="Tell customers what you offer..." rows={4} />
-            </Field>
-            <Field label="Main Category *">
-              <Select value={form.main_category} onValueChange={v => set("main_category", v)}>
-                <SelectTrigger><SelectValue placeholder="Select a category" /></SelectTrigger>
+
+            <div className="border-t pt-4">
+              <p className="text-xs font-medium text-muted-foreground mb-3">
+                HBB Logo <span className="text-gray-400">(optional)</span>
+              </p>
+              <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
+                Optional, but good to have as it makes your listing looks beautiful AND customers know who you are.<br />
+                Remember to choose the nicest photo of your logo you have. 🙂
+              </p>
+              <label className="flex flex-col items-center gap-2 border-2 border-dashed border-border rounded-xl p-6 cursor-pointer hover:border-primary/50 transition-colors">
+                <Upload className="w-8 h-8 text-muted-foreground" />
+                <span className="text-sm text-muted-foreground">{logoFile ? logoFile.name : "Click to upload logo"}</span>
+                <input type="file" accept="image/*" className="hidden" onChange={e => setLogoFile(e.target.files[0])} />
+              </label>
+            </div>
+
+            <Field label="HBB Mamas? *">
+              <Select value={form.is_mama} onValueChange={v => set("is_mama", v)}>
+                <SelectTrigger><SelectValue placeholder="Select Yes or No" /></SelectTrigger>
                 <SelectContent>
-                  {MAIN_CATEGORIES.map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                  <SelectItem value="Yes">Yes</SelectItem>
+                  <SelectItem value="No">No</SelectItem>
                 </SelectContent>
               </Select>
             </Field>
-          </Section>
 
-          {/* Logo */}
-          <Section title="Logo / Profile Image">
-            <label className="flex flex-col items-center gap-2 border-2 border-dashed border-border rounded-xl p-6 cursor-pointer hover:border-primary/50 transition-colors">
-              <Upload className="w-8 h-8 text-muted-foreground" />
-              <span className="text-sm text-muted-foreground">{logoFile ? logoFile.name : "Click to upload logo"}</span>
-              <input type="file" accept="image/*" className="hidden" onChange={e => setLogoFile(e.target.files[0])} />
-            </label>
-          </Section>
+            <div className="border-t pt-4">
+              <p className="text-xs font-medium text-muted-foreground mb-3">Choose your category</p>
+              <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
+                Choose ONE main category — the one you want customers to recognise you for.
+                <br /><br />
+                If you are selling mixed categories, pick the category that best represents your business.
+                You can tick extra categories under "Additional Categories" later on.
+              </p>
 
-          {/* Badges */}
-          <Section title="Tags & Badges">
-            <div className="flex flex-wrap gap-2">
-              {BADGES.map(badge => (
-                <button key={badge} type="button" onClick={() => toggleBadge(badge)}
-                  className={`px-3 py-1.5 rounded-full text-sm font-medium border transition-all ${form.badges.includes(badge) ? "bg-primary text-primary-foreground border-primary" : "bg-white text-muted-foreground border-border hover:border-primary/40"}`}>
-                  {badge}
-                </button>
-              ))}
+              <div className="bg-secondary/20 p-3 rounded-lg mb-4 text-xs text-muted-foreground space-y-2">
+                <p><strong>01 Food</strong> → Meals, bentos, lauk, savoury, etc</p>
+                <p><strong>02 Desserts & Bakes</strong> → Cakes, brownies, cookies, kuih, etc</p>
+                <p><strong>03 Drinks</strong> → Milk tea, coffee, juices, bottled drinks, etc</p>
+                <p><strong>04 Beauty & Wellness</strong> → Makeup, skincare, henna, massage, etc</p>
+                <p><strong>05 Fashion & Accessories</strong> → Apparels, tudung, bags, jewellery, etc</p>
+                <p><strong>06 Home & Lifestyle</strong> → Decor, candles, diffusers, organisers, etc</p>
+                <p><strong>07 Gifts & Custom Crafts</strong> → Hampers, personalised items, party packs, etc</p>
+                <p><strong>08 Educational & Learning</strong> → Busy books, worksheets, toys, enrichment, etc</p>
+                <p><strong>09 Services</strong> → Delivery, personal shopper, mover, design, website, IT, business support, digital creation, etc</p>
+                <p><strong>10 Others</strong> → Anything not listed above</p>
+              </div>
+
+              <Field label="HBB Main Category *">
+                <Select value={form.main_category} onValueChange={v => set("main_category", v)}>
+                  <SelectTrigger><SelectValue placeholder="Select a category" /></SelectTrigger>
+                  <SelectContent>
+                    {MAIN_CATEGORIES.map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+                <p className="text-xs text-muted-foreground mt-2 leading-relaxed">
+                  Pick ONE category that best matches your business. This is what you sell the MOST.
+                  <br /><br />
+                  Example: If you sell food + desserts → choose the one you sell MOST
+                </p>
+              </Field>
             </div>
-          </Section>
 
-          {/* Location & Hours */}
-          <Section title="Location & Hours">
-            <Field label="Area / Location">
+            <div className="border-t pt-4">
+              <p className="text-xs font-medium text-muted-foreground mb-3">HBB Additional Categories <span className="text-gray-400">(optional)</span></p>
+              <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
+                Optional. IF have, tick any other categories that also match your business. If don't have, leave it blank.
+                <br />
+                <strong>DO NOT tick the same as your MAIN category above.</strong>
+              </p>
+              <div className="space-y-2">
+                {MAIN_CATEGORIES.map(cat => (
+                  <label key={cat} className="flex items-center gap-2 cursor-pointer">
+                    <Checkbox
+                      checked={form.additional_categories.includes(cat)}
+                      onCheckedChange={() => toggleCategory(cat)}
+                      disabled={cat === form.main_category}
+                    />
+                    <span className="text-sm">{cat}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            <Field label="Product/Services Details *">
+              <Textarea
+                value={form.description}
+                onChange={e => set("description", e.target.value)}
+                placeholder="A brief description of the products you're selling and or the services you're rendering..."
+                rows={4}
+                required
+              />
+              <p className="text-xs text-muted-foreground mt-2 leading-relaxed">
+                A brief description of the products you're selling and or the services you're rendering.
+                This will be shown while customers are browsing all the listings.
+                <br /><br />
+                Example for F&B: popiah & tahu bergedil
+              </p>
+            </Field>
+
+            <div className="border-t pt-4">
+              <p className="text-xs font-medium text-muted-foreground mb-3">Upload Product/Services Photos <span className="text-gray-400">(optional)</span></p>
+              <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
+                Image of the products you're selling and or the services you're rendering.
+                Example can be from your social media posts.
+                <br /><br />
+                <strong>PLEASE TAKE NOTE:</strong> Only FIVE photos can be uploaded.
+                Remember to choose the nicest photo of your products/services you have. 🙂
+              </p>
+              <label className="flex flex-col items-center gap-2 border-2 border-dashed border-border rounded-xl p-6 cursor-pointer hover:border-primary/50 transition-colors">
+                <Upload className="w-8 h-8 text-muted-foreground" />
+                <span className="text-sm text-muted-foreground">Click to upload photos ({productPhotos.length}/5)</span>
+                <input type="file" accept="image/*" multiple className="hidden" onChange={handleProductPhotoChange} />
+              </label>
+              {productPhotos.length > 0 && (
+                <div className="grid grid-cols-5 gap-2 mt-4">
+                  {productPhotos.map((file, idx) => (
+                    <div key={idx} className="relative">
+                      <img src={URL.createObjectURL(file)} alt={`Product ${idx}`} className="w-full h-20 object-cover rounded-lg" />
+                      <button
+                        type="button"
+                        onClick={() => removeProductPhoto(idx)}
+                        className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <Field label="Location *">
               <Select value={form.location} onValueChange={v => set("location", v)}>
                 <SelectTrigger><SelectValue placeholder="Select your area" /></SelectTrigger>
                 <SelectContent>
                   {LOCATIONS.map(l => <SelectItem key={l} value={l}>{l}</SelectItem>)}
                 </SelectContent>
               </Select>
+              <p className="text-xs text-muted-foreground mt-2 leading-relaxed">
+                Don't know which location to choose? The 2-digit number in the brackets [ ] is based on the first two numbers of your postal code.
+                <br /><br />
+                Example: If your postal code is 189165, your first two digits are 18, so choose the location "07 [Central] Middle Road, Golden Mile [18, 19]"
+              </p>
             </Field>
-            <Field label="Operating Hours">
-              <Input value={form.hours} onChange={e => set("hours", e.target.value)} placeholder="e.g. Mon–Fri 9am–6pm" />
+          </Section>
+
+          {/* SECTION 2 — Contact & Links */}
+          <Section title="SECTION 2 — Contact & Links">
+            <Field label="WhatsApp Number *">
+              <Input
+                value={form.whatsapp}
+                onChange={e => set("whatsapp", e.target.value.replace(/\D/g, ""))}
+                placeholder="65912345678"
+                maxLength="11"
+                required
+              />
+              <p className="text-xs text-muted-foreground mt-2">For customers to contact you.</p>
             </Field>
-            <Field label="F&B Halal Status">
+
+            <Field label="Website / Order Form / Shop Link">
+              <Input
+                value={form.website}
+                onChange={e => set("website", e.target.value)}
+                placeholder="https://example.com"
+              />
+              <p className="text-xs text-muted-foreground mt-2">Enter your full link address, including the https://</p>
+            </Field>
+
+            <Field label="Facebook">
+              <Input
+                value={form.facebook}
+                onChange={e => set("facebook", e.target.value)}
+                placeholder="yourfacebookhandle"
+              />
+              <p className="text-xs text-muted-foreground mt-2">Only enter the Facebook username handle, no @ or links required</p>
+            </Field>
+
+            <Field label="Instagram">
+              <Input
+                value={form.instagram}
+                onChange={e => set("instagram", e.target.value)}
+                placeholder="yourinstagramhandle"
+              />
+              <p className="text-xs text-muted-foreground mt-2">Only enter the Instagram username handle, no @ or links required</p>
+            </Field>
+
+            <Field label="Threads">
+              <Input
+                value={form.threads}
+                onChange={e => set("threads", e.target.value)}
+                placeholder="yourthreadshandle"
+              />
+              <p className="text-xs text-muted-foreground mt-2">Only enter the Threads username handle, no @ or links required</p>
+            </Field>
+
+            <Field label="TikTok">
+              <Input
+                value={form.tiktok}
+                onChange={e => set("tiktok", e.target.value)}
+                placeholder="yourtiktokhandle"
+              />
+              <p className="text-xs text-muted-foreground mt-2">Only enter the TikTok username handle, no @ or links required</p>
+            </Field>
+
+            <Field label="Telegram Channel">
+              <Input
+                value={form.telegram}
+                onChange={e => set("telegram", e.target.value)}
+                placeholder="yourtelegramchannel"
+              />
+              <p className="text-xs text-muted-foreground mt-2">Only enter the Telegram Channel username, no links required</p>
+            </Field>
+          </Section>
+
+          {/* SECTION 3 — Menu / Additional Details */}
+          <Section title="SECTION 3 — Menu / Additional Details">
+            <div className="border-t pt-4">
+              <p className="text-xs font-medium text-muted-foreground mb-3">Latest Menu / Price List <span className="text-gray-400">(optional)</span></p>
+              <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
+                Optional. Only one PDF/image to be uploaded.
+                Remember to choose the nicest photo of your menu/price list you have. 🙂
+              </p>
+              <label className="flex flex-col items-center gap-2 border-2 border-dashed border-border rounded-xl p-6 cursor-pointer hover:border-primary/50 transition-colors">
+                <Upload className="w-8 h-8 text-muted-foreground" />
+                <span className="text-sm text-muted-foreground">{menuFile ? menuFile.name : "Click to upload menu"}</span>
+                <input type="file" accept="image/*,.pdf" className="hidden" onChange={e => setMenuFile(e.target.files[0])} />
+              </label>
+            </div>
+
+            <Field label="F&B Halal Status *">
               <Select value={form.halal_status} onValueChange={v => set("halal_status", v)}>
                 <SelectTrigger><SelectValue placeholder="Select halal status" /></SelectTrigger>
                 <SelectContent>
                   {HALAL_OPTIONS.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}
                 </SelectContent>
               </Select>
+              <p className="text-xs text-muted-foreground mt-2">
+                <strong>Muslim-owned F&B must be responsible for ensuring halal</strong>
+              </p>
+            </Field>
+
+            <Field label="More About Us">
+              <Textarea
+                value={form.more_about_us}
+                onChange={e => set("more_about_us", e.target.value)}
+                placeholder="Anything you want people to know about your beloved home based business?"
+                rows={4}
+              />
             </Field>
           </Section>
 
-          {/* Contact */}
-          <Section title="Contact Info">
-            <Field label="WhatsApp Number">
-              <Input value={form.whatsapp} onChange={e => set("whatsapp", e.target.value)} placeholder="+65 9123 4567" />
-            </Field>
-            <Field label="Phone">
-              <Input value={form.phone} onChange={e => set("phone", e.target.value)} placeholder="+65 9123 4567" />
-            </Field>
-            <Field label="Email">
-              <Input type="email" value={form.email} onChange={e => set("email", e.target.value)} placeholder="hello@yourbusiness.com" />
-            </Field>
-            <Field label="Website">
-              <Input value={form.website} onChange={e => set("website", e.target.value)} placeholder="https://yourbusiness.com" />
-            </Field>
+          {/* Disclaimer */}
+          <Section title="Form Collection Disclaimer">
+            <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
+              By submitting this form, you agree that the information, photos, and links you provide will be displayed publicly in the SG HBB Directory.
+              <br /><br />
+              You also acknowledge that: <strong>(all must be checked and selected!)</strong>
+            </p>
+
+            <div className="space-y-3">
+              <label className="flex items-start gap-3 cursor-pointer">
+                <Checkbox
+                  checked={disclaimer.stored}
+                  onCheckedChange={(v) => setDisclaimer({...disclaimer, stored: v})}
+                />
+                <span className="text-sm leading-relaxed">Your submission will be stored in this website.</span>
+              </label>
+
+              <label className="flex items-start gap-3 cursor-pointer">
+                <Checkbox
+                  checked={disclaimer.email}
+                  onCheckedChange={(v) => setDisclaimer({...disclaimer, email: v})}
+                />
+                <span className="text-sm leading-relaxed">You may receive an email with a link to edit your response.</span>
+              </label>
+
+              <label className="flex items-start gap-3 cursor-pointer">
+                <Checkbox
+                  checked={disclaimer.edited}
+                  onCheckedChange={(v) => setDisclaimer({...disclaimer, edited: v})}
+                />
+                <span className="text-sm leading-relaxed">Listings may be edited or removed if they are inappropriate, misleading, or harmful.</span>
+              </label>
+
+              <label className="flex items-start gap-3 cursor-pointer">
+                <Checkbox
+                  checked={disclaimer.directory}
+                  onCheckedChange={(v) => setDisclaimer({...disclaimer, directory: v})}
+                />
+                <span className="text-sm leading-relaxed"><strong>‼️This is a directory, not a marketplace — buyers do not purchase through this platform.</strong></span>
+              </label>
+
+              <label className="flex items-start gap-3 cursor-pointer">
+                <Checkbox
+                  checked={disclaimer.visibility}
+                  onCheckedChange={(v) => setDisclaimer({...disclaimer, visibility: v})}
+                />
+                <span className="text-sm leading-relaxed"><strong>‼️The directory does not guarantee visibility, traffic, or sales for any business.</strong></span>
+              </label>
+
+              <label className="flex items-start gap-3 cursor-pointer">
+                <Checkbox
+                  checked={disclaimer.indexed}
+                  onCheckedChange={(v) => setDisclaimer({...disclaimer, indexed: v})}
+                />
+                <span className="text-sm leading-relaxed">Search engines may index your listing once it appears on the directory.</span>
+              </label>
+
+              <label className="flex items-start gap-3 cursor-pointer">
+                <Checkbox
+                  checked={disclaimer.contact}
+                  onCheckedChange={(v) => setDisclaimer({...disclaimer, contact: v})}
+                />
+                <span className="text-sm leading-relaxed">If you wish to update or remove your listing, you may contact <strong>hello@sghbb.directory</strong></span>
+              </label>
+            </div>
           </Section>
 
-          {/* Social */}
-          <Section title="Social Media">
-            <Field label="Instagram">
-              <Input value={form.instagram} onChange={e => set("instagram", e.target.value)} placeholder="@yourusername" />
-            </Field>
-            <Field label="Facebook">
-              <Input value={form.facebook} onChange={e => set("facebook", e.target.value)} placeholder="facebook.com/yourpage" />
-            </Field>
-            <Field label="TikTok">
-              <Input value={form.tiktok} onChange={e => set("tiktok", e.target.value)} placeholder="@yourusername" />
-            </Field>
-            <Field label="Threads">
-              <Input value={form.threads} onChange={e => set("threads", e.target.value)} placeholder="@yourusername" />
-            </Field>
-          </Section>
-
-          <Button type="submit" disabled={loading || !form.name || !form.main_category} className="w-full py-6 text-base font-semibold">
+          <Button type="submit" disabled={loading || !form.name || !form.main_category || !form.location || !form.whatsapp || !form.halal_status} className="w-full py-6 text-base font-semibold">
             {loading ? "Submitting..." : "Submit HBB Listing"}
           </Button>
         </form>
@@ -206,7 +532,7 @@ export default function SubmitBusiness() {
 function Section({ title, children }) {
   return (
     <div className="border border-border rounded-xl p-5 bg-white space-y-4">
-      <h3 className="font-inter font-semibold text-sm text-foreground border-b border-border pb-2">{title}</h3>
+      <h3 className="font-quicksand font-bold text-sm text-foreground border-b border-border pb-2">{title}</h3>
       {children}
     </div>
   );
