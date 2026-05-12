@@ -24,7 +24,7 @@ export default function BusinessCard({ business }) {
     <div className="bg-white border-b border-border hover:bg-secondary/30 transition-colors">
       <div className="flex gap-4 px-4 py-5 max-w-4xl mx-auto">
         {/* Thumbnail */}
-        <Link to={`/business/${business.id}`} className="flex-shrink-0">
+        <Link to={business.bsn ? `/hbb/${business.bsn}` : `/business/${business.id}`} className="flex-shrink-0">
           <div className="w-24 h-24 md:w-28 md:h-28 rounded-lg overflow-hidden bg-muted border border-border">
             {business.logo_url ? (
               <img src={business.logo_url} alt={business.name} className="w-full h-full object-cover" />
@@ -40,7 +40,7 @@ export default function BusinessCard({ business }) {
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between gap-2">
             <div className="flex-1">
-              <Link to={`/business/${business.id}`}>
+              <Link to={business.bsn ? `/hbb/${business.bsn}` : `/business/${business.id}`}>
                 <h3 className="font-inter font-bold text-base md:text-lg text-foreground hover:text-primary transition-colors leading-tight">
                   {business.name}
                 </h3>

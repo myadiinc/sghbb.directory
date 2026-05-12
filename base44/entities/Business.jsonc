@@ -6,6 +6,10 @@
       "type": "string",
       "description": "Business name"
     },
+    "bsn": {
+      "type": "string",
+      "description": "Business Serial Number (e.g. 0010925)"
+    },
     "logo_url": {
       "type": "string",
       "description": "Logo/profile image URL"
@@ -144,6 +148,11 @@
         ]
       },
       "description": "Special attributes for filtering"
+    },
+    "welcome_email_sent": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether welcome email has been sent to the business"
     }
   },
   "required": [

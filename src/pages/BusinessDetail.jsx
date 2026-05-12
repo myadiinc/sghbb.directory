@@ -26,7 +26,7 @@ const HALAL_TAG_STYLES = {
 };
 
 export default function BusinessDetail() {
-  const { id } = useParams();
+  const { id, bsn } = useParams();
   const [photoIndex, setPhotoIndex] = useState(0);
   const [user, setUser] = useState(null);
 
@@ -35,16 +35,26 @@ export default function BusinessDetail() {
   }, []);
 
   const { data: business, isLoading } = useQuery({
-    queryKey: ["business", id],
-    queryFn: () => base44.entities.Business.filter({ id }),
-    select: (data) => data[0],
+    queryKey: ["business", id || bsn],
+    queryFn: async () => {
+      if (id) {
+        const data = await base44.entities.Business.filter({ id });
+        return data[0];
+      } else if (bsn) {
+        const data = await base44.entities.Business.filter({ bsn });
+        return data[0];
+      }
+      return null;
+    },
   });
+
+  const businessId = business?.id || id;
 
   const { data: related = [] } = useQuery({
     queryKey: ["related", business?.main_category],
     queryFn: () => base44.entities.Business.filter({ status: "approved", main_category: business.main_category }, "-created_date", 6),
     enabled: !!business?.main_category,
-    select: (data) => data.filter(b => b.id !== id).slice(0, 4),
+    select: (data) => data.filter(b => b.id !== businessId).slice(0, 4),
   });
 
   if (isLoading) {
@@ -110,25 +120,25 @@ export default function BusinessDetail() {
         {/* WhatsApp CTA + action buttons */}
         <div className="flex gap-2 mb-4">
           {waLink && (
-            <a href={waLink} target="_blank" rel="noopener noreferrer"
-              className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-white font-semibold text-sm transition-opacity hover:opacity-90"
-              style={{ background: "hsl(142,71%,40%)" }}>
-              💬 WhatsApp
-            </a>
+           <a href={waLink} target="_blank" rel="noopener noreferrer"
+             className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-white font-semibold text-sm transition-opacity hover:opacity-90"
+             style={{ background: "hsl(142,71%,40%)" }}>
+             💬 WhatsApp
+           </a>
           )}
-          <LikeButton businessId={id} user={user} />
-          <SaveToListButton businessId={id} user={user} />
+          <LikeButton businessId={businessId} user={user} />
+          <SaveToListButton businessId={businessId} user={user} />
         </div>
 
         {/* Back breadcrumb + Edit button */}
         <div className="flex items-center justify-between gap-2 text-sm text-muted-foreground mb-3">
           <Link to="/" className="hover:text-primary">← Back</Link>
           {user && (user.role === "admin" || business.submitted_by_email === user.email || business.created_by === user.email) && (
-            <Link to={`/edit-business/${id}`}>
-              <Button size="sm" variant="outline" className="gap-1.5 text-xs">
-                <Pencil className="w-3 h-3" /> Edit Listing
-              </Button>
-            </Link>
+           <Link to={`/edit-business/${businessId}`}>
+             <Button size="sm" variant="outline" className="gap-1.5 text-xs">
+               <Pencil className="w-3 h-3" /> Edit Listing
+             </Button>
+           </Link>
           )}
         </div>
 
@@ -242,7 +252,7 @@ export default function BusinessDetail() {
         </div>
 
         {/* Reviews */}
-        <ReviewSection businessId={id} user={user} />
+        <ReviewSection businessId={businessId} user={user} />
 
         {/* Related */}
         {related.length > 0 && (
@@ -252,7 +262,7 @@ export default function BusinessDetail() {
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {related.map((b) => (
-                <Link key={b.id} to={`/business/${b.id}`}
+               <Link key={b.id} to={b.bsn ? `/hbb/${b.bsn}` : `/business/${b.id}`}
                   className="flex gap-3 p-3 border border-border rounded-xl bg-white hover:shadow-md transition-shadow">
                   <div className="w-16 h-16 rounded-lg overflow-hidden bg-muted flex-shrink-0">
                     {b.logo_url ? (

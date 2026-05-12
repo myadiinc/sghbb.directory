@@ -42,6 +42,7 @@ const AuthenticatedApp = () => {
     <Routes>
       <Route path="/" element={<Directory />} />
       <Route path="/business/:id" element={<BusinessDetail />} />
+      <Route path="/hbb/:bsn" element={<BusinessDetail />} />
       <Route path="/submit" element={<SubmitBusiness />} />
       <Route path="/admin" element={<AdminDashboard />} />
       <Route path="/admin/blog" element={<AdminBlogManager />} />
