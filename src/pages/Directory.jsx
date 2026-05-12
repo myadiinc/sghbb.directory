@@ -14,7 +14,7 @@ export default function Directory() {
 
   const { data: businesses = [], isLoading } = useQuery({
     queryKey: ["businesses"],
-    queryFn: () => base44.entities.Business.filter({ status: "approved" }, "-created_date", 200),
+    queryFn: () => base44.entities.Business.filter({ status: "approved" }, "-created_date", 200)
   });
 
   const filtered = useMemo(() => {
@@ -22,27 +22,27 @@ export default function Directory() {
 
     if (filters.search) {
       const q = filters.search.toLowerCase();
-      list = list.filter(b =>
-        b.name?.toLowerCase().includes(q) ||
-        b.description?.toLowerCase().includes(q) ||
-        b.tagline?.toLowerCase().includes(q) ||
-        b.location?.toLowerCase().includes(q)
+      list = list.filter((b) =>
+      b.name?.toLowerCase().includes(q) ||
+      b.description?.toLowerCase().includes(q) ||
+      b.tagline?.toLowerCase().includes(q) ||
+      b.location?.toLowerCase().includes(q)
       );
     }
     if (filters.main_category) {
-      list = list.filter(b => b.main_category === filters.main_category);
+      list = list.filter((b) => b.main_category === filters.main_category);
     }
     if (filters.additional_category) {
-      list = list.filter(b => b.badges?.includes(filters.additional_category));
+      list = list.filter((b) => b.badges?.includes(filters.additional_category));
     }
     if (filters.is_mama === "Yes") {
-      list = list.filter(b => b.is_mama);
+      list = list.filter((b) => b.is_mama);
     }
     if (filters.halal_status) {
-      list = list.filter(b => b.halal_status === filters.halal_status);
+      list = list.filter((b) => b.halal_status === filters.halal_status);
     }
     if (filters.location) {
-      list = list.filter(b => b.location?.toLowerCase().includes(filters.location.toLowerCase()));
+      list = list.filter((b) => b.location?.toLowerCase().includes(filters.location.toLowerCase()));
     }
     if (filters.sort === "Name A-Z") {
       list.sort((a, b) => a.name.localeCompare(b.name));
@@ -55,10 +55,10 @@ export default function Directory() {
     return list;
   }, [businesses, filters]);
 
-  const featured = businesses.filter(b => b.is_featured);
+  const featured = businesses.filter((b) => b.is_featured);
 
   return (
-      <div className="min-h-screen bg-background font-inter">
+    <div className="min-h-screen bg-background font-inter">
       <Navbar />
       <HeroSection totalCount={businesses.length} />
 
@@ -69,7 +69,7 @@ export default function Directory() {
         </p>
         <a
           href="/submit"
-          className="inline-block px-8 py-3 rounded-full font-quicksand font-semibold text-sm text-white transition-all hover:opacity-90 hover:scale-105 shadow"
+          className="inline-block px-8 py-3 rounded-full font-quicksand text-sm text-white transition-all hover:opacity-90 hover:scale-105 shadow font-bold"
           style={{ background: "hsl(38,75%,45%)" }}>
           SUBMIT YOUR HBB LISTING HERE
         </a>
@@ -88,37 +88,37 @@ export default function Directory() {
         </Tabs>
       </div>
 
-      {tab === "platforms" ? (
-        <div className="max-w-4xl mx-auto px-4 py-10 text-center text-muted-foreground">
+      {tab === "platforms" ?
+      <div className="max-w-4xl mx-auto px-4 py-10 text-center text-muted-foreground">
           <p className="text-sm">Links to other HBB platforms coming soon.</p>
-        </div>
-      ) : (
-        <>
+        </div> :
+
+      <>
           <SearchFilters filters={filters} onFilterChange={setFilters} />
 
           <div className="max-w-4xl mx-auto">
-            {isLoading ? (
-              <div className="flex items-center justify-center py-20">
+            {isLoading ?
+          <div className="flex items-center justify-center py-20">
                 <div className="w-8 h-8 border-4 border-border border-t-primary rounded-full animate-spin" />
-              </div>
-            ) : filtered.length === 0 ? (
-              <div className="text-center py-20 text-muted-foreground">
+              </div> :
+          filtered.length === 0 ?
+          <div className="text-center py-20 text-muted-foreground">
                 <p className="text-4xl mb-3">🔍</p>
                 <p className="font-medium">No HBBs found matching your search.</p>
                 <p className="text-sm mt-1">Try adjusting your filters.</p>
-              </div>
-            ) : (
-              <div className="divide-y divide-border">
-                {filtered.map((business) => (
-                  <BusinessCard key={business.id} business={business} />
-                ))}
-              </div>
+              </div> :
+
+          <div className="divide-y divide-border">
+                {filtered.map((business) =>
+            <BusinessCard key={business.id} business={business} />
             )}
+              </div>
+          }
           </div>
         </>
-      )}
+      }
 
       <Footer />
-    </div>
-  );
+    </div>);
+
 }
