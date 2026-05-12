@@ -49,18 +49,6 @@
       },
       "description": "Additional category tags"
     },
-    "special_attributes": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      },
-      "enum": [
-        "April_01",
-        "April_02",
-        "May"
-      ],
-      "description": "Special attributes for filtering"
-    },
     "halal_status": {
       "type": "string",
       "enum": [
@@ -144,6 +132,18 @@
     },
     "email": {
       "type": "string"
+    },
+    "special_attributes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "April_01",
+          "April_02",
+          "May"
+        ]
+      },
+      "description": "Special attributes for filtering"
     }
   },
   "required": [
