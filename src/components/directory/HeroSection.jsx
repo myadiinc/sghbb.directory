@@ -19,7 +19,7 @@ export default function HeroSection({ totalCount }) {
           <img src="https://i.ibb.co/mC8w4ghP/SGHBBD-Logo-V2-2b.png" alt="SGHBB Directory Logo" className="w-80 h-80 object-contain drop-shadow-lg" />
         </div>
 
-        <p className="text-white/80 font-nunito text-sm md:text-base max-w-md leading-relaxed">
+        <p className="text-white/80 font-nunito text-sm md:text-4xl max-w-md leading-relaxed">
           Discover Muslim Home-Based Businesses on<br />
           Singapore's Centralised HBB Directory
         </p>
