@@ -55,7 +55,7 @@ export default function SubmitBusiness() {
   useEffect(() => {
     base44.auth.me().then(u => {
       setUser(u);
-      if (!u || (u.role !== "business" && u.role !== "admin")) {
+      if (!u) {
         base44.auth.redirectToLogin();
       }
     }).catch(() => base44.auth.redirectToLogin());
@@ -171,7 +171,12 @@ export default function SubmitBusiness() {
         menu_url,
         photos,
         status: "pending",
+        submitted_by_email: user.email,
       });
+
+      if (user.role === "user") {
+        await base44.auth.updateMe({ role: "business" });
+      }
 
       setLoading(false);
       setSubmitted(true);
