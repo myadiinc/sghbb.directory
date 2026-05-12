@@ -16,7 +16,7 @@ export default function HeroSection({ totalCount }) {
       <div className="relative z-10 flex flex-col items-center gap-3">
         {/* Logo */}
         <div className="flex flex-col items-center mb-1">
-          <img src="https://i.ibb.co/mC8w4ghP/SGHBBD-Logo-V2-2b.png" alt="SGHBB Directory Logo" className="w-50 h-50 object-contain drop-shadow-lg" />
+          <img src="https://i.ibb.co/mC8w4ghP/SGHBBD-Logo-V2-2b.png" alt="SGHBB Directory Logo" className="w-40 h-40 object-contain drop-shadow-lg" />
         </div>
 
         <p className="text-white/80 font-nunito text-sm md:text-base max-w-md leading-relaxed">
