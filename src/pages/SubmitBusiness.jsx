@@ -44,6 +44,7 @@ const LOCATIONS = [
 ];
 
 const HALAL_OPTIONS = ["Muslim-Owned F&B", "Halal-Certified F&B", "Non F&B"];
+const SPECIAL_ATTRIBUTES = ["April", "Spotlight", "New"];
 
 export default function SubmitBusiness() {
   const navigate = useNavigate();
@@ -57,6 +58,7 @@ export default function SubmitBusiness() {
     is_mama: "",
     main_category: "",
     additional_categories: [],
+    special_attributes: [],
     description: "",
     location: "",
     whatsapp: "",
@@ -88,6 +90,15 @@ export default function SubmitBusiness() {
       additional_categories: f.additional_categories.includes(cat)
         ? f.additional_categories.filter(c => c !== cat)
         : [...f.additional_categories, cat],
+    }));
+  };
+
+  const toggleSpecialAttribute = (attr) => {
+    setForm(f => ({
+      ...f,
+      special_attributes: f.special_attributes.includes(attr)
+        ? f.special_attributes.filter(a => a !== attr)
+        : [...f.special_attributes, attr],
     }));
   };
 
@@ -139,6 +150,7 @@ export default function SubmitBusiness() {
         is_mama: form.is_mama === "Yes",
         main_category: form.main_category,
         additional_categories: form.additional_categories,
+        special_attributes: form.special_attributes,
         description: form.description,
         location: form.location,
         whatsapp: form.whatsapp,
@@ -292,6 +304,23 @@ export default function SubmitBusiness() {
                     {HALAL_OPTIONS.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}
                   </SelectContent>
                 </Select>
+              </Field>
+
+              <Field label="Special Attributes (optional)">
+                <p className="text-sm text-muted-foreground mb-2 leading-relaxed">
+                  Tick any special attributes that apply to your business.
+                </p>
+                <div className="space-y-2">
+                  {SPECIAL_ATTRIBUTES.map(attr => (
+                    <label key={attr} className="flex items-center gap-2 cursor-pointer">
+                      <Checkbox
+                        checked={form.special_attributes.includes(attr)}
+                        onCheckedChange={() => toggleSpecialAttribute(attr)}
+                      />
+                      <span className="text-sm">{attr}</span>
+                    </label>
+                  ))}
+                </div>
               </Field>
             </SubSection>
 

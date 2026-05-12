@@ -33,7 +33,19 @@
     "additional_categories": {
       "type": "array",
       "items": {
-        "type": "string"
+        "type": "string",
+        "enum": [
+          "01 Food",
+          "02 Desserts & Bakes",
+          "03 Drinks",
+          "04 Beauty & Wellness",
+          "05 Fashion & Accessories",
+          "06 Home & Lifestyle",
+          "07 Gifts & Custom Crafts",
+          "08 Educational & Learning",
+          "09 Services",
+          "10 Others"
+        ]
       },
       "description": "Additional category tags"
     },
