@@ -50,13 +50,12 @@ export default function Blog() {
     });
   }, [entries, selectedMonth, selectedSpotlight]);
 
-  // Get HBBs matching current filters
-  const filteredBusinesses = useMemo(() => {
-    if (!selectedSpotlight) return [];
+  const getHbbsByAttribute = (attribute) => {
+    if (!attribute) return [];
     return businesses.filter(b => 
-      b.special_attributes?.includes(selectedSpotlight)
+      b.special_attributes?.includes(attribute)
     );
-  }, [businesses, selectedSpotlight]);
+  };
 
   return (
     <div className="min-h-screen bg-background font-inter">
@@ -127,11 +126,11 @@ export default function Blog() {
                     <p className="text-sm text-foreground mt-3 leading-relaxed">{entry.description}</p>
                   )}
 
-                  {selectedSpotlight && filteredBusinesses.length > 0 && (
+                  {entry.special_attribute && getHbbsByAttribute(entry.special_attribute).length > 0 && (
                     <div className="mt-4">
                       <p className="text-sm font-medium text-foreground mb-3">Featured HBBs</p>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        {filteredBusinesses.map((biz) => (
+                        {getHbbsByAttribute(entry.special_attribute).map((biz) => (
                           <Link
                             key={biz.id}
                             to={`/business/${biz.id}`}
