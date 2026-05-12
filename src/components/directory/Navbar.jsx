@@ -14,7 +14,7 @@ export default function Navbar() {
     retry: false
   });
 
-  const { data: userBusiness } = useQuery({
+  const { data: userBusiness, isLoading: businessLoading } = useQuery({
     queryKey: ["userBusiness", user?.email],
     queryFn: async () => {
       if (!user?.email) return null;
@@ -28,8 +28,9 @@ export default function Navbar() {
   const currentUser = user || authUser;
   const isAdmin = currentUser && currentUser.role === "admin";
   const isBusiness = currentUser && currentUser.role === "business";
-  const submitPath = (isBusiness && userBusiness) ? `/edit-business/${userBusiness.id}` : "/submit";
-  const submitLabel = (isBusiness && userBusiness) ? "Edit HBB" : "Submit HBB";
+  const hasUserBusiness = isBusiness && !businessLoading && userBusiness;
+  const submitPath = hasUserBusiness ? `/edit-business/${userBusiness.id}` : "/submit";
+  const submitLabel = hasUserBusiness ? "Edit HBB" : "Submit HBB";
 
   return (
     <nav className="sticky top-0 z-50 bg-white border-b border-border shadow-sm">

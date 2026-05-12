@@ -25,7 +25,7 @@ export default function Directory() {
     queryFn: () => base44.entities.Business.filter({ status: "approved" }, "-created_date", 200),
   });
 
-  const { data: userBusiness } = useQuery({
+  const { data: userBusiness, isLoading: businessLoading } = useQuery({
     queryKey: ["userBusiness", currentUser?.email],
     queryFn: async () => {
       if (!currentUser?.email) return null;
@@ -37,8 +37,9 @@ export default function Directory() {
   });
 
   const isBusiness = currentUser && currentUser.role === "business";
-  const submitPath = (isBusiness && userBusiness) ? `/edit-business/${userBusiness.id}` : "/submit";
-  const submitLabel = (isBusiness && userBusiness) ? "EDIT YOUR HBB LISTING HERE" : "SUBMIT YOUR HBB LISTING HERE";
+  const hasUserBusiness = isBusiness && !businessLoading && userBusiness;
+  const submitPath = hasUserBusiness ? `/edit-business/${userBusiness.id}` : "/submit";
+  const submitLabel = hasUserBusiness ? "EDIT YOUR HBB LISTING HERE" : "SUBMIT YOUR HBB LISTING HERE";
 
   const filtered = useMemo(() => {
     let list = [...businesses];
