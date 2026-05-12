@@ -31,29 +31,24 @@ export default function Navbar() {
 
         {/* Desktop nav */}
         <div className="hidden md:flex items-center gap-6 text-sm font-inter">
-          {!currentUser ? (
+          <Link to="/submit" className="text-muted-foreground hover:text-primary transition-colors">Submit HBB</Link>
+          <Link to="/my-lists" className="text-muted-foreground hover:text-primary transition-colors">My Lists</Link>
+          {isAdmin && (
             <>
-              <Link to="/submit" className="text-muted-foreground hover:text-primary transition-colors">Submit HBB</Link>
-              <Link to="/report" className="text-muted-foreground hover:text-primary transition-colors">Report HBB</Link>
-              <button onClick={() => base44.auth.redirectToLogin()} className="text-primary hover:opacity-80 transition-colors font-medium">Login / Register</button>
+              <Link to="/admin" className="text-muted-foreground hover:text-primary transition-colors text-xs font-thin">Admin</Link>
+              <Link to="/admin/blog" className="text-muted-foreground hover:text-primary transition-colors text-xs font-thin">Blog Manager</Link>
             </>
-          ) : (
-            <>
-              {isOwner && <Link to="/my-lists" className="text-muted-foreground hover:text-primary transition-colors">My Lists</Link>}
-              <Link to="/report" className="text-muted-foreground hover:text-primary transition-colors">Report HBB</Link>
-              {isAdmin && (
-                <>
-                  <Link to="/admin" className="text-muted-foreground hover:text-primary transition-colors text-xs font-thin">Admin</Link>
-                  <Link to="/admin/blog" className="text-muted-foreground hover:text-primary transition-colors text-xs font-thin">Blog Manager</Link>
-                </>
-              )}
-              <div className="flex items-center gap-3 pl-6 border-l border-border">
-                <span className="text-xs text-muted-foreground">{currentUser.email}</span>
-                <button onClick={() => logout()} className="text-muted-foreground hover:text-primary transition-colors" title="Logout">
-                  <LogOut className="w-4 h-4" />
-                </button>
-              </div>
-            </>
+          )}
+          {!currentUser && (
+            <button onClick={() => base44.auth.redirectToLogin()} className="text-primary hover:opacity-80 transition-colors font-medium">Login / Register</button>
+          )}
+          {currentUser && (
+            <div className="flex items-center gap-3 pl-6 border-l border-border">
+              <span className="text-xs text-muted-foreground">{currentUser.email}</span>
+              <button onClick={() => logout()} className="text-muted-foreground hover:text-primary transition-colors" title="Logout">
+                <LogOut className="w-4 h-4" />
+              </button>
+            </div>
           )}
         </div>
 
@@ -66,29 +61,24 @@ export default function Navbar() {
       {/* Mobile menu */}
       {open &&
       <div className="md:hidden bg-white border-t border-border px-4 py-3 flex flex-col gap-3 text-sm">
-          {!currentUser ? (
+          <Link to="/submit" onClick={() => setOpen(false)} className="text-muted-foreground hover:text-primary">Submit HBB</Link>
+          <Link to="/my-lists" onClick={() => setOpen(false)} className="text-muted-foreground hover:text-primary">My Lists</Link>
+          {isAdmin && (
             <>
-              <Link to="/submit" onClick={() => setOpen(false)} className="text-muted-foreground hover:text-primary">Submit HBB</Link>
-              <Link to="/report" onClick={() => setOpen(false)} className="text-muted-foreground hover:text-primary">Report HBB</Link>
-              <button onClick={() => { base44.auth.redirectToLogin(); setOpen(false); }} className="text-primary hover:opacity-80 transition-colors font-medium text-left">Login / Register</button>
+              <Link to="/admin" onClick={() => setOpen(false)} className="text-muted-foreground hover:text-primary text-xs font-thin">Admin</Link>
+              <Link to="/admin/blog" onClick={() => setOpen(false)} className="text-muted-foreground hover:text-primary text-xs font-thin">Blog Manager</Link>
             </>
-          ) : (
-            <>
-              {isOwner && <Link to="/my-lists" onClick={() => setOpen(false)} className="text-muted-foreground hover:text-primary">My Lists</Link>}
-              <Link to="/report" onClick={() => setOpen(false)} className="text-muted-foreground hover:text-primary">Report HBB</Link>
-              {isAdmin && (
-                <>
-                  <Link to="/admin" onClick={() => setOpen(false)} className="text-muted-foreground hover:text-primary text-xs font-thin">Admin</Link>
-                  <Link to="/admin/blog" onClick={() => setOpen(false)} className="text-muted-foreground hover:text-primary text-xs font-thin">Blog Manager</Link>
-                </>
-              )}
-              <div className="border-t border-border pt-3 mt-3 flex items-center justify-between">
-                <span className="text-xs text-muted-foreground">{currentUser.email}</span>
-                <button onClick={() => logout()} className="text-muted-foreground hover:text-primary transition-colors" title="Logout">
-                  <LogOut className="w-4 h-4" />
-                </button>
-              </div>
-            </>
+          )}
+          {!currentUser && (
+            <button onClick={() => { base44.auth.redirectToLogin(); setOpen(false); }} className="text-primary hover:opacity-80 transition-colors font-medium text-left">Login / Register</button>
+          )}
+          {currentUser && (
+            <div className="border-t border-border pt-3 mt-3 flex items-center justify-between">
+              <span className="text-xs text-muted-foreground">{currentUser.email}</span>
+              <button onClick={() => logout()} className="text-muted-foreground hover:text-primary transition-colors" title="Logout">
+                <LogOut className="w-4 h-4" />
+              </button>
+            </div>
           )}
         </div>
       }

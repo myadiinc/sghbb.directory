@@ -78,11 +78,10 @@ export default function Footer() {
       <div className="w-full bg-white border-t border-border px-4 py-6">
         <div className="max-w-2xl mx-auto space-y-6">
 
-          {/* Links to Blog, Help, Info */}
+          {/* Links to Blog, Help */}
           <div className="flex justify-center gap-6 text-sm">
             <a href="/blog" className="text-primary hover:underline font-medium">Blog</a>
             <a href="/help" className="text-primary hover:underline font-medium">Help & Info</a>
-            <a href="/info" className="text-primary hover:underline font-medium">About</a>
           </div>
 
           {/* Social icons */}
