@@ -1,0 +1,96 @@
+{
+  "name": "Report",
+  "type": "object",
+  "properties": {
+    "reporter_name": {
+      "type": "string",
+      "description": "Name of the person reporting"
+    },
+    "reporter_email": {
+      "type": "string",
+      "description": "Email of the person reporting"
+    },
+    "hbb_in_directory": {
+      "type": "boolean",
+      "description": "Whether the HBB is in the directory"
+    },
+    "hbb_directory_id": {
+      "type": "string",
+      "description": "ID of the HBB in directory (if applicable)"
+    },
+    "hbb_name_not_in_directory": {
+      "type": "string",
+      "description": "Name of HBB not in directory"
+    },
+    "hbb_facebook": {
+      "type": "string",
+      "description": "HBB Facebook handle"
+    },
+    "hbb_instagram": {
+      "type": "string",
+      "description": "HBB Instagram handle"
+    },
+    "hbb_threads": {
+      "type": "string",
+      "description": "HBB Threads handle"
+    },
+    "hbb_tiktok": {
+      "type": "string",
+      "description": "HBB TikTok handle"
+    },
+    "hbb_other_socials": {
+      "type": "string",
+      "description": "Other social media handles and platforms"
+    },
+    "report_reason": {
+      "type": "string",
+      "enum": [
+        "Wrong information",
+        "Duplicate listing",
+        "Inappropriate content",
+        "Scam / suspicious activity",
+        "Harassment / abusive behaviour",
+        "Copyright / stolen photos",
+        "Fake reviews",
+        "Others"
+      ],
+      "description": "Reason for the report"
+    },
+    "report_reason_others": {
+      "type": "string",
+      "description": "Details if 'Others' was selected"
+    },
+    "detailed_report": {
+      "type": "string",
+      "description": "Detailed information about the report"
+    },
+    "file_urls": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "URLs of uploaded evidence files"
+    },
+    "additional_info": {
+      "type": "string",
+      "description": "Any additional information"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "reviewed",
+        "resolved"
+      ],
+      "default": "pending",
+      "description": "Status of the report"
+    }
+  },
+  "required": [
+    "reporter_name",
+    "reporter_email",
+    "hbb_in_directory",
+    "report_reason",
+    "detailed_report"
+  ]
+}

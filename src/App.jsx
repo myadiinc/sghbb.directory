@@ -16,6 +16,7 @@ import Help from './pages/Help';
 import Info from './pages/Info';
 import AdminBlogManager from './pages/AdminBlogManager';
 import MyReviews from './pages/MyReviews';
+import ReportHBB from './pages/ReportHBB';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -46,6 +47,7 @@ const AuthenticatedApp = () => {
       <Route path="/admin/blog" element={<AdminBlogManager />} />
       <Route path="/my-lists" element={<MyLists />} />
       <Route path="/my-reviews" element={<MyReviews />} />
+      <Route path="/report" element={<ReportHBB />} />
       <Route path="/edit-business/:id" element={<EditBusiness />} />
       <Route path="/blog" element={<Blog />} />
       <Route path="/help" element={<Help />} />
