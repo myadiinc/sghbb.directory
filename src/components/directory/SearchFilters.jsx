@@ -6,7 +6,7 @@ const SORT_OPTIONS = ["Default order", "Newest first", "Name A-Z", "Name Z-A"];
 
 export default function SearchFilters({ filters, onFilterChange }) {
   return (
-    <div className="w-full px-4 py-4 bg-white border-b border-border sticky top-0 z-20 shadow-sm">
+    <div className="w-full px-4 py-4 bg-white border-b border-border md:sticky md:top-0 z-20 shadow-sm">
       {/* Search */}
       <div className="relative mb-3 max-w-2xl mx-auto">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
