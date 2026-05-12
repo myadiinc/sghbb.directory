@@ -83,20 +83,8 @@ export default function Directory() {
            DISCOVER ✨
          </h2>
 
-         {/* Location Filter Tabs */}
-         <Tabs value={filters.location || ""} onValueChange={(v) => setFilters(f => ({ ...f, location: v }))} className="w-full mb-6">
-           <TabsList className="grid grid-cols-5 w-full max-w-2xl mx-auto">
-             <TabsTrigger value="">All</TabsTrigger>
-             <TabsTrigger value="North">North</TabsTrigger>
-             <TabsTrigger value="South">South</TabsTrigger>
-             <TabsTrigger value="East">East</TabsTrigger>
-             <TabsTrigger value="West">West</TabsTrigger>
-             <TabsTrigger value="Central">Central</TabsTrigger>
-           </TabsList>
-         </Tabs>
-
          {/* Discover Buttons */}
-         <div className="flex flex-col sm:flex-row justify-center gap-3 max-w-2xl mx-auto">
+         <div className="flex flex-col sm:flex-row justify-center gap-3 max-w-2xl mx-auto mb-6">
            <a
              href="/blog"
              className="px-6 py-3 rounded-lg font-semibold text-sm bg-primary text-primary-foreground hover:opacity-90 transition-all shadow"
@@ -112,6 +100,18 @@ export default function Directory() {
              OTHER HBB PLATFORMS 🔗
            </a>
          </div>
+
+         {/* Location Filter Tabs */}
+         <Tabs value={filters.location || ""} onValueChange={(v) => setFilters(f => ({ ...f, location: v }))} className="w-full">
+           <TabsList className="grid grid-cols-6 w-full max-w-2xl mx-auto gap-0">
+             <TabsTrigger value="" className="text-xs py-2">All</TabsTrigger>
+             <TabsTrigger value="North" className="text-xs py-2">North</TabsTrigger>
+             <TabsTrigger value="South" className="text-xs py-2">South</TabsTrigger>
+             <TabsTrigger value="East" className="text-xs py-2">East</TabsTrigger>
+             <TabsTrigger value="West" className="text-xs py-2">West</TabsTrigger>
+             <TabsTrigger value="Central" className="text-xs py-2">Central</TabsTrigger>
+           </TabsList>
+         </Tabs>
        </div>
 
       <SearchFilters filters={filters} onFilterChange={setFilters} />
