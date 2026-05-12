@@ -16,23 +16,25 @@
     },
     "description": {
       "type": "string",
-      "description": "Full business description"
+      "description": "Full business description / product & services details"
+    },
+    "more_about_us": {
+      "type": "string",
+      "description": "Additional info about the business"
     },
     "main_category": {
       "type": "string",
       "enum": [
-        "01 Food & Beverage",
-        "02 Fashion & Apparel",
-        "03 Beauty & Personal Care",
+        "01 Food",
+        "02 Desserts & Bakes",
+        "03 Drinks",
         "04 Beauty & Wellness",
-        "05 Home & Living",
-        "06 Education & Tutoring",
-        "07 Digital Services",
-        "08 Event & Catering",
-        "09 Health & Wellness",
-        "10 Crafts & Handmade",
-        "11 Kids & Parenting",
-        "12 Other"
+        "05 Fashion & Accessories",
+        "06 Home & Lifestyle",
+        "07 Gifts & Custom Crafts",
+        "08 Educational & Learning",
+        "09 Services",
+        "10 Others"
       ]
     },
     "additional_categories": {
@@ -108,7 +110,8 @@
       "type": "string"
     },
     "website": {
-      "type": "string"
+      "type": "string",
+      "description": "Website / Order Form / Shop Link"
     },
     "instagram": {
       "type": "string",
@@ -126,6 +129,14 @@
       "type": "string",
       "description": "Threads handle or URL"
     },
+    "telegram": {
+      "type": "string",
+      "description": "Telegram channel link or handle"
+    },
+    "menu_url": {
+      "type": "string",
+      "description": "Latest menu / price list URL"
+    },
     "logo_url": {
       "type": "string",
       "description": "Logo/profile image URL"
@@ -135,7 +146,7 @@
       "items": {
         "type": "string"
       },
-      "description": "Array of photo URLs"
+      "description": "Array of product/services photo URLs"
     },
     "is_featured": {
       "type": "boolean",
