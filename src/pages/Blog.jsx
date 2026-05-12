@@ -67,7 +67,7 @@ export default function Blog() {
           Back to Directory
         </Link>
 
-        <h1 className="font-quicksand font-bold text-3xl text-foreground mb-8 text-center">HBB Blog 📝</h1>
+        <h1 className="font-quicksand font-bold text-3xl text-foreground mb-8 text-center">HBB Spotlight</h1>
 
         {/* Filters */}
         <div className="flex flex-col sm:flex-row gap-4 mb-8">
