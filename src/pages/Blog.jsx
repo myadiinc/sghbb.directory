@@ -23,6 +23,11 @@ export default function Blog() {
     queryFn: () => base44.entities.BlogEntry.filter({ is_published: true }, "-created_date", 50),
   });
 
+  const { data: businesses = [] } = useQuery({
+    queryKey: ["allBusinesses"],
+    queryFn: () => base44.entities.Business.filter({ status: "approved" }, "-created_date", 500),
+  });
+
   // Get unique months and special attributes
   const months = useMemo(() => {
     const m = new Set();
@@ -44,6 +49,14 @@ export default function Blog() {
       return matchMonth && matchSpotlight;
     });
   }, [entries, selectedMonth, selectedSpotlight]);
+
+  // Get HBBs matching current filters
+  const filteredBusinesses = useMemo(() => {
+    if (!selectedSpotlight) return [];
+    return businesses.filter(b => 
+      b.special_attributes?.includes(selectedSpotlight)
+    );
+  }, [businesses, selectedSpotlight]);
 
   return (
     <div className="min-h-screen bg-background font-inter">
@@ -112,6 +125,33 @@ export default function Blog() {
 
                   {entry.description && (
                     <p className="text-sm text-foreground mt-3 leading-relaxed">{entry.description}</p>
+                  )}
+
+                  {selectedSpotlight && filteredBusinesses.length > 0 && (
+                    <div className="mt-4">
+                      <p className="text-sm font-medium text-foreground mb-3">Featured HBBs</p>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        {filteredBusinesses.map((biz) => (
+                          <Link
+                            key={biz.id}
+                            to={`/business/${biz.id}`}
+                            className="flex gap-3 p-3 border border-border rounded-lg bg-secondary/30 hover:bg-secondary transition-colors"
+                          >
+                            <div className="w-16 h-16 rounded-lg overflow-hidden bg-muted flex-shrink-0">
+                              {biz.logo_url ? (
+                                <img src={biz.logo_url} alt={biz.name} className="w-full h-full object-cover" />
+                              ) : (
+                                <div className="w-full h-full flex items-center justify-center text-2xl bg-secondary">🏠</div>
+                              )}
+                            </div>
+                            <div className="min-w-0 flex-1">
+                              <p className="font-semibold text-sm text-foreground truncate">{biz.name}</p>
+                              <p className="text-xs text-muted-foreground truncate mt-0.5">{biz.description || biz.main_category}</p>
+                            </div>
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
                   )}
                 </div>
               );
