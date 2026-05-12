@@ -103,12 +103,14 @@ export default function MyReviews() {
                           <button
                             key={star}
                             onClick={() => setEditRating(star)}
-                            className={`text-2xl transition-opacity ${star <= editRating ? 'text-yellow-500' : 'text-gray-300'}`}
+                            onMouseEnter={() => {}}
+                            className={`text-2xl transition-all cursor-pointer ${star <= editRating ? 'text-yellow-500 scale-125' : 'text-gray-300 hover:text-yellow-300'}`}
                           >
                             ⭐
                           </button>
                         ))}
                       </div>
+                      <p className="text-xs text-muted-foreground mt-2">{editRating} star{editRating !== 1 ? 's' : ''}</p>
                     </div>
                     <div>
                       <label className="text-sm font-medium text-foreground">Comment</label>

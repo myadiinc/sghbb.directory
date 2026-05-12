@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { CheckCircle2, XCircle, Eye, Trash2, Star, StarOff } from "lucide-react";
 import { toast } from "sonner";
-import SpotlightManager from "@/components/admin/SpotlightManager";
+
 
 export default function AdminDashboard() {
   const qc = useQueryClient();
@@ -25,6 +25,7 @@ export default function AdminDashboard() {
   const pending = all.filter(b => b.status === "pending");
   const approved = all.filter(b => b.status === "approved");
   const rejected = all.filter(b => b.status === "rejected");
+  const pendingReviewEdits = reviews.filter(r => r.requires_approval);
 
   const update = useMutation({
     mutationFn: ({ id, data }) => base44.entities.Business.update(id, data),
@@ -46,6 +47,8 @@ export default function AdminDashboard() {
   const toggleFeatured = (b) => { update.mutate({ id: b.id, data: { is_featured: !b.is_featured } }); };
   const del = (b) => { if (confirm(`Delete ${b.name}?`)) { remove.mutate(b.id); toast.success("Deleted."); } };
   const deleteReview = (r) => { if (confirm("Delete this review?")) { reviewDelete.mutate(r.id); toast.success("Review deleted."); } };
+  const approveReviewEdit = (r) => { base44.entities.Review.update(r.id, { requires_approval: false, comment: r.pending_comment }).then(() => { refetchReviews(); toast.success("Review edit approved!"); }); };
+  const rejectReviewEdit = (r) => { base44.entities.Review.update(r.id, { requires_approval: false, pending_comment: "" }).then(() => { refetchReviews(); toast.success("Review edit rejected."); }); };
 
   return (
     <div className="min-h-screen bg-background font-inter">
@@ -55,7 +58,7 @@ export default function AdminDashboard() {
         <div className="mb-6">
           <h1 className="font-playfair text-2xl font-bold text-foreground">Admin Dashboard</h1>
           <p className="text-muted-foreground text-sm mt-1">
-            Manage business submissions — {pending.length} pending, {approved.length} approved, {rejected.length} rejected
+            {pending.length} business submissions pending, {pendingReviewEdits.length} review edits waiting
           </p>
         </div>
 
@@ -67,7 +70,7 @@ export default function AdminDashboard() {
           <Tabs defaultValue="pending">
             <TabsList className="mb-6">
               <TabsTrigger value="pending">
-                Pending <span className="ml-1.5 bg-amber-100 text-amber-700 text-xs px-1.5 rounded-full">{pending.length}</span>
+                Business Submissions <span className="ml-1.5 bg-amber-100 text-amber-700 text-xs px-1.5 rounded-full">{pending.length}</span>
               </TabsTrigger>
               <TabsTrigger value="approved">
                 Approved <span className="ml-1.5 bg-emerald-100 text-emerald-700 text-xs px-1.5 rounded-full">{approved.length}</span>
@@ -75,8 +78,9 @@ export default function AdminDashboard() {
               <TabsTrigger value="rejected">
                 Rejected <span className="ml-1.5 bg-red-100 text-red-700 text-xs px-1.5 rounded-full">{rejected.length}</span>
               </TabsTrigger>
-              <TabsTrigger value="reviews">Reviews</TabsTrigger>
-              <TabsTrigger value="spotlights">✨ Spotlights</TabsTrigger>
+              <TabsTrigger value="reviews">
+                Review Edits <span className="ml-1.5 bg-amber-100 text-amber-700 text-xs px-1.5 rounded-full">{pendingReviewEdits.length}</span>
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="pending">
@@ -89,10 +93,7 @@ export default function AdminDashboard() {
                <BusinessList businesses={rejected} onApprove={approve} onReject={reject} onDelete={del} onToggleFeatured={toggleFeatured} showApprove />
              </TabsContent>
              <TabsContent value="reviews">
-               <ReviewList reviews={reviews} onDelete={deleteReview} />
-             </TabsContent>
-             <TabsContent value="spotlights">
-               <SpotlightManager />
+               <ReviewEditList reviews={pendingReviewEdits} onApprove={approveReviewEdit} onReject={rejectReviewEdit} onDelete={deleteReview} />
              </TabsContent>
           </Tabs>
         )}
@@ -101,27 +102,38 @@ export default function AdminDashboard() {
   );
 }
 
-function ReviewList({ reviews, onDelete }) {
+function ReviewEditList({ reviews, onApprove, onReject, onDelete }) {
   if (reviews.length === 0) {
-    return <p className="text-center text-muted-foreground py-10 text-sm">No reviews here.</p>;
+    return <p className="text-center text-muted-foreground py-10 text-sm">No pending review edits.</p>;
   }
 
   return (
     <div className="space-y-3">
       {reviews.map(r => (
-        <div key={r.id} className="bg-white border border-border rounded-xl p-4">
+        <div key={r.id} className="bg-white border border-amber-200 rounded-xl p-4 bg-amber-50/30">
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 mb-1">
+              <div className="flex items-center gap-2 mb-2">
                 <span className="font-semibold text-foreground">{r.reviewer_name}</span>
                 <span className="text-sm text-yellow-500">{'⭐'.repeat(r.rating)}</span>
               </div>
-              <p className="text-sm text-foreground mb-2">{r.comment}</p>
+              <div className="mb-3">
+                <p className="text-xs text-muted-foreground mb-1 font-medium">Proposed edit:</p>
+                <p className="text-sm text-foreground bg-white p-2 rounded border border-amber-100">{r.pending_comment}</p>
+              </div>
               <p className="text-xs text-muted-foreground">Business ID: {r.business_id}</p>
             </div>
-            <Button size="sm" variant="outline" onClick={() => onDelete(r)} className="h-8 text-destructive border-destructive/30 gap-1 flex-shrink-0">
-              <Trash2 className="w-3.5 h-3.5" />Delete
-            </Button>
+            <div className="flex gap-1 flex-wrap justify-end flex-shrink-0">
+              <Button size="sm" onClick={() => onApprove(r)} className="h-8 bg-emerald-600 hover:bg-emerald-700 text-white gap-1">
+                <CheckCircle2 className="w-3.5 h-3.5" />Approve
+              </Button>
+              <Button size="sm" variant="outline" onClick={() => onReject(r)} className="h-8 text-destructive border-destructive/30 gap-1">
+                <XCircle className="w-3.5 h-3.5" />Reject
+              </Button>
+              <Button size="sm" variant="ghost" onClick={() => onDelete(r)} className="h-8 text-destructive hover:bg-destructive/10">
+                <Trash2 className="w-3.5 h-3.5" />
+              </Button>
+            </div>
           </div>
         </div>
       ))}
