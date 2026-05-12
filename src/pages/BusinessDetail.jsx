@@ -19,6 +19,12 @@ const BADGE_STYLES = {
   "HBB Spotlight": "bg-yellow-100 text-yellow-700 border border-yellow-200",
 };
 
+const HALAL_TAG_STYLES = {
+  "Muslim-Owned F&B": "bg-green-100 text-green-700 border border-green-200",
+  "Halal-Certified F&B": "bg-green-100 text-green-700 border border-green-200",
+  "Non F&B": "bg-blue-100 text-blue-700 border border-blue-200",
+};
+
 export default function BusinessDetail() {
   const { id } = useParams();
   const [photoIndex, setPhotoIndex] = useState(0);
@@ -126,16 +132,24 @@ export default function BusinessDetail() {
           )}
         </div>
 
-        {/* Badges */}
-        {business.badges?.length > 0 && (
-          <div className="flex flex-wrap gap-1.5 mb-3">
-            {business.badges.map((badge) => (
-              <span key={badge} className={`text-xs px-2.5 py-1 rounded-full font-medium ${BADGE_STYLES[badge] || "bg-muted text-muted-foreground"}`}>
-                {badge}
-              </span>
-            ))}
-          </div>
-        )}
+        {/* Tags */}
+        <div className="flex flex-wrap gap-1.5 mb-3">
+          {business.is_mama && (
+            <span className="text-xs px-2.5 py-1 rounded-full font-medium bg-pink-100 text-pink-700 border border-pink-200">
+              HBB Mama
+            </span>
+          )}
+          {business.halal_status && (
+            <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${HALAL_TAG_STYLES[business.halal_status] || "bg-muted text-muted-foreground"}`}>
+              {business.halal_status}
+            </span>
+          )}
+          {business.badges?.length > 0 && business.badges.map((badge) => (
+            <span key={badge} className={`text-xs px-2.5 py-1 rounded-full font-medium ${BADGE_STYLES[badge] || "bg-muted text-muted-foreground"}`}>
+              {badge}
+            </span>
+          ))}
+        </div>
 
         {/* Name & tagline */}
         <h1 className="font-quicksand font-bold text-2xl text-foreground">{business.name}</h1>

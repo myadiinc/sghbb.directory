@@ -37,7 +37,7 @@ export default function Directory() {
       list = list.filter(b => b.badges?.includes(filters.additional_category));
     }
     if (filters.is_mama === "Yes") {
-      list = list.filter(b => b.is_mama);
+      list = list.filter(b => b.is_mama === true);
     }
     if (filters.halal_status) {
       list = list.filter(b => b.halal_status === filters.halal_status);
@@ -83,6 +83,24 @@ export default function Directory() {
         <h2 className="font-quicksand text-xl font-bold text-foreground mb-4">
           DISCOVER ✨
         </h2>
+
+        {/* Location Filter Buttons */}
+        <div className="flex flex-wrap justify-center gap-2 mb-5">
+          {["North", "South", "East", "West", "Central"].map((location) => (
+            <button
+              key={location}
+              onClick={() => setFilters(f => ({ ...f, location: f.location === location ? "" : location }))}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                filters.location === location
+                  ? "bg-primary text-primary-foreground shadow-md"
+                  : "bg-secondary text-secondary-foreground hover:bg-accent"
+              }`}
+            >
+              {location}
+            </button>
+          ))}
+        </div>
+
         <Tabs value={tab} onValueChange={setTab} className="w-full max-w-sm mx-auto">
           <TabsList className="grid grid-cols-2 w-full">
             <TabsTrigger value="directory">HBB SPOTLIGHT</TabsTrigger>
