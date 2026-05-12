@@ -30,7 +30,7 @@ export default function Navbar() {
           {user?.role === "admin" &&
           <>
               <Link to="/admin" className="text-muted-foreground hover:text-primary transition-colors text-xs font-thin">Admin</Link>
-              <Link to="/admin/blog" className="text-muted-foreground hover:text-primary transition-colors text-xs">Blog Manager</Link>
+              <Link to="/admin/blog" className="text-muted-foreground hover:text-primary transition-colors text-xs font-thin">Blog Manager</Link>
             </>
           }
         </div>
