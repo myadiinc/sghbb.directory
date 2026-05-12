@@ -44,7 +44,7 @@ const LOCATIONS = [
 ];
 
 const HALAL_OPTIONS = ["Muslim-Owned F&B", "Halal-Certified F&B", "Non F&B"];
-const SPECIAL_ATTRIBUTES = ["April", "Spotlight", "New"];
+const SPECIAL_ATTRIBUTES = ["April_01", "April_02", "May"];
 
 export default function SubmitBusiness() {
   const navigate = useNavigate();
