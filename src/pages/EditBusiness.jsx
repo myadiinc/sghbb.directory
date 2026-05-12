@@ -416,7 +416,7 @@ export default function EditBusiness() {
                 <Input
                   value={form.whatsapp}
                   onChange={e => set("whatsapp", e.target.value.replace(/\D/g, ""))}
-                  placeholder="65912345678"
+                  placeholder="912345678"
                   maxLength="11"
                   required
                 />
@@ -442,7 +442,7 @@ export default function EditBusiness() {
                 <Input
                   value={form.facebook}
                   onChange={e => set("facebook", e.target.value)}
-                  placeholder="yourfacebookhandle"
+                  placeholder="Your Facebook Handle"
                 />
               </Field>
 
@@ -451,7 +451,7 @@ export default function EditBusiness() {
                 <Input
                   value={form.instagram}
                   onChange={e => set("instagram", e.target.value)}
-                  placeholder="yourinstagramhandle"
+                  placeholder="Your Instagram Handle"
                 />
               </Field>
 
@@ -460,7 +460,7 @@ export default function EditBusiness() {
                 <Input
                   value={form.threads}
                   onChange={e => set("threads", e.target.value)}
-                  placeholder="yourthreadshandle"
+                  placeholder="Your Threads Handle"
                 />
               </Field>
 
@@ -469,7 +469,7 @@ export default function EditBusiness() {
                 <Input
                   value={form.tiktok}
                   onChange={e => set("tiktok", e.target.value)}
-                  placeholder="yourtiktokhandle"
+                  placeholder="Your Tiktok Handle"
                 />
               </Field>
 
@@ -478,7 +478,7 @@ export default function EditBusiness() {
                 <Input
                   value={form.telegram}
                   onChange={e => set("telegram", e.target.value)}
-                  placeholder="yourtelegramchannel"
+                  placeholder="Your Telegram Channel Username"
                 />
               </Field>
             </SubSection>
