@@ -9,19 +9,19 @@ export default function HeroSection({ totalCount }) {
       
       {/* Background image */}
       <div className="absolute inset-0"
-      style={{ backgroundImage: "url('https://i.ibb.co/pB1GG7sf/SGHBBD-BG-V3-0.png')", backgroundSize: "cover", backgroundPosition: "center" }} />
+        style={{ backgroundImage: "url('https://i.ibb.co/pB1GG7sf/SGHBBD-BG-V3-0.png')", backgroundSize: "cover", backgroundPosition: "center" }} />
       {/* Dark overlay for readability */}
       <div className="absolute inset-0 bg-black/40" />
       
       <div className="relative z-10 flex flex-col items-center gap-3">
         {/* Logo */}
         <div className="flex flex-col items-center mb-1">
-          <img src="https://i.ibb.co/mC8w4ghP/SGHBBD-Logo-V2-2b.png" alt="SGHBB Directory Logo" className="w-40 h-40 object-contain drop-shadow-lg" />
+          <img src="https://i.ibb.co/mC8w4ghP/SGHBBD-Logo-V2-2b.png" alt="SGHBB Directory Logo" className="w-80 h-80 object-contain drop-shadow-lg" />
         </div>
 
-        <p className="text-white/80 font-nunito md:text-base max-w-md leading-relaxed text-4xl font-black">Discover Muslim Home-Based Businesses on
-Singapore's Centralised HBB Directory
-
+        <p className="text-white/80 font-nunito text-sm md:text-base max-w-md leading-relaxed">
+          Discover Muslim Home-Based Businesses on<br />
+          Singapore's Centralised HBB Directory
         </p>
       </div>
     </div>);
