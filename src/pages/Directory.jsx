@@ -58,7 +58,7 @@ export default function Directory() {
   const featured = businesses.filter(b => b.is_featured);
 
   return (
-    <div className="min-h-screen bg-background font-inter">
+    <div className="min-h-screen font-inter">
       <Navbar />
       <HeroSection totalCount={businesses.length} />
 
