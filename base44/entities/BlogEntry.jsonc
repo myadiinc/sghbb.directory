@@ -1,0 +1,34 @@
+{
+  "name": "BlogEntry",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Blog entry title"
+    },
+    "month": {
+      "type": "string",
+      "description": "Month for this blog entry (e.g., May 2026)"
+    },
+    "description": {
+      "type": "string",
+      "description": "Blog entry description/content"
+    },
+    "featured_hbb_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Array of featured business IDs for this month"
+    },
+    "is_published": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether this blog entry is published"
+    }
+  },
+  "required": [
+    "title",
+    "month"
+  ]
+}

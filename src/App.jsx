@@ -11,6 +11,10 @@ import SubmitBusiness from './pages/SubmitBusiness';
 import AdminDashboard from './pages/AdminDashboard';
 import MyLists from './pages/MyLists';
 import EditBusiness from './pages/EditBusiness';
+import Blog from './pages/Blog';
+import Help from './pages/Help';
+import Info from './pages/Info';
+import AdminBlogManager from './pages/AdminBlogManager';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -38,8 +42,12 @@ const AuthenticatedApp = () => {
       <Route path="/business/:id" element={<BusinessDetail />} />
       <Route path="/submit" element={<SubmitBusiness />} />
       <Route path="/admin" element={<AdminDashboard />} />
+      <Route path="/admin/blog" element={<AdminBlogManager />} />
       <Route path="/my-lists" element={<MyLists />} />
       <Route path="/edit-business/:id" element={<EditBusiness />} />
+      <Route path="/blog" element={<Blog />} />
+      <Route path="/help" element={<Help />} />
+      <Route path="/info" element={<Info />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );

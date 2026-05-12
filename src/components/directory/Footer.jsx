@@ -1,6 +1,15 @@
 export default function Footer() {
   return (
     <>
+      {/* Links to Blog, Help, Info */}
+      <div className="bg-white border-t border-border px-4 py-4">
+        <div className="max-w-2xl mx-auto flex justify-center gap-6 text-sm">
+          <a href="/blog" className="text-primary hover:underline font-medium">Blog</a>
+          <a href="/help" className="text-primary hover:underline font-medium">Help & Support</a>
+          <a href="/info" className="text-primary hover:underline font-medium">About</a>
+        </div>
+      </div>
+
       {/* About & Support section */}
 <div className="bg-secondary/40 border-t border-border px-4 py-10">
   <div className="max-w-2xl mx-auto space-y-8">
