@@ -499,18 +499,6 @@ export default function EditBusiness() {
               </label>
             </div>
 
-            <Field label="F&B Halal Status *">
-              <Select value={form.halal_status} onValueChange={v => set("halal_status", v)}>
-                <SelectTrigger><SelectValue placeholder="Select halal status" /></SelectTrigger>
-                <SelectContent>
-                  {HALAL_OPTIONS.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}
-                </SelectContent>
-              </Select>
-              <p className="text-xs text-muted-foreground mt-2">
-                <strong>Muslim-owned F&B must be responsible for ensuring halal</strong>
-              </p>
-            </Field>
-
             <Field label="More About Us">
               <Textarea
                 value={form.more_about_us}
@@ -543,7 +531,7 @@ function Section({ title, children }) {
 
 function SubSection({ children }) {
   return (
-    <div className="bg-secondary/30 rounded-lg p-4 space-y-4">
+    <div className="bg-slate-50 rounded-lg p-4 space-y-4">
       {children}
     </div>
   );
