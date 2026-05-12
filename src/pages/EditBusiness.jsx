@@ -238,41 +238,43 @@ export default function EditBusiness() {
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* SECTION 1 — Business Info */}
           <Section title="SECTION 1 — Business Info">
-            <Field label="HBB Name *">
-              <Input value={form.name} onChange={e => set("name", e.target.value)} placeholder="Your HBB name" required />
-            </Field>
+            {/* 1.1: HBB Name, Logo, Mamas */}
+            <SubSection>
+              <Field label="HBB Name *">
+                <Input value={form.name} onChange={e => set("name", e.target.value)} placeholder="Your HBB name" required />
+              </Field>
 
-            <div className="border-t pt-4">
-              <p className="text-xs font-medium text-muted-foreground mb-3">
-                HBB Logo <span className="text-gray-400">(optional)</span>
-              </p>
-              <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
-                Optional, but good to have as it makes your listing looks beautiful AND customers know who you are.<br />
-                Remember to choose the nicest photo of your logo you have. 🙂
-              </p>
-              {form.logo_url && !logoFile && (
-                <img src={form.logo_url} alt="Current logo" className="w-20 h-20 rounded-xl object-cover mb-3" />
-              )}
-              <label className="flex flex-col items-center gap-2 border-2 border-dashed border-border rounded-xl p-6 cursor-pointer hover:border-primary/50 transition-colors">
-                <Upload className="w-8 h-8 text-muted-foreground" />
-                <span className="text-sm text-muted-foreground">{logoFile ? logoFile.name : "Click to replace logo"}</span>
-                <input type="file" accept="image/*" className="hidden" onChange={e => setLogoFile(e.target.files[0])} />
-              </label>
-            </div>
+              <div className="border-t pt-4">
+                <p className="text-sm font-semibold text-foreground mb-2">HBB Logo <span className="text-gray-400 font-normal">(optional)</span></p>
+                <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+                  Optional, but good to have as it makes your listing looks beautiful AND customers know who you are.<br />
+                  Remember to choose the nicest photo of your logo you have. 🙂
+                </p>
+                {form.logo_url && !logoFile && (
+                  <img src={form.logo_url} alt="Current logo" className="w-20 h-20 rounded-xl object-cover mb-3" />
+                )}
+                <label className="flex flex-col items-center gap-2 border-2 border-dashed border-border rounded-xl p-6 cursor-pointer hover:border-primary/50 transition-colors">
+                  <Upload className="w-8 h-8 text-muted-foreground" />
+                  <span className="text-sm text-muted-foreground">{logoFile ? logoFile.name : "Click to replace logo"}</span>
+                  <input type="file" accept="image/*" className="hidden" onChange={e => setLogoFile(e.target.files[0])} />
+                </label>
+              </div>
 
-            <Field label="HBB Mamas? *">
-              <Select value={form.is_mama} onValueChange={v => set("is_mama", v)}>
-                <SelectTrigger><SelectValue placeholder="Select Yes or No" /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Yes">Yes</SelectItem>
-                  <SelectItem value="No">No</SelectItem>
-                </SelectContent>
-              </Select>
-            </Field>
+              <Field label="HBB Mamas? *">
+                <Select value={form.is_mama} onValueChange={v => set("is_mama", v)}>
+                  <SelectTrigger><SelectValue placeholder="Select Yes or No" /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Yes">Yes</SelectItem>
+                    <SelectItem value="No">No</SelectItem>
+                  </SelectContent>
+                </Select>
+              </Field>
+            </SubSection>
 
-            <div className="border-t pt-4">
-              <p className="text-xs font-medium text-muted-foreground mb-3">Choose your category</p>
-              <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
+            {/* 1.2: Choose your category */}
+            <SubSection>
+              <p className="text-sm font-semibold text-foreground mb-3">Choose your category</p>
+              <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
                 Choose ONE main category — the one you want customers to recognise you for.
               </p>
 
@@ -288,8 +290,14 @@ export default function EditBusiness() {
                 <p><strong>09 Services</strong> → Delivery, personal shopper, mover, design, website, IT, business support, digital creation, etc</p>
                 <p><strong>10 Others</strong> → Anything not listed above</p>
               </div>
+            </SubSection>
 
+            {/* 1.3: Main Category, Additional Categories, Halal Status */}
+            <SubSection>
               <Field label="HBB Main Category *">
+                <p className="text-sm text-muted-foreground mb-2 leading-relaxed">
+                  Pick ONE category that best matches your business. This is what you sell the MOST.
+                </p>
                 <Select value={form.main_category} onValueChange={v => set("main_category", v)}>
                   <SelectTrigger><SelectValue placeholder="Select a category" /></SelectTrigger>
                   <SelectContent>
@@ -297,158 +305,183 @@ export default function EditBusiness() {
                   </SelectContent>
                 </Select>
               </Field>
-            </div>
 
-            <div className="border-t pt-4">
-              <p className="text-xs font-medium text-muted-foreground mb-3">HBB Additional Categories <span className="text-gray-400">(optional)</span></p>
-              <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
-                Optional. IF have, tick any other categories that also match your business.
-              </p>
-              <div className="space-y-2">
-                {MAIN_CATEGORIES.map(cat => (
-                  <label key={cat} className="flex items-center gap-2 cursor-pointer">
-                    <Checkbox
-                      checked={form.additional_categories.includes(cat)}
-                      onCheckedChange={() => toggleCategory(cat)}
-                      disabled={cat === form.main_category}
-                    />
-                    <span className="text-sm">{cat}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
-
-            <Field label="Product/Services Details *">
-              <Textarea
-                value={form.description}
-                onChange={e => set("description", e.target.value)}
-                placeholder="A brief description of the products you're selling..."
-                rows={4}
-                required
-              />
-              <p className="text-xs text-muted-foreground mt-2 leading-relaxed">
-                A brief description of the products you're selling and or the services you're rendering.
-              </p>
-            </Field>
-
-            <div className="border-t pt-4">
-              <p className="text-xs font-medium text-muted-foreground mb-3">Upload Product/Services Photos <span className="text-gray-400">(optional)</span></p>
-              <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
-                Image of the products you're selling and or the services you're rendering.
-                <br /><br />
-                <strong>PLEASE TAKE NOTE:</strong> Only FIVE photos can be uploaded.
-              </p>
-              <label className="flex flex-col items-center gap-2 border-2 border-dashed border-border rounded-xl p-6 cursor-pointer hover:border-primary/50 transition-colors">
-                <Upload className="w-8 h-8 text-muted-foreground" />
-                <span className="text-sm text-muted-foreground">Click to add more photos ({productPhotos.length + newProductPhotos.length}/5)</span>
-                <input type="file" accept="image/*" multiple className="hidden" onChange={handleProductPhotoChange} />
-              </label>
-              {(productPhotos.length > 0 || newProductPhotos.length > 0) && (
-                <div className="grid grid-cols-5 gap-2 mt-4">
-                  {productPhotos.map((url, idx) => (
-                    <div key={`existing-${idx}`} className="relative">
-                      <img src={url} alt={`Product ${idx}`} className="w-full h-20 object-cover rounded-lg" />
-                      <button
-                        type="button"
-                        onClick={() => removeProductPhoto(idx)}
-                        className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center"
-                      >
-                        <X className="w-3 h-3" />
-                      </button>
-                    </div>
-                  ))}
-                  {newProductPhotos.map((file, idx) => (
-                    <div key={`new-${idx}`} className="relative">
-                      <img src={URL.createObjectURL(file)} alt={`New ${idx}`} className="w-full h-20 object-cover rounded-lg border-2 border-primary" />
-                      <button
-                        type="button"
-                        onClick={() => removeNewProductPhoto(idx)}
-                        className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center"
-                      >
-                        <X className="w-3 h-3" />
-                      </button>
-                    </div>
+              <Field label="HBB Additional Categories (optional)">
+                <p className="text-sm text-muted-foreground mb-2 leading-relaxed">
+                  Tick any other categories that also match your business. DO NOT tick the same as your MAIN category above.
+                </p>
+                <div className="space-y-2">
+                  {MAIN_CATEGORIES.map(cat => (
+                    <label key={cat} className="flex items-center gap-2 cursor-pointer">
+                      <Checkbox
+                        checked={form.additional_categories.includes(cat)}
+                        onCheckedChange={() => toggleCategory(cat)}
+                        disabled={cat === form.main_category}
+                      />
+                      <span className="text-sm">{cat}</span>
+                    </label>
                   ))}
                 </div>
-              )}
-            </div>
+              </Field>
 
-            <Field label="Location *">
-              <Select value={form.location} onValueChange={v => set("location", v)}>
-                <SelectTrigger><SelectValue placeholder="Select your area" /></SelectTrigger>
-                <SelectContent>
-                  {LOCATIONS.map(l => <SelectItem key={l} value={l}>{l}</SelectItem>)}
-                </SelectContent>
-              </Select>
-            </Field>
+              <Field label="F&B Halal Status *">
+                <p className="text-sm text-muted-foreground mb-2 leading-relaxed">
+                  Muslim-owned F&B must be responsible for ensuring halal
+                </p>
+                <Select value={form.halal_status} onValueChange={v => set("halal_status", v)}>
+                  <SelectTrigger><SelectValue placeholder="Select halal status" /></SelectTrigger>
+                  <SelectContent>
+                    {HALAL_OPTIONS.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+              </Field>
+            </SubSection>
+
+            {/* 1.4: Product/Services Details, Photos */}
+            <SubSection>
+              <Field label="Product/Services Details *">
+                <p className="text-sm text-muted-foreground mb-2 leading-relaxed">
+                  A brief description of the products you're selling and or the services you're rendering.
+                </p>
+                <Textarea
+                  value={form.description}
+                  onChange={e => set("description", e.target.value)}
+                  placeholder="A brief description of the products you're selling..."
+                  rows={4}
+                  required
+                />
+              </Field>
+
+              <Field label="Upload Product/Services Photos (optional)">
+                <p className="text-sm text-muted-foreground mb-2 leading-relaxed">
+                  Image of the products you're selling and or the services you're rendering.
+                  <br /><br />
+                  <strong>PLEASE TAKE NOTE:</strong> Only FIVE photos can be uploaded.
+                </p>
+                <label className="flex flex-col items-center gap-2 border-2 border-dashed border-border rounded-xl p-6 cursor-pointer hover:border-primary/50 transition-colors">
+                  <Upload className="w-8 h-8 text-muted-foreground" />
+                  <span className="text-sm text-muted-foreground">Click to add more photos ({productPhotos.length + newProductPhotos.length}/5)</span>
+                  <input type="file" accept="image/*" multiple className="hidden" onChange={handleProductPhotoChange} />
+                </label>
+                {(productPhotos.length > 0 || newProductPhotos.length > 0) && (
+                  <div className="grid grid-cols-5 gap-2 mt-4">
+                    {productPhotos.map((url, idx) => (
+                      <div key={`existing-${idx}`} className="relative">
+                        <img src={url} alt={`Product ${idx}`} className="w-full h-20 object-cover rounded-lg" />
+                        <button
+                          type="button"
+                          onClick={() => removeProductPhoto(idx)}
+                          className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center"
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                      </div>
+                    ))}
+                    {newProductPhotos.map((file, idx) => (
+                      <div key={`new-${idx}`} className="relative">
+                        <img src={URL.createObjectURL(file)} alt={`New ${idx}`} className="w-full h-20 object-cover rounded-lg border-2 border-primary" />
+                        <button
+                          type="button"
+                          onClick={() => removeNewProductPhoto(idx)}
+                          className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center"
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </Field>
+
+              <Field label="Location *">
+                <p className="text-sm text-muted-foreground mb-2 leading-relaxed">
+                  Don't know which location to choose? The 2-digit number in the brackets [ ] is based on the first two numbers of your postal code.
+                </p>
+                <Select value={form.location} onValueChange={v => set("location", v)}>
+                  <SelectTrigger><SelectValue placeholder="Select your area" /></SelectTrigger>
+                  <SelectContent>
+                    {LOCATIONS.map(l => <SelectItem key={l} value={l}>{l}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+              </Field>
+            </SubSection>
           </Section>
 
           {/* SECTION 2 — Contact & Links */}
           <Section title="SECTION 2 — Contact & Links">
-            <Field label="WhatsApp Number *">
-              <Input
-                value={form.whatsapp}
-                onChange={e => set("whatsapp", e.target.value.replace(/\D/g, ""))}
-                placeholder="65912345678"
-                maxLength="11"
-                required
-              />
-              <p className="text-xs text-muted-foreground mt-2">For customers to contact you.</p>
-            </Field>
+            {/* 2.1: WhatsApp Number */}
+            <SubSection>
+              <Field label="WhatsApp Number *">
+                <p className="text-sm text-muted-foreground mb-2">For customers to contact you.</p>
+                <Input
+                  value={form.whatsapp}
+                  onChange={e => set("whatsapp", e.target.value.replace(/\D/g, ""))}
+                  placeholder="65912345678"
+                  maxLength="11"
+                  required
+                />
+              </Field>
+            </SubSection>
 
-            <Field label="Website / Order Form / Shop Link">
-              <Input
-                value={form.website}
-                onChange={e => set("website", e.target.value)}
-                placeholder="https://example.com"
-              />
-              <p className="text-xs text-muted-foreground mt-2">Enter your full link address, including the https://</p>
-            </Field>
+            {/* 2.2: Website */}
+            <SubSection>
+              <Field label="Website / Order Form / Shop Link">
+                <p className="text-sm text-muted-foreground mb-2">Enter your full link address, including the https://</p>
+                <Input
+                  value={form.website}
+                  onChange={e => set("website", e.target.value)}
+                  placeholder="https://example.com"
+                />
+              </Field>
+            </SubSection>
 
-            <Field label="Facebook">
-              <Input
-                value={form.facebook}
-                onChange={e => set("facebook", e.target.value)}
-                placeholder="yourfacebookhandle"
-              />
-              <p className="text-xs text-muted-foreground mt-2">Only enter the Facebook username handle, no @ or links required</p>
-            </Field>
+            {/* 2.3: Social Media */}
+            <SubSection>
+              <Field label="Facebook">
+                <p className="text-sm text-muted-foreground mb-2">Only enter the Facebook username handle, no @ or links required</p>
+                <Input
+                  value={form.facebook}
+                  onChange={e => set("facebook", e.target.value)}
+                  placeholder="yourfacebookhandle"
+                />
+              </Field>
 
-            <Field label="Instagram">
-              <Input
-                value={form.instagram}
-                onChange={e => set("instagram", e.target.value)}
-                placeholder="yourinstagramhandle"
-              />
-              <p className="text-xs text-muted-foreground mt-2">Only enter the Instagram username handle, no @ or links required</p>
-            </Field>
+              <Field label="Instagram">
+                <p className="text-sm text-muted-foreground mb-2">Only enter the Instagram username handle, no @ or links required</p>
+                <Input
+                  value={form.instagram}
+                  onChange={e => set("instagram", e.target.value)}
+                  placeholder="yourinstagramhandle"
+                />
+              </Field>
 
-            <Field label="Threads">
-              <Input
-                value={form.threads}
-                onChange={e => set("threads", e.target.value)}
-                placeholder="yourthreadshandle"
-              />
-              <p className="text-xs text-muted-foreground mt-2">Only enter the Threads username handle, no @ or links required</p>
-            </Field>
+              <Field label="Threads">
+                <p className="text-sm text-muted-foreground mb-2">Only enter the Threads username handle, no @ or links required</p>
+                <Input
+                  value={form.threads}
+                  onChange={e => set("threads", e.target.value)}
+                  placeholder="yourthreadshandle"
+                />
+              </Field>
 
-            <Field label="TikTok">
-              <Input
-                value={form.tiktok}
-                onChange={e => set("tiktok", e.target.value)}
-                placeholder="yourtiktokhandle"
-              />
-              <p className="text-xs text-muted-foreground mt-2">Only enter the TikTok username handle, no @ or links required</p>
-            </Field>
+              <Field label="TikTok">
+                <p className="text-sm text-muted-foreground mb-2">Only enter the TikTok username handle, no @ or links required</p>
+                <Input
+                  value={form.tiktok}
+                  onChange={e => set("tiktok", e.target.value)}
+                  placeholder="yourtiktokhandle"
+                />
+              </Field>
 
-            <Field label="Telegram Channel">
-              <Input
-                value={form.telegram}
-                onChange={e => set("telegram", e.target.value)}
-                placeholder="yourtelegramchannel"
-              />
-              <p className="text-xs text-muted-foreground mt-2">Only enter the Telegram Channel username, no links required</p>
-            </Field>
+              <Field label="Telegram Channel">
+                <p className="text-sm text-muted-foreground mb-2">Only enter the Telegram Channel username, no links required</p>
+                <Input
+                  value={form.telegram}
+                  onChange={e => set("telegram", e.target.value)}
+                  placeholder="yourtelegramchannel"
+                />
+              </Field>
+            </SubSection>
           </Section>
 
           {/* SECTION 3 — Menu / Additional Details */}
@@ -501,8 +534,16 @@ export default function EditBusiness() {
 
 function Section({ title, children }) {
   return (
-    <div className="border border-border rounded-xl p-5 bg-white space-y-4">
-      <h3 className="font-quicksand font-bold text-sm text-foreground border-b border-border pb-2">{title}</h3>
+    <div className="border border-border rounded-xl p-5 bg-white space-y-6">
+      <h3 className="font-quicksand font-bold text-lg text-foreground border-b border-border pb-3">{title}</h3>
+      {children}
+    </div>
+  );
+}
+
+function SubSection({ children }) {
+  return (
+    <div className="border-t pt-4 space-y-4 first:border-t-0 first:pt-0">
       {children}
     </div>
   );
@@ -511,7 +552,7 @@ function Section({ title, children }) {
 function Field({ label, children }) {
   return (
     <div className="space-y-1.5">
-      <Label className="text-xs font-medium text-muted-foreground">{label}</Label>
+      <Label className="text-sm font-semibold text-foreground">{label}</Label>
       {children}
     </div>
   );
