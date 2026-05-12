@@ -9,7 +9,8 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function Blog() {
   const [expandedId, setExpandedId] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedMonth, setSelectedMonth] = useState("");
+  const [selectedSpotlight, setSelectedSpotlight] = useState("");
 
   const { data: entries = [] } = useQuery({
     queryKey: ["blogEntries"],
@@ -21,30 +22,29 @@ export default function Blog() {
     queryFn: () => base44.entities.Business.filter({ status: "approved" }, "-created_date", 500),
   });
 
-  // Get all unique categories (months + special_attributes)
-  const categories = useMemo(() => {
-    const cats = new Set();
-    entries.forEach(entry => {
-      if (entry.month) cats.add(entry.month);
-      if (entry.special_attribute) cats.add(entry.special_attribute);
-    });
-    return Array.from(cats).sort();
+  // Get unique months and special attributes
+  const months = useMemo(() => {
+    const m = new Set();
+    entries.forEach(e => e.month && m.add(e.month));
+    return Array.from(m).sort();
   }, [entries]);
 
-  // Filter entries by selected category
+  const spotlights = useMemo(() => {
+    const s = new Set();
+    entries.forEach(e => e.special_attribute && s.add(e.special_attribute));
+    return Array.from(s).sort();
+  }, [entries]);
+
+  // Filter entries
   const filteredEntries = useMemo(() => {
-    if (!selectedCategory) return entries;
-    return entries.filter(entry => 
-      entry.month === selectedCategory || entry.special_attribute === selectedCategory
-    );
-  }, [entries, selectedCategory]);
+    return entries.filter(entry => {
+      const matchMonth = !selectedMonth || entry.month === selectedMonth;
+      const matchSpotlight = !selectedSpotlight || entry.special_attribute === selectedSpotlight;
+      return matchMonth && matchSpotlight;
+    });
+  }, [entries, selectedMonth, selectedSpotlight]);
 
   const getBusiness = (id) => businesses.find(b => b.id === id);
-
-  const getCategoryLabel = (cat) => {
-    const hasAsSpecial = entries.some(e => e.special_attribute === cat);
-    return hasAsSpecial ? "🌟 Spotlight" : cat;
-  };
 
   return (
     <div className="min-h-screen bg-background font-inter">
@@ -56,31 +56,49 @@ export default function Blog() {
           Back to Directory
         </Link>
 
-        <h1 className="font-quicksand font-bold text-3xl text-foreground mb-6 text-center">HBB Blog 📝</h1>
+        <h1 className="font-quicksand font-bold text-3xl text-foreground mb-8 text-center">HBB Blog 📝</h1>
 
-        {/* Categories */}
-        {categories.length > 0 && (
-          <Tabs value={selectedCategory} onValueChange={setSelectedCategory} className="w-full mb-8">
-            <TabsList className="flex flex-wrap gap-0 h-auto p-0 justify-center">
-              <TabsTrigger value="" className="text-sm py-2">All</TabsTrigger>
-              {categories.map((cat) => (
-                <TabsTrigger key={cat} value={cat} className="text-sm py-2">
-                  {getCategoryLabel(cat)}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-          </Tabs>
+        {/* Month Filter */}
+        {months.length > 0 && (
+          <div className="mb-6">
+            <p className="text-sm font-semibold text-foreground mb-3">By Month</p>
+            <Tabs value={selectedMonth} onValueChange={setSelectedMonth} className="w-full">
+              <TabsList className="flex flex-wrap gap-0 h-auto p-0">
+                <TabsTrigger value="" className="text-sm py-2">All</TabsTrigger>
+                {months.map((month) => (
+                  <TabsTrigger key={month} value={month} className="text-sm py-2">
+                    {month}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+            </Tabs>
+          </div>
+        )}
+
+        {/* Spotlight Filter */}
+        {spotlights.length > 0 && (
+          <div className="mb-6">
+            <p className="text-sm font-semibold text-foreground mb-3">By Spotlight</p>
+            <Tabs value={selectedSpotlight} onValueChange={setSelectedSpotlight} className="w-full">
+              <TabsList className="flex flex-wrap gap-0 h-auto p-0">
+                <TabsTrigger value="" className="text-sm py-2">All</TabsTrigger>
+                {spotlights.map((spot) => (
+                  <TabsTrigger key={spot} value={spot} className="text-sm py-2">
+                    🌟 {spot}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+            </Tabs>
+          </div>
         )}
 
         {filteredEntries.length === 0 ? (
           <div className="text-center py-12 text-muted-foreground">
-            <p className="text-lg">No blog entries yet.</p>
+            <p className="text-lg">No blog entries matching filters.</p>
           </div>
         ) : (
           <div className="space-y-6">
             {filteredEntries.map((entry) => {
-              const isSpotlight = !!entry.special_attribute;
-
               return (
                 <div key={entry.id} className="border border-border rounded-xl p-6 bg-white hover:shadow-md transition-shadow">
                   <div className="flex items-start justify-between gap-4">
@@ -89,7 +107,7 @@ export default function Blog() {
                   
                   <div className="flex gap-2 mt-2">
                     <span className="text-xs bg-secondary text-secondary-foreground px-2 py-1 rounded">{entry.month}</span>
-                    {isSpotlight && <span className="text-xs bg-accent text-accent-foreground px-2 py-1 rounded">🌟 Spotlight</span>}
+                    {entry.special_attribute && <span className="text-xs bg-accent text-accent-foreground px-2 py-1 rounded">🌟 {entry.special_attribute}</span>}
                   </div>
 
                   {entry.description && (
