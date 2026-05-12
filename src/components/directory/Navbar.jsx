@@ -32,6 +32,17 @@ export default function Navbar() {
   const submitPath = hasUserBusiness ? `/edit-business/${userBusiness.id}` : "/submit";
   const submitLabel = hasUserBusiness ? "Edit HBB" : "Submit HBB";
 
+  // DEBUG
+  console.log("Navbar Debug:", {
+    currentUser: currentUser?.email,
+    role: currentUser?.role,
+    isBusiness,
+    businessLoading,
+    userBusiness: userBusiness?.id,
+    hasUserBusiness,
+    submitLabel
+  });
+
   return (
     <nav className="sticky top-0 z-50 bg-white border-b border-border shadow-sm">
       <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
