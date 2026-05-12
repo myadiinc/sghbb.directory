@@ -6,21 +6,14 @@
       "type": "string",
       "description": "Business name"
     },
-    "slug": {
+    "logo_url": {
       "type": "string",
-      "description": "URL-friendly unique identifier"
+      "description": "Logo/profile image URL"
     },
-    "tagline": {
-      "type": "string",
-      "description": "Short tagline or one-liner"
-    },
-    "description": {
-      "type": "string",
-      "description": "Full business description / product & services details"
-    },
-    "more_about_us": {
-      "type": "string",
-      "description": "Additional info about the business"
+    "is_mama": {
+      "type": "boolean",
+      "default": false,
+      "description": "HBB Mama badge"
     },
     "main_category": {
       "type": "string",
@@ -44,20 +37,65 @@
       },
       "description": "Additional category tags"
     },
-    "badges": {
+    "halal_status": {
+      "type": "string",
+      "enum": [
+        "Muslim-Owned F&B",
+        "Halal-Certified F&B",
+        "Non F&B"
+      ],
+      "description": "F&B Halal status"
+    },
+    "location": {
+      "type": "string",
+      "description": "Area/region in Singapore"
+    },
+    "description": {
+      "type": "string",
+      "description": "Product & services details"
+    },
+    "photos": {
       "type": "array",
       "items": {
-        "type": "string",
-        "enum": [
-          "HBB Verified",
-          "New HBB",
-          "HBB Mama",
-          "Non F&B",
-          "F&B",
-          "HBB Spotlight"
-        ]
+        "type": "string"
       },
-      "description": "Status badges"
+      "description": "Array of product/services photo URLs"
+    },
+    "whatsapp": {
+      "type": "string",
+      "description": "WhatsApp number (with country code)"
+    },
+    "website": {
+      "type": "string",
+      "description": "Website / Order Form / Shop Link"
+    },
+    "facebook": {
+      "type": "string",
+      "description": "Facebook handle"
+    },
+    "instagram": {
+      "type": "string",
+      "description": "Instagram handle"
+    },
+    "threads": {
+      "type": "string",
+      "description": "Threads handle"
+    },
+    "tiktok": {
+      "type": "string",
+      "description": "TikTok handle"
+    },
+    "telegram": {
+      "type": "string",
+      "description": "Telegram channel handle"
+    },
+    "menu_url": {
+      "type": "string",
+      "description": "Latest menu / price list URL"
+    },
+    "more_about_us": {
+      "type": "string",
+      "description": "Additional info about the business"
     },
     "status": {
       "type": "string",
@@ -68,96 +106,20 @@
       ],
       "default": "pending"
     },
-    "location": {
+    "submitted_by_email": {
       "type": "string",
-      "description": "Area/region in Singapore (e.g. Yishun, Tampines)"
-    },
-    "postal_district": {
-      "type": "string",
-      "description": "Postal district or zone"
-    },
-    "hours": {
-      "type": "string",
-      "description": "Operating hours as text"
-    },
-    "is_halal": {
-      "type": "boolean",
-      "default": false
-    },
-    "halal_status": {
-      "type": "string",
-      "enum": [
-        "Muslim-Owned F&B",
-        "Halal-Certified F&B",
-        "Non F&B"
-      ],
-      "description": "F&B Halal status"
-    },
-    "is_mama": {
-      "type": "boolean",
-      "default": false,
-      "description": "HBB Mama badge"
-    },
-    "phone": {
-      "type": "string"
-    },
-    "whatsapp": {
-      "type": "string",
-      "description": "WhatsApp number (with country code)"
-    },
-    "email": {
-      "type": "string"
-    },
-    "website": {
-      "type": "string",
-      "description": "Website / Order Form / Shop Link"
-    },
-    "instagram": {
-      "type": "string",
-      "description": "Instagram handle or URL"
-    },
-    "facebook": {
-      "type": "string",
-      "description": "Facebook page URL"
-    },
-    "tiktok": {
-      "type": "string",
-      "description": "TikTok handle or URL"
-    },
-    "threads": {
-      "type": "string",
-      "description": "Threads handle or URL"
-    },
-    "telegram": {
-      "type": "string",
-      "description": "Telegram channel link or handle"
-    },
-    "menu_url": {
-      "type": "string",
-      "description": "Latest menu / price list URL"
-    },
-    "logo_url": {
-      "type": "string",
-      "description": "Logo/profile image URL"
-    },
-    "photos": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      },
-      "description": "Array of product/services photo URLs"
+      "description": "Email of submitter"
     },
     "is_featured": {
       "type": "boolean",
       "default": false
     },
-    "submitted_by_email": {
-      "type": "string",
-      "description": "Email of submitter"
-    },
     "view_count": {
       "type": "number",
       "default": 0
+    },
+    "email": {
+      "type": "string"
     }
   },
   "required": [
