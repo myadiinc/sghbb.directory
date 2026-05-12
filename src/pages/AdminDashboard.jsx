@@ -17,6 +17,11 @@ export default function AdminDashboard() {
     queryFn: () => base44.entities.Business.list("-created_date", 500),
   });
 
+  const { data: reviews = [], refetch: refetchReviews } = useQuery({
+    queryKey: ["admin-reviews"],
+    queryFn: () => base44.entities.Review.list("-created_date", 500),
+  });
+
   const pending = all.filter(b => b.status === "pending");
   const approved = all.filter(b => b.status === "approved");
   const rejected = all.filter(b => b.status === "rejected");
@@ -31,10 +36,16 @@ export default function AdminDashboard() {
     onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-businesses"] }),
   });
 
+  const reviewDelete = useMutation({
+    mutationFn: (id) => base44.entities.Review.delete(id),
+    onSuccess: () => refetchReviews(),
+  });
+
   const approve = (b) => { update.mutate({ id: b.id, data: { status: "approved" } }); toast.success(`${b.name} approved!`); };
   const reject = (b) => { update.mutate({ id: b.id, data: { status: "rejected" } }); toast.error(`${b.name} rejected.`); };
   const toggleFeatured = (b) => { update.mutate({ id: b.id, data: { is_featured: !b.is_featured } }); };
   const del = (b) => { if (confirm(`Delete ${b.name}?`)) { remove.mutate(b.id); toast.success("Deleted."); } };
+  const deleteReview = (r) => { if (confirm("Delete this review?")) { reviewDelete.mutate(r.id); toast.success("Review deleted."); } };
 
   return (
     <div className="min-h-screen bg-background font-inter">
@@ -64,6 +75,7 @@ export default function AdminDashboard() {
               <TabsTrigger value="rejected">
                 Rejected <span className="ml-1.5 bg-red-100 text-red-700 text-xs px-1.5 rounded-full">{rejected.length}</span>
               </TabsTrigger>
+              <TabsTrigger value="reviews">Reviews</TabsTrigger>
               <TabsTrigger value="spotlights">✨ Spotlights</TabsTrigger>
             </TabsList>
 
@@ -74,14 +86,45 @@ export default function AdminDashboard() {
               <BusinessList businesses={approved} onApprove={approve} onReject={reject} onDelete={del} onToggleFeatured={toggleFeatured} showFeatured />
             </TabsContent>
             <TabsContent value="rejected">
-              <BusinessList businesses={rejected} onApprove={approve} onReject={reject} onDelete={del} onToggleFeatured={toggleFeatured} showApprove />
-            </TabsContent>
-            <TabsContent value="spotlights">
-              <SpotlightManager />
-            </TabsContent>
+               <BusinessList businesses={rejected} onApprove={approve} onReject={reject} onDelete={del} onToggleFeatured={toggleFeatured} showApprove />
+             </TabsContent>
+             <TabsContent value="reviews">
+               <ReviewList reviews={reviews} onDelete={deleteReview} />
+             </TabsContent>
+             <TabsContent value="spotlights">
+               <SpotlightManager />
+             </TabsContent>
           </Tabs>
         )}
       </div>
+    </div>
+  );
+}
+
+function ReviewList({ reviews, onDelete }) {
+  if (reviews.length === 0) {
+    return <p className="text-center text-muted-foreground py-10 text-sm">No reviews here.</p>;
+  }
+
+  return (
+    <div className="space-y-3">
+      {reviews.map(r => (
+        <div key={r.id} className="bg-white border border-border rounded-xl p-4">
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="font-semibold text-foreground">{r.reviewer_name}</span>
+                <span className="text-sm text-yellow-500">{'⭐'.repeat(r.rating)}</span>
+              </div>
+              <p className="text-sm text-foreground mb-2">{r.comment}</p>
+              <p className="text-xs text-muted-foreground">Business ID: {r.business_id}</p>
+            </div>
+            <Button size="sm" variant="outline" onClick={() => onDelete(r)} className="h-8 text-destructive border-destructive/30 gap-1 flex-shrink-0">
+              <Trash2 className="w-3.5 h-3.5" />Delete
+            </Button>
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
