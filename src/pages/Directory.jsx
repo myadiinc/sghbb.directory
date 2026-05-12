@@ -14,10 +14,31 @@ export default function Directory() {
   const [currentPage, setCurrentPage] = useState(1);
   const ITEMS_PER_PAGE = 10;
 
+  const { data: currentUser } = useQuery({
+    queryKey: ["me"],
+    queryFn: () => base44.auth.me(),
+    retry: false
+  });
+
   const { data: businesses = [], isLoading } = useQuery({
     queryKey: ["businesses"],
     queryFn: () => base44.entities.Business.filter({ status: "approved" }, "-created_date", 200),
   });
+
+  const { data: userBusiness } = useQuery({
+    queryKey: ["userBusiness", currentUser?.email],
+    queryFn: async () => {
+      if (!currentUser?.email) return null;
+      const businesses = await base44.entities.Business.filter({ submitted_by_email: currentUser.email });
+      return businesses.length > 0 ? businesses[0] : null;
+    },
+    enabled: !!currentUser?.email,
+    retry: false
+  });
+
+  const isBusiness = currentUser && currentUser.role === "business";
+  const submitPath = (isBusiness && userBusiness) ? `/edit-business/${userBusiness.id}` : "/submit";
+  const submitLabel = (isBusiness && userBusiness) ? "EDIT YOUR HBB LISTING HERE" : "SUBMIT YOUR HBB LISTING HERE";
 
   const filtered = useMemo(() => {
     let list = [...businesses];
@@ -80,10 +101,10 @@ export default function Directory() {
           Come join the <span className="font-bold text-foreground">{businesses.length}</span> HBBs listed ✨
         </p>
         <a
-          href="/submit"
+          href={submitPath}
           className="inline-block px-8 py-3 rounded-full font-quicksand font-semibold text-sm text-white transition-all hover:opacity-90 hover:scale-105 shadow"
           style={{ background: "#5e2c2c" }}>
-          SUBMIT YOUR HBB LISTING HERE
+          {submitLabel}
         </a>
       </div>
 

@@ -14,9 +14,22 @@ export default function Navbar() {
     retry: false
   });
 
+  const { data: userBusiness } = useQuery({
+    queryKey: ["userBusiness", user?.email],
+    queryFn: async () => {
+      if (!user?.email) return null;
+      const businesses = await base44.entities.Business.filter({ submitted_by_email: user.email });
+      return businesses.length > 0 ? businesses[0] : null;
+    },
+    enabled: !!user?.email,
+    retry: false
+  });
+
   const currentUser = user || authUser;
   const isAdmin = currentUser && currentUser.role === "admin";
   const isBusiness = currentUser && currentUser.role === "business";
+  const submitPath = (isBusiness && userBusiness) ? `/edit-business/${userBusiness.id}` : "/submit";
+  const submitLabel = (isBusiness && userBusiness) ? "Edit HBB" : "Submit HBB";
 
   return (
     <nav className="sticky top-0 z-50 bg-white border-b border-border shadow-sm">
@@ -32,7 +45,7 @@ export default function Navbar() {
         {/* Desktop nav */}
         <div className="hidden md:flex items-center gap-6 text-sm font-inter">
           {(isBusiness || isAdmin) && (
-            <Link to="/submit" className="text-muted-foreground hover:text-primary transition-colors">Submit HBB</Link>
+            <Link to={submitPath} className="text-muted-foreground hover:text-primary transition-colors">{submitLabel}</Link>
           )}
           <Link to="/my-lists" className="text-muted-foreground hover:text-primary transition-colors">My Lists</Link>
           <Link to="/my-reviews" className="text-muted-foreground hover:text-primary transition-colors">My Reviews</Link>
@@ -64,9 +77,9 @@ export default function Navbar() {
       {/* Mobile menu */}
       {open &&
       <div className="md:hidden bg-white border-t border-border px-4 py-3 flex flex-col gap-3 text-sm">
-          {(isBusiness || isAdmin) && (
-            <Link to="/submit" onClick={() => setOpen(false)} className="text-muted-foreground hover:text-primary">Submit HBB</Link>
-          )}
+         {(isBusiness || isAdmin) && (
+           <Link to={submitPath} onClick={() => setOpen(false)} className="text-muted-foreground hover:text-primary">{submitLabel}</Link>
+         )}
           <Link to="/my-lists" onClick={() => setOpen(false)} className="text-muted-foreground hover:text-primary">My Lists</Link>
           <Link to="/my-reviews" onClick={() => setOpen(false)} className="text-muted-foreground hover:text-primary">My Reviews</Link>
           {isAdmin && (
