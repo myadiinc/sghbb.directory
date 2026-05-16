@@ -34,12 +34,12 @@ export const SORT_OPTIONS = ["Oldest", "Newest", "A to Z", "Z to A"];
 export const BADGES = ["HBB Mama", "Non F&B", "F&B"];
 
 export const LOCATION_REGIONS = [
-  "North",
-  "South",
-  "East",
-  "West",
-  "Central",
-  "North-East",
+  "⬆️ North",
+  "⬇️ South",
+  "➡️ East",
+  "⬅️ West",
+  "🔄 Central",
+  "↗️ North-East",
 ];
 
 /** Region from a location string, e.g. "25 [North] ..." → "North" */
