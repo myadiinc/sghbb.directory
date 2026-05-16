@@ -11,9 +11,43 @@ export const MAIN_CATEGORIES = [
   "10 Others",
 ];
 
+const CATEGORY_NUMBER_EMOJI = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"];
+
+/** Display label for category buttons, e.g. "01 Food" → "1️⃣ Food" */
+export function getCategoryTabLabel(category) {
+  const match = category.match(/^(\d+)\s+(.+)$/);
+  if (!match) return category;
+  const num = parseInt(match[1], 10);
+  const emoji = CATEGORY_NUMBER_EMOJI[num - 1] ?? match[1];
+  return `${emoji} ${match[2]}`;
+}
+
+export const MAMA_FILTER_OPTIONS = [
+  { value: "Yes", label: "HBB Mama" },
+  { value: "No", label: "Non-HBB Mama" },
+];
+
 export const HALAL_OPTIONS = ["Muslim-Owned", "Non F&B"];
 
+export const SORT_OPTIONS = ["Oldest", "Newest", "A to Z", "Z to A"];
+
 export const BADGES = ["HBB Mama", "Non F&B", "F&B"];
+
+export const LOCATION_REGIONS = [
+  "North",
+  "South",
+  "East",
+  "West",
+  "Central",
+  "North-East",
+];
+
+/** Region from a location string, e.g. "25 [North] ..." → "North" */
+export function getLocationRegion(location) {
+  if (!location) return null;
+  const match = location.match(/\[(North-East|North|South|East|West|Central)\]/i);
+  return match ? match[1] : null;
+}
 
 export const LOCATIONS = [
   "01 [Central] Raffles Place, Cecil, Marina, People's Park",
@@ -45,3 +79,14 @@ export const LOCATIONS = [
   "27 [North] Yishun, Khatib, Sembawang, Canberra",
   "28 [North] Seletar",
 ];
+
+/** Match tab region or exact dropdown location */
+export function matchesLocationFilter(businessLocation, filterLocation) {
+  if (!filterLocation) return true;
+  if (!businessLocation) return false;
+  if (LOCATIONS.includes(filterLocation)) {
+    return businessLocation === filterLocation;
+  }
+  const escaped = filterLocation.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return new RegExp(`\\[${escaped}\\]`, "i").test(businessLocation);
+}
