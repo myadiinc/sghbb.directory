@@ -17,19 +17,6 @@ export default function FilterTabLocation({ locationFilter, onLocationChange }) 
           {region}
         </button>
       ))}
-      <Select
-        value={LOCATIONS.includes(locationFilter) ? locationFilter : ""}
-        onValueChange={(val) => onLocationChange(val || null)}
-      >
-        <SelectTrigger className="h-8 text-xs min-w-[180px] max-w-[240px] bg-white border-border">
-          <SelectValue placeholder="Specific location..." />
-        </SelectTrigger>
-        <SelectContent>
-          {LOCATIONS.map((loc) => (
-            <SelectItem key={loc} value={loc}>{loc}</SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-    </div>
+      </div>
   );
 }
