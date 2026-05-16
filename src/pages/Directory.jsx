@@ -12,7 +12,7 @@ import FilterTabMama from "@/components/directory/filters/FilterTabMama";
 import FilterTabHalal from "@/components/directory/filters/FilterTabHalal";
 import FilterSearch from "@/components/directory/filters/FilterSearch";
 import FilterSort from "@/components/directory/filters/FilterSort";
-import { matchesLocationFilter } from "@/lib/constants";
+import { matchesLocationFilter, MAIN_CATEGORIES } from "@/lib/constants";
 
 export default function Directory() {
   const [filters, setFilters] = useState({});
