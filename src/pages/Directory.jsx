@@ -198,10 +198,10 @@ export default function Directory() {
          />
        </div>
 
-      <section className="w-full px-4 py-4 bg-white border-b border-border md:sticky md:top-0 z-20 shadow-sm">
-  <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center sm:items-end justify-between gap-3">
-    
-    {/* Search bar */}
+      <section className="w-full bg-white border-b border-border md:sticky md:top-0 z-20 shadow-sm">
+  <div className="max-w-4xl mx-auto px-4 py-4 flex flex-col sm:flex-row items-center sm:items-center justify-between gap-4">
+
+    {/* Search */}
     <div className="w-full sm:flex-1">
       <FilterSearch
         search={filters.search}
@@ -216,8 +216,8 @@ export default function Directory() {
       />
     </div>
 
-    {/* Sort dropdown */}
-    <div className="w-full sm:w-auto">
+    {/* Sort */}
+    <div className="w-full sm:w-auto sm:min-w-[160px]">
       <FilterSort
         sort={filters.sort}
         onSortChange={(sort) =>
@@ -228,6 +228,7 @@ export default function Directory() {
 
   </div>
 </section>
+
 
 
         <div className="max-w-4xl mx-auto">
