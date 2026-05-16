@@ -199,26 +199,36 @@ export default function Directory() {
        </div>
 
       <section className="w-full px-4 py-4 bg-white border-b border-border md:sticky md:top-0 z-20 shadow-sm">
-        <FilterSearch
-          search={filters.search}
-          onSearchChange={(search) =>
-            setFilters((f) => {
-              const next = { ...f };
-              if (search) next.search = search;
-              else delete next.search;
-              return next;
-            })
-          }
-        />
-        <div className="flex flex-wrap gap-2 justify-center">
-          <FilterSort
-            sort={filters.sort}
-            onSortChange={(sort) =>
-              setFilters((f) => ({ ...f, sort }))
-            }
-          />
-        </div>
-      </section>
+  <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center sm:items-end justify-between gap-3">
+    
+    {/* Search bar */}
+    <div className="w-full sm:flex-1">
+      <FilterSearch
+        search={filters.search}
+        onSearchChange={(search) =>
+          setFilters((f) => {
+            const next = { ...f };
+            if (search) next.search = search;
+            else delete next.search;
+            return next;
+          })
+        }
+      />
+    </div>
+
+    {/* Sort dropdown */}
+    <div className="w-full sm:w-auto">
+      <FilterSort
+        sort={filters.sort}
+        onSortChange={(sort) =>
+          setFilters((f) => ({ ...f, sort }))
+        }
+      />
+    </div>
+
+  </div>
+</section>
+
 
         <div className="max-w-4xl mx-auto">
           {isLoading ? (
