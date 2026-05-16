@@ -1,22 +1,27 @@
-import { LOCATION_REGIONS, LOCATIONS } from "@/lib/constants";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useState } from "react";
+import { LOCATION_REGIONS } from "@/lib/constants";
 
 export default function FilterTabLocation({ locationFilter, onLocationChange }) {
+  const [activeTab, setActiveTab] = useState(locationFilter || "🌍 All");
+
   return (
-    <div className="flex flex-wrap justify-center gap-2 mb-4 items-center">
+    <div className="flex overflow-x-auto border-b border-border justify-center gap-2 mb-4">
       {LOCATION_REGIONS.map((region) => (
         <button
           key={region}
-          onClick={() => onLocationChange(locationFilter === region ? null : region)}
-          className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${
-            locationFilter === region
-              ? "bg-primary text-primary-foreground border-primary"
-              : "bg-white text-muted-foreground border-border hover:border-primary hover:text-primary"
-          }`}
+          onClick={() => {
+            setActiveTab(region);
+            onLocationChange(region === "🇸🇬 All" ? null : region);
+          }}
+          className={`px-4 py-2 text-sm font-medium transition-colors whitespace-nowrap
+            ${activeTab === region
+              ? "border-b-2 border-primary text-primary"
+              : "text-muted-foreground hover:text-primary"
+            }`}
         >
           {region}
         </button>
       ))}
-      </div>
+    </div>
   );
 }
