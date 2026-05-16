@@ -150,7 +150,9 @@ export default function Directory() {
            </a>
          </div>
 
-         {/* FILTER PANEL */}
+       </div>{/* end Discover section */}
+
+       {/* FILTER PANEL */}
 <div className="max-w-4xl mx-auto px-4 pt-8 pb-8">
   <div className="bg-white rounded-2xl shadow-sm border border-border p-5 space-y-6">
 
