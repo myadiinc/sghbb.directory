@@ -150,86 +150,94 @@ export default function Directory() {
            </a>
          </div>
 
-         <FilterTabLocation
-           locationFilter={filters.location}
-           onLocationChange={(location) =>
-             setFilters((f) => {
-               const next = { ...f };
-               if (location) next.location = location;
-               else delete next.location;
-               return next;
-             })
-           }
-         />
-         <FilterTabCategory
-  categoryFilter={filters.main_category}
-  onCategoryChange={(category) =>
-    setFilters((f) => {
-      const next = { ...f };
-      if (category) next.main_category = category;
-      else delete next.main_category;
-      return next;
-    })
-  }
-  categoryCounts={categoryCounts}
-/>
+         {/* FILTER PANEL */}
+<div className="max-w-4xl mx-auto px-4 pt-8 pb-8">
+  <div className="bg-white rounded-2xl shadow-sm border border-border p-5 space-y-6">
 
-         <FilterTabMama
-           mamaFilter={filters.is_mama}
-           onMamaChange={(isMama) =>
-             setFilters((f) => {
-               const next = { ...f };
-               if (isMama) next.is_mama = isMama;
-               else delete next.is_mama;
-               return next;
-             })
-           }
-         />
-         <FilterTabHalal
-           halalFilter={filters.halal_status}
-           onHalalChange={(halal) =>
-             setFilters((f) => {
-               const next = { ...f };
-               if (halal) next.halal_status = halal;
-               else delete next.halal_status;
-               return next;
-             })
-           }
-         />
-       </div>
+    {/* Location Tabs */}
+    <FilterTabLocation
+      locationFilter={filters.location}
+      onLocationChange={(location) =>
+        setFilters((f) => {
+          const next = { ...f };
+          if (location) next.location = location;
+          else delete next.location;
+          return next;
+        })
+      }
+    />
 
-      <section className="w-full bg-white border-b border-border md:sticky md:top-0 z-20 shadow-sm">
-  <div className="max-w-4xl mx-auto px-4 py-4 flex flex-col sm:flex-row items-center sm:items-center justify-between gap-4">
+    {/* Category Cards */}
+    <FilterTabCategory
+      categoryFilter={filters.main_category}
+      onCategoryChange={(category) =>
+        setFilters((f) => {
+          const next = { ...f };
+          if (category) next.main_category = category;
+          else delete next.main_category;
+          return next;
+        })
+      }
+      categoryCounts={categoryCounts}
+    />
 
-    {/* Search */}
-    <div className="w-full sm:flex-1">
-      <FilterSearch
-        search={filters.search}
-        onSearchChange={(search) =>
+    {/* Mama + Halal Chips */}
+    <div className="flex flex-wrap gap-3 justify-center">
+      <FilterTabMama
+        mamaFilter={filters.is_mama}
+        onMamaChange={(isMama) =>
           setFilters((f) => {
             const next = { ...f };
-            if (search) next.search = search;
-            else delete next.search;
+            if (isMama) next.is_mama = isMama;
+            else delete next.is_mama;
+            return next;
+          })
+        }
+      />
+
+      <FilterTabHalal
+        halalFilter={filters.halal_status}
+        onHalalChange={(halal) =>
+          setFilters((f) => {
+            const next = { ...f };
+            if (halal) next.halal_status = halal;
+            else delete next.halal_status;
             return next;
           })
         }
       />
     </div>
 
-    {/* Sort */}
-    <div className="w-full sm:w-auto sm:min-w-[160px]">
-      <FilterSort
-        sort={filters.sort}
-        onSortChange={(sort) =>
-          setFilters((f) => ({ ...f, sort }))
-        }
-      />
+    {/* Search + Sort */}
+    <div className="flex flex-col sm:flex-row items-center sm:items-end justify-between gap-4 pt-2">
+
+      <div className="w-full sm:flex-1">
+        <FilterSearch
+          search={filters.search}
+          onSearchChange={(search) =>
+            setFilters((f) => {
+              const next = { ...f };
+              if (search) next.search = search;
+              else delete next.search;
+              return next;
+            })
+          }
+        />
+      </div>
+
+      <div className="w-full sm:w-auto sm:min-w-[160px]">
+        <FilterSort
+          sort={filters.sort}
+          onSortChange={(sort) =>
+            setFilters((f) => ({ ...f, sort }))
+          }
+        />
+      </div>
+
     </div>
 
   </div>
-</section>
-
-
+</div>
 
         <div className="max-w-4xl mx-auto">
           {isLoading ? (
