@@ -30,6 +30,14 @@ export default function Directory() {
     queryFn: () => base44.entities.Business.filter({ status: "approved" }, "-created_date", 200),
   });
 
+   // ⭐ STEP 1 — Count how many HBBs per category
+  const categoryCounts = useMemo(() => {
+    return MAIN_CATEGORIES.reduce((acc, cat) => {
+      acc[cat] = businesses.filter(b => b.main_category === cat).length;
+      return acc;
+    }, {});
+  }, [businesses]);
+  
   const { data: userBusiness, isLoading: businessLoading } = useQuery({
     queryKey: ["userBusiness", currentUser?.email],
     queryFn: async () => {
