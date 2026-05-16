@@ -1,0 +1,40 @@
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { getCategoryTabLabel, MAIN_CATEGORIES } from "@/lib/constants";
+
+function isActive(categoryFilter, value) {
+  if (!value) return !categoryFilter;
+  return categoryFilter === value;
+}
+
+export default function FilterTabCategory({ categoryFilter, onCategoryChange }) {
+  return (
+    <section
+      role="group"
+      aria-label="Filter by main category"
+      className="flex w-full max-w-2xl mx-auto mt-3 gap-1.5 overflow-x-auto p-0.5 justify-start"
+    >
+      <Button
+        type="button"
+        size="sm"
+        variant={isActive(categoryFilter, "") ? "default" : "outline"}
+        className={cn("text-xs whitespace-nowrap flex-shrink-0 rounded-full")}
+        onClick={() => onCategoryChange("")}
+      >
+        All
+      </Button>
+      {MAIN_CATEGORIES.map((category) => (
+        <Button
+          key={category}
+          type="button"
+          size="sm"
+          variant={isActive(categoryFilter, category) ? "default" : "outline"}
+          className={cn("text-xs whitespace-nowrap flex-shrink-0 rounded-full")}
+          onClick={() => onCategoryChange(category)}
+        >
+          {getCategoryTabLabel(category)}
+        </Button>
+      ))}
+    </section>
+  );
+}
