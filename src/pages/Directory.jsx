@@ -3,11 +3,16 @@ import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
 import Navbar from "@/components/directory/Navbar";
 import HeroSection from "@/components/directory/HeroSection";
-import SearchFilters from "@/components/directory/SearchFilters";
 import BusinessCard from "@/components/directory/BusinessCard";
 import Footer from "@/components/directory/Footer";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SpotlightSection from "@/components/directory/SpotlightSection";
+import FilterTabLocation from "@/components/directory/filters/FilterTabLocation";
+import FilterTabCategory from "@/components/directory/filters/FilterTabCategory";
+import FilterTabMama from "@/components/directory/filters/FilterTabMama";
+import FilterTabHalal from "@/components/directory/filters/FilterTabHalal";
+import FilterSearch from "@/components/directory/filters/FilterSearch";
+import FilterSort from "@/components/directory/filters/FilterSort";
+import { matchesLocationFilter } from "@/lib/constants";
 
 export default function Directory() {
   const [filters, setFilters] = useState({});
@@ -57,24 +62,25 @@ export default function Directory() {
     if (filters.main_category) {
       list = list.filter(b => b.main_category === filters.main_category);
     }
-    if (filters.additional_category) {
-      list = list.filter(b => b.badges?.includes(filters.additional_category));
-    }
     if (filters.is_mama === "Yes") {
       list = list.filter(b => b.is_mama === true);
+    } else if (filters.is_mama === "No") {
+      list = list.filter(b => !b.is_mama);
     }
     if (filters.halal_status) {
       list = list.filter(b => b.halal_status === filters.halal_status);
     }
     if (filters.location) {
-      list = list.filter(b => b.location?.toLowerCase().includes(filters.location.toLowerCase()));
+      list = list.filter(b => matchesLocationFilter(b.location, filters.location));
     }
-    if (filters.sort === "Name A-Z") {
+    if (filters.sort === "A to Z") {
       list.sort((a, b) => a.name.localeCompare(b.name));
-    } else if (filters.sort === "Name Z-A") {
+    } else if (filters.sort === "Z to A") {
       list.sort((a, b) => b.name.localeCompare(a.name));
-    } else if (filters.sort === "Newest first") {
+    } else if (filters.sort === "Newest") {
       list.sort((a, b) => new Date(b.created_date) - new Date(a.created_date));
+    } else if (filters.sort === "Oldest") {
+      list.sort((a, b) => new Date(a.created_date) - new Date(b.created_date));
     }
 
     return list;
@@ -136,20 +142,73 @@ export default function Directory() {
            </a>
          </div>
 
-         {/* Location Filter Tabs */}
-         <Tabs value={filters.location || ""} onValueChange={(v) => setFilters(f => ({ ...f, location: v }))} className="w-full">
-           <TabsList className="grid grid-cols-6 w-full max-w-2xl mx-auto gap-0">
-             <TabsTrigger value="" className="text-xs py-2">All</TabsTrigger>
-             <TabsTrigger value="North" className="text-xs py-2">North</TabsTrigger>
-             <TabsTrigger value="South" className="text-xs py-2">South</TabsTrigger>
-             <TabsTrigger value="East" className="text-xs py-2">East</TabsTrigger>
-             <TabsTrigger value="West" className="text-xs py-2">West</TabsTrigger>
-             <TabsTrigger value="Central" className="text-xs py-2">Central</TabsTrigger>
-           </TabsList>
-         </Tabs>
+         <FilterTabLocation
+           locationFilter={filters.location}
+           onLocationChange={(location) =>
+             setFilters((f) => {
+               const next = { ...f };
+               if (location) next.location = location;
+               else delete next.location;
+               return next;
+             })
+           }
+         />
+         <FilterTabCategory
+           categoryFilter={filters.main_category}
+           onCategoryChange={(category) =>
+             setFilters((f) => {
+               const next = { ...f };
+               if (category) next.main_category = category;
+               else delete next.main_category;
+               return next;
+             })
+           }
+         />
+         <FilterTabMama
+           mamaFilter={filters.is_mama}
+           onMamaChange={(isMama) =>
+             setFilters((f) => {
+               const next = { ...f };
+               if (isMama) next.is_mama = isMama;
+               else delete next.is_mama;
+               return next;
+             })
+           }
+         />
+         <FilterTabHalal
+           halalFilter={filters.halal_status}
+           onHalalChange={(halal) =>
+             setFilters((f) => {
+               const next = { ...f };
+               if (halal) next.halal_status = halal;
+               else delete next.halal_status;
+               return next;
+             })
+           }
+         />
        </div>
 
-      <SearchFilters filters={filters} onFilterChange={setFilters} />
+      <section className="w-full px-4 py-4 bg-white border-b border-border md:sticky md:top-0 z-20 shadow-sm">
+        <FilterSearch
+          search={filters.search}
+          onSearchChange={(search) =>
+            setFilters((f) => {
+              const next = { ...f };
+              if (search) next.search = search;
+              else delete next.search;
+              return next;
+            })
+          }
+        />
+        <div className="flex flex-wrap gap-2 justify-center">
+          <FilterSort
+            sort={filters.sort}
+            onSortChange={(sort) =>
+              setFilters((f) => ({ ...f, sort }))
+            }
+          />
+        </div>
+      </section>
 
         <div className="max-w-4xl mx-auto">
           {isLoading ? (
