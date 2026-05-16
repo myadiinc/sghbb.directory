@@ -149,7 +149,6 @@ export default function Directory() {
              OTHER HBB PLATFORMS 🔗
            </a>
          </div>
-
        </div>{/* end Discover section */}
 
        {/* FILTER PANEL */}
