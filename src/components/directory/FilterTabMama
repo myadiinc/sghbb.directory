@@ -1,0 +1,35 @@
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { MAMA_FILTER_OPTIONS } from "@/lib/constants";
+
+const TAB_ALL = "all";
+
+function getActiveTab(mamaFilter) {
+  if (!mamaFilter) return TAB_ALL;
+  if (MAMA_FILTER_OPTIONS.some((o) => o.value === mamaFilter)) return mamaFilter;
+  return TAB_ALL;
+}
+
+export default function FilterTabMama({ mamaFilter, onMamaChange }) {
+  const activeTab = getActiveTab(mamaFilter);
+
+  return (
+    <Tabs
+      value={activeTab}
+      onValueChange={(value) => {
+        onMamaChange(value === TAB_ALL ? "" : value);
+      }}
+      className="w-full mt-3"
+    >
+      <TabsList className="grid w-full max-w-2xl mx-auto gap-0.5 h-auto p-1 grid-cols-3">
+        <TabsTrigger value={TAB_ALL} className="text-xs py-2 px-1">
+          All
+        </TabsTrigger>
+        {MAMA_FILTER_OPTIONS.map(({ value, label }) => (
+          <TabsTrigger key={value} value={value} className="text-xs py-2 px-1">
+            {label}
+          </TabsTrigger>
+        ))}
+      </TabsList>
+    </Tabs>
+  );
+}
