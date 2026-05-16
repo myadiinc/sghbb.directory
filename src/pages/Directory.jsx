@@ -162,16 +162,18 @@ export default function Directory() {
            }
          />
          <FilterTabCategory
-           categoryFilter={filters.main_category}
-           onCategoryChange={(category) =>
-             setFilters((f) => {
-               const next = { ...f };
-               if (category) next.main_category = category;
-               else delete next.main_category;
-               return next;
-             })
-           }
-         />
+  categoryFilter={filters.main_category}
+  onCategoryChange={(category) =>
+    setFilters((f) => {
+      const next = { ...f };
+      if (category) next.main_category = category;
+      else delete next.main_category;
+      return next;
+    })
+  }
+  categoryCounts={categoryCounts}
+/>
+
          <FilterTabMama
            mamaFilter={filters.is_mama}
            onMamaChange={(isMama) =>
