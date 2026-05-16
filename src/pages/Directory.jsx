@@ -151,39 +151,42 @@ export default function Directory() {
          </div>
        </div>{/* end Discover section */}
 
-       {/* FILTER PANEL */}
-<div className="max-w-4xl mx-auto px-4 pt-8 pb-8">
-  <div className="bg-white rounded-2xl shadow-sm border border-border p-5 space-y-6">
+      <div className="max-w-4xl mx-auto px-4 py-8">
+  <div className="bg-[#f9f8f7] border border-gray-200 rounded-2xl shadow-[0_2px_6px_rgba(0,0,0,0.05)] p-6 space-y-6">
 
     {/* Location Tabs */}
-    <FilterTabLocation
-      locationFilter={filters.location}
-      onLocationChange={(location) =>
-        setFilters((f) => {
-          const next = { ...f };
-          if (location) next.location = location;
-          else delete next.location;
-          return next;
-        })
-      }
-    />
+    <div className="flex flex-wrap justify-center gap-2">
+      <FilterTabLocation
+        locationFilter={filters.location}
+        onLocationChange={(location) =>
+          setFilters((f) => {
+            const next = { ...f };
+            if (location) next.location = location;
+            else delete next.location;
+            return next;
+          })
+        }
+      />
+    </div>
 
     {/* Category Cards */}
-    <FilterTabCategory
-      categoryFilter={filters.main_category}
-      onCategoryChange={(category) =>
-        setFilters((f) => {
-          const next = { ...f };
-          if (category) next.main_category = category;
-          else delete next.main_category;
-          return next;
-        })
-      }
-      categoryCounts={categoryCounts}
-    />
+    <div className="flex overflow-x-auto gap-3 no-scrollbar justify-center">
+      <FilterTabCategory
+        categoryFilter={filters.main_category}
+        onCategoryChange={(category) =>
+          setFilters((f) => {
+            const next = { ...f };
+            if (category) next.main_category = category;
+            else delete next.main_category;
+            return next;
+          })
+        }
+        categoryCounts={categoryCounts}
+      />
+    </div>
 
     {/* Mama + Halal Chips */}
-    <div className="flex flex-wrap gap-3 justify-center">
+    <div className="flex flex-wrap justify-center gap-3">
       <FilterTabMama
         mamaFilter={filters.is_mama}
         onMamaChange={(isMama) =>
@@ -195,7 +198,6 @@ export default function Directory() {
           })
         }
       />
-
       <FilterTabHalal
         halalFilter={filters.halal_status}
         onHalalChange={(halal) =>
@@ -209,9 +211,8 @@ export default function Directory() {
       />
     </div>
 
-    {/* Search + Sort */}
-    <div className="flex flex-col sm:flex-row items-center sm:items-end justify-between gap-4 pt-2">
-
+    {/* Divider + Search + Sort */}
+    <div className="border-t border-gray-200 pt-4 flex flex-col sm:flex-row items-center justify-between gap-4">
       <div className="w-full sm:flex-1">
         <FilterSearch
           search={filters.search}
@@ -225,7 +226,6 @@ export default function Directory() {
           }
         />
       </div>
-
       <div className="w-full sm:w-auto sm:min-w-[160px]">
         <FilterSort
           sort={filters.sort}
@@ -234,11 +234,11 @@ export default function Directory() {
           }
         />
       </div>
-
     </div>
 
   </div>
 </div>
+
 
         <div className="max-w-4xl mx-auto">
           {isLoading ? (
